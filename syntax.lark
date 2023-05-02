@@ -38,7 +38,7 @@
     %import common.WS
     %ignore WS
     VAR: NAME
-    NUM: INT
+    NUM: INT | "-" INT
     TRUE: "true"
     FALSE: "false"
     SKIP : "skip"
