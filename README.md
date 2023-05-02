@@ -1,5 +1,21 @@
 # IMP_Operational_semantics
+
+
 IMPの操作的意味論の可視化
+
+# install
+
+```
+git clone https://github.com/ryoryon66/IMP_Operational_semantics.git
+pip install -r requirements.txt
+```
+実行
+
+```
+python main.py
+```
+
+# 例
 
 ```
 S := S;
