@@ -2,8 +2,13 @@ a := 750;
 b := 200;
 iteration := 0;
 
-while not a=b do
+
+
+while not a=b do (
     iteration := iteration+1;
+    print iteration;
+    print a;
+    print b;
 
     if a<b then
     c := a;
@@ -14,6 +19,7 @@ while not a=b do
     ;
 
     a := a-b
+)
 ;
 
 gcd := a;

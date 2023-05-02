@@ -30,7 +30,7 @@
         | VAR ":=" aexp              -> assign
         | com ";" com              -> seq
         | "if" bexp "then" com "else" com -> ifelse
-        | "while" bexp "do" com    -> while
+        | "while" bexp "do" "(" com ")"    -> while
         | "print" aexp              -> print
 
     %import common.CNAME -> NAME
