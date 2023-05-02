@@ -1,0 +1,45 @@
+    start:com
+
+    aexp: term
+        | aexp "+" term    -> add
+        | aexp "-" term    -> sub
+
+    term: factor
+        | term "*" factor  -> mul
+
+    factor: NUM
+          | VAR
+          | "(" aexp ")"
+
+    bexp: band
+        | bexp "or" band   -> or
+    
+    band: bnot
+        | band "and" bnot  -> and
+    
+    bnot:  batom
+        | "not" bnot       -> not
+    
+    batom: TRUE 
+        | FALSE 
+        | aexp "<" aexp -> lt
+        | aexp "=" aexp -> eq
+        | "(" bexp ")"
+
+    com: SKIP
+        | VAR ":=" aexp              -> assign
+        | com ";" com              -> seq
+        | "if" bexp "then" com "else" com -> ifelse
+        | "while" bexp "do" com    -> while
+        | "print" aexp              -> print
+
+    %import common.CNAME -> NAME
+    %import common.INT   -> INT
+    %import common.WS
+    %ignore WS
+    VAR: NAME
+    NUM: INT
+    TRUE: "true"
+    FALSE: "false"
+    SKIP : "skip"
+

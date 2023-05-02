@@ -1,0 +1,26 @@
+a := 750;
+b := 200;
+iteration := 0;
+
+while not a=b do
+    iteration := iteration+1;
+
+    if a<b then
+    c := a;
+    a := b;
+    b := c
+    else
+    skip
+    ;
+
+    a := a-b
+;
+
+gcd := a;
+
+print gcd;
+
+
+skip
+
+
