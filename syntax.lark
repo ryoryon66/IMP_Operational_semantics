@@ -1,4 +1,4 @@
-    start:com
+start:com
 
     aexp: term
         | aexp "+" term    -> add
@@ -9,6 +9,7 @@
 
     factor: NUM
           | VAR
+          | VAR "(" (aexp ",")* ")" -> call
           | "(" aexp ")"
 
     bexp: band
@@ -32,14 +33,15 @@
         | "if" bexp "then" com "else" com "end" -> ifelse
         | "while" bexp "do"  com "end"    -> while
         | "print" aexp              -> print
+        | "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" -> def
 
     %import common.CNAME -> NAME
     %import common.INT   -> INT
     %import common.WS
     %ignore WS
-    VAR: NAME
+
+    VAR: /(?!(if|then|else|end|while|do|print|not|and|or|true|false|def|return)\b)[a-zA-Z_]\w*/
     NUM: INT | "-" INT
     TRUE: "true"
     FALSE: "false"
     SKIP : "skip"
-

@@ -1,0 +1,26 @@
+def sum (f,x,){
+    ans := 0;
+    if 0 < x then
+        ans := f(x,) + sum(f,x-1,)
+    else
+        ans := 0
+    end
+
+    return ans
+};
+
+def sq(x,){
+    skip
+    return x*x
+};
+
+def tri (x,){
+    skip
+    return x*x *x
+};
+
+print sum(sq,2,);
+
+print sum(tri,2,);
+
+skip

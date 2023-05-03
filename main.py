@@ -5,6 +5,7 @@ from typing import DefaultDict, Union
 from lark import Lark, Token, Transformer, Tree
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
+from dataclasses import dataclass
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -69,9 +70,23 @@ class RemoveRedundant(Transformer):
             return children[0]
         raise Exception("com")
 
+# dataclass function info
+
+@dataclass
+class FunctionInfo:
+    args : list[str]
+    com : Union[ParseTree,Token] # com
+    aexp_returned : Union[ParseTree,Token] # return aexp
+    
+    def __repr__(self):
+        return f"fun({[str(arg) for arg in self.args]})"
+    
+    def __str__(self):
+        return f"fun({self.args})"
+
 class Env:
     def __init__(self):
-        self.env : list[tuple] = [] # list of tuples (key,value)
+        self.env : list[tuple[str,Union[int,FunctionInfo]]] = [] # list of tuples (key,value)
     
     def __getitem__(self, key):
         
@@ -128,6 +143,8 @@ class DeriviationTreeNode:
         label = label.replace("\'","")
         label = label.replace("<","\\<")
         label = label.replace(">","\\>")
+        label = label.replace("{","\\{")
+        label = label.replace("}","\\}")
         
         return label
 
@@ -156,14 +173,14 @@ class DeriviationTreeNode:
                 color = "red"
             if self.exp.data == "ifelse":
                 color = "blue"
-            if self.exp.data == "assign":
+            if self.exp.data in ["def","assign"]:
                 color = "green"
             if self.exp.data == "seq":
                 color = "black"
             if self.exp.data == "print":
                 color = "orange"
             
-            if self.exp.data in ["add","sub","mul"]:
+            if self.exp.data in ["add","sub","mul","call"]:
                 color = "purple"
             
             if self.exp.data in ["eq","lt","and","or","not"]:
@@ -202,9 +219,9 @@ class DeriviationTreeNode:
         
         data = self.exp.data
         
-        is_aexp = data in ["aexp","term","factor","add","sub","mul"]
+        is_aexp = data in ["aexp","term","factor","add","sub","mul","call"]
         is_bexp = data in ["bexp","batom","and","or","not","eq","lt"]
-        is_com = data in ["com","skip","assign","ifelse","while","seq","print"]
+        is_com = data in ["com","skip","assign","ifelse","while","seq","print","def"]
         
         if is_aexp:
             return self.eval_aexp()
@@ -294,13 +311,26 @@ class DeriviationTreeNode:
             self.ancestors.append(ancestor1)
             self.res = deepcopy(self.env)
             return deepcopy(self.env)
+        
+        if data == "def":
+            var = self.exp.children[0].value
+            args = [x.value for x in self.exp.children[1:-2]]
+            com = self.exp.children[-2]
+            aexp_returned = self.exp.children[-1]
+            
+            new_env = deepcopy(self.env)
+            new_env[var] = FunctionInfo(args,com,aexp_returned)
+            
+            self.res = new_env
+            return new_env
+            
 
         if data == "com":
             raise Exception("com should be removed")
     
         raise Exception("Unknown token type")
 
-    def eval_aexp(self) -> int:
+    def eval_aexp(self) -> Union[int,FunctionInfo]:
         
         if isinstance(self.exp, Token):
             t = self.exp.type
@@ -348,6 +378,43 @@ class DeriviationTreeNode:
             self.res = res
             return res
         
+        if data == "call":
+
+            func_name = self.exp.children[0].value # function name
+            args_aexps = self.exp.children[1:] # arguments passed
+            args_ancestors = []
+            
+            function_info = self.env[func_name]
+            env_passed = Env() # environment passed to the function
+            for aexp, arg_name in zip(args_aexps,function_info.args):
+                arg_node = DeriviationTreeNode(aexp,self.env)
+                evaluated_v = arg_node.eval()
+                #assert isinstance(evaluated_v,int)
+                args_ancestors.append(arg_node)
+                assert isinstance(arg_name,str)
+                #assert isinstance(evaluated_v,int)
+                env_passed[arg_name] = evaluated_v
+            env_passed[func_name] = function_info #関数自身も引数に追加　再帰呼び出しのため
+            
+            self.ancestors += args_ancestors #引数の評価結果をancestorsに追加
+            
+            com = function_info.com
+            com_node = DeriviationTreeNode(com,env_passed)
+            env_returned = com_node.eval()
+            assert isinstance(env_returned,Env)
+            self.ancestors.append(com_node) #関数の本体の評価結果をancestorsに追加
+            
+            aexp_returned = function_info.aexp_returned
+            aexp_node = DeriviationTreeNode(aexp_returned,env_returned)
+            res = aexp_node.eval()
+            assert isinstance(res,int)
+            self.ancestors.append(aexp_node) #関数の返り値の評価結果をancestorsに追加
+            self.res = res
+            return res
+            
+            
+            
+        print (data) 
         raise Exception("Unknown token type")
 
     def eval_bexp(self) -> bool:
@@ -419,9 +486,9 @@ def tree_to_string(tree:Union[ParseTree,Token]):
         return tree.value
     
     data = tree.data
-    is_aexp = data in ["aexp","term","factor","add","sub","mul"]
+    is_aexp = data in ["aexp","term","factor","add","sub","mul","call"]
     is_bexp = data in ["bexp","batom","and","or","not","eq","lt"]
-    is_com = data in ["com","skip","assign","ifelse","while","seq","print"]
+    is_com = data in ["com","skip","assign","ifelse","while","seq","print","def"]
     
     if is_aexp:
         return aexp_tree_to_string(tree)
@@ -452,6 +519,15 @@ def aexp_tree_to_string(tree:Union[ParseTree,Token]):
         return "" + aexp_tree_to_string(tree.children[0]) + ""
     elif data == "factor":
         return "" + aexp_tree_to_string(tree.children[0]) + ""
+    
+    if data == "call":
+        funcname = tree.children[0].value
+        args = tree.children[1:]
+        args_str = " ".join([aexp_tree_to_string(arg) for arg in args])
+        
+        return funcname + "(" + args_str + ")"
+
+    print (data)
     
     raise Exception("Unknown token type")
             
@@ -498,15 +574,26 @@ def com_tree_to_string(tree:Union[ParseTree,Token]):
     elif data == "assign":
         return "" + tree.children[0].value + ":=" + aexp_tree_to_string(tree.children[1]) + ""
     elif data == "ifelse":
-        return "if " + bexp_tree_to_string(tree.children[0]) + " then " + com_tree_to_string(tree.children[1]) + " else " + com_tree_to_string(tree.children[2]) + ""
+        return "if " + bexp_tree_to_string(tree.children[0]) + " then " + com_tree_to_string(tree.children[1]) + " else " + com_tree_to_string(tree.children[2]) + "end"
     elif data == "seq":
         return "" + com_tree_to_string(tree.children[0]) + ";" + com_tree_to_string(tree.children[1]) + ""
     elif data == "while":
-        return "while " + bexp_tree_to_string(tree.children[0]) + " do(" + com_tree_to_string(tree.children[1]) + ")"
+        return "while " + bexp_tree_to_string(tree.children[0]) + " do " + com_tree_to_string(tree.children[1]) + "end"
     elif data == "com":
         return "" + com_tree_to_string(tree.children[0]) + ""
     elif data == "print":
         return "print " + aexp_tree_to_string(tree.children[0]) + ""
+    
+    if data == "def":
+        func_name = tree.children[0].value
+        args = tree.children[1:-2]
+        args_str = ""
+        for arg in args:
+            args_str += arg.value + " "
+        com_str = com_tree_to_string(tree.children[-2])
+        returned_aexp_str = aexp_tree_to_string(tree.children[-1])
+        return "def "+func_name+"{...}"
+        return "def " + func_name + "(" + args_str + "){" + com_str + "; return " + returned_aexp_str + "}"
     
     print (tree.pretty())
     raise Exception("Unknown token type")
@@ -521,7 +608,14 @@ def run_code (code : str) :
         IMP_grammar = f.read()
 
     parser = Lark(IMP_grammar, start='com', parser='lalr',propagate_positions=True)
-    parse_tree = parser.parse(code)
+    try:
+        parse_tree = parser.parse(code)
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc(1)
+
+        exit (1)
     simplified_tree = RemoveRedundant().transform(parse_tree)
     
     print ("constructing deriviation tree...")

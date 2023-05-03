@@ -1,0 +1,22 @@
+def const4() {
+    skip
+    return 4
+};
+
+def fact(n,) {
+
+    if 1 < n then
+        a := n * fact(n-1,)
+    else
+        a := 1
+    end
+
+    return a
+};
+
+a := const4();
+
+b := fact(a,);
+
+print b
+
