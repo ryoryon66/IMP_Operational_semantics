@@ -1,0 +1,19 @@
+def fib(n,){
+    if n = 1 or n = 2 then
+        res := 1
+    else
+        res := 
+        fib(
+            n-1,
+            ) 
+        + fib(
+            n-2,
+            )
+    end
+
+    return res
+};
+
+n := 10;
+
+print fib(n,)

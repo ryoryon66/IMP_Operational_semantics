@@ -21,6 +21,6 @@ def tri (x,){
 
 print sum(sq,2,);
 
-print sum(tri,2,);
+print sum(tri, sum(sq,2,),);
 
 skip
