@@ -6,6 +6,22 @@ from lark import Lark, Token, Transformer, Tree
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--input", help="input file path")
+
+program_file_path = parser.parse_args().input
+
+if program_file_path == None:
+    print("input file path is not specified")
+    print ("use --input option")
+    exit()
+
+# recursion limit
+import sys
+sys.setrecursionlimit(10 ** 9)
+    
+
 
 class RemoveRedundant(Transformer):
     def aexp(self,children):
@@ -520,7 +536,7 @@ def run_code (code : str) :
     
 program = ""
 
-with open("sum.txt", "r") as f:
+with open(program_file_path, "r") as f:
     program = f.read()
 
 
@@ -529,6 +545,8 @@ print ("_" * 20)
 dot_graph = tree.out_to_dot()
 
 # save as txt
-with open("sum_deriviation_tree.txt", "w") as f:
+print ("saving deriviation tree to file...")
+output_file_name = program_file_path.replace(".txt","_deriviation_tree.txt")
+with open(output_file_name, "w") as f:
     f.write(dot_graph)
-    
+print ("finished saving deriviation tree to file")

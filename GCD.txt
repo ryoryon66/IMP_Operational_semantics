@@ -1,18 +1,21 @@
-a := 25;
-b := 15;
+a := 20;
+b := 10;
 i := 0;
 
-while (not (a = ((b)))) do(
-    i := i + 1;
+while not (a = b) do
     if a < b then
         c := b;
         b := a;
         a := c
     else
         skip
-    ;
+    end;
+    
+    i := i + 1;
     a := a - b
-);
+end;
 
-gcd := a;
-print gcd
+print i;
+print a;
+
+skip

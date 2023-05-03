@@ -29,8 +29,8 @@
     com: SKIP
         | VAR ":=" aexp              -> assign
         | com ";" com              -> seq
-        | "if" bexp "then" com "else" com -> ifelse
-        | "while" bexp "do" "(" com ")"    -> while
+        | "if" bexp "then" com "else" com "end" -> ifelse
+        | "while" bexp "do"  com "end"    -> while
         | "print" aexp              -> print
 
     %import common.CNAME -> NAME

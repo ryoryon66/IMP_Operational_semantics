@@ -1,32 +1,10 @@
-a := 750;
-b := 200;
-iteration := 0;
+X := -1;
+Z := 0;
 
+while not X = 0 do
+    Z := Z + X;
+    X := X - 1;
+    print X
+end;
 
-
-while not a=b do (
-    iteration := iteration+1;
-    print iteration;
-    print a;
-    print b;
-
-    if a<b then
-    c := a;
-    a := b;
-    b := c
-    else
-    skip
-    ;
-
-    a := a-b
-)
-;
-
-gcd := a;
-
-print gcd;
-
-
-skip
-
-
+print Z

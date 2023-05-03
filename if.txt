@@ -1,0 +1,14 @@
+a := 2;
+
+if a = 2 then
+ skip
+else 
+ print 1;
+ print 2
+end;
+
+print 100;
+
+print 200;
+
+skip

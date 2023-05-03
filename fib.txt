@@ -1,0 +1,17 @@
+a1 := 0;
+a2 := 1;
+
+print a2;
+
+n := 10;
+i := 2;
+
+while i < n + 1 do
+    a3 := a1 + a2;
+    a1 := a2;
+    a2 := a3;
+    print a3;
+    i := i + 1
+end;
+
+skip

@@ -1,0 +1,34 @@
+digraph G {
+node [shape=record];
+1683114135698209 [label="{\<a:=2;if a=2 then skip else print 1;print 2;print 100;print 200;skip,[]\>→[(a, 2)]}" color="black" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982343 [label="{\<a:=2,[]\>→[(a, 2)]}" color="green" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982434 [label="{\<2,[]\>→2}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982434 -> 16831141356982343;
+16831141356982343 -> 1683114135698209;
+16831141356982622 [label="{\<if a=2 then skip else print 1;print 2;print 100;print 200;skip,[(a, 2)]\>→[(a, 2)]}" color="black" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982706 [label="{\<if a=2 then skip else print 1;print 2,[(a, 2)]\>→[(a, 2)]}" color="blue" penwidth="3.0" style="filled" fillcolor="gray"];
+1683114135698278 [label="{\<a=2,[(a, 2)]\>→True}" color="brown" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982856 [label="{\<a,[(a, 2)]\>→2}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982856 -> 1683114135698278;
+16831141356982915 [label="{\<2,[(a, 2)]\>→2}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356982915 -> 1683114135698278;
+1683114135698278 -> 16831141356982706;
+16831141356983016 [label="{\<skip,[(a, 2)]\>→[(a, 2)]}" color="orange" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356983016 -> 16831141356982706;
+16831141356982706 -> 16831141356982622;
+16831141356983197 [label="{\<print 100;print 200;skip,[(a, 2)]\>→[(a, 2)]}" color="black" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356983266 [label="{\<print 100,[(a, 2)]\>→[(a, 2)]}" color="orange" penwidth="3.0" style="filled" fillcolor="gray"];
+1683114135698334 [label="{\<100,[(a, 2)]\>→100}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+1683114135698334 -> 16831141356983266;
+16831141356983266 -> 16831141356983197;
+16831141356983745 [label="{\<print 200;skip,[(a, 2)]\>→[(a, 2)]}" color="black" penwidth="3.0" style="filled" fillcolor="gray"];
+1683114135698383 [label="{\<print 200,[(a, 2)]\>→[(a, 2)]}" color="orange" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356983905 [label="{\<200,[(a, 2)]\>→200}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356983905 -> 1683114135698383;
+1683114135698383 -> 16831141356983745;
+16831141356988122 [label="{\<skip,[(a, 2)]\>→[(a, 2)]}" color="orange" penwidth="3.0" style="filled" fillcolor="gray"];
+16831141356988122 -> 16831141356983745;
+16831141356983745 -> 16831141356983197;
+16831141356983197 -> 16831141356982622;
+16831141356982622 -> 1683114135698209;
+}
