@@ -39,6 +39,7 @@ start:com
     %import common.INT   -> INT
     %import common.WS
     %ignore WS
+    %ignore /(#).*/ //comment
 
     VAR: /(?!(if|then|else|end|while|do|print|not|and|or|true|false|def|return)\b)[a-zA-Z_]\w*/
     NUM: INT | "-" INT

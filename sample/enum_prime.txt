@@ -1,9 +1,9 @@
-
+# 素数を出力するプログラム
 
 def isprime(n,){
     def mod(n,m,){
     
-        while m < n or m = n do 
+        while m < n or m = n do  # 引き算を繰り返して余りを求める
             n := n - m 
         end
 
@@ -29,7 +29,7 @@ def isprime(n,){
     return res
 };
 
-n := 10000000000;
+n := 14;
 i := 1;
 
 while i < n do
