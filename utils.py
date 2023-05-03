@@ -1,4 +1,4 @@
-from typing import  Union
+from typing import  Union,Literal
 
 from lark import Lark, Token, Transformer
 from lark.lexer import Token
@@ -176,13 +176,13 @@ def com_tree_to_string(tree:Union[ParseTree,Token]):
     raise Exception("Unknown token type")
 
 
-def constract_ast (code : str) :
+def constract_ast (code : str,start : Literal["com","aexp","bexp"] = "com") :
     IMP_grammar = ""
 
     with open("syntax.lark", "r") as f:
         IMP_grammar = f.read()
 
-    parser = Lark(IMP_grammar, start='com', parser='lalr',propagate_positions=True)
+    parser = Lark(IMP_grammar, start=start, parser='lalr',propagate_positions=True)
     try:
         parse_tree = parser.parse(code)
     except Exception as e:
