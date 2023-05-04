@@ -437,7 +437,9 @@ def run_code (code : str) :
     eval_count_for_line = Counter()
     
     def count_nodes(tree):
-        eval_count_for_line[tree.exp.line] += 1
+        if isinstance(tree.exp,Token):
+            return 1
+        eval_count_for_line[tree.exp.meta.line] += 1
         return 1 + sum([count_nodes(child) for child in tree.ancestors])
     
     def print_profile():

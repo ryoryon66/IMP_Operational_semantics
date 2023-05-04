@@ -22,7 +22,7 @@ class RemoveRedundant(Transformer):
         raise Exception("term")
 
     def factor(self,children):
-        if len(children) == 1 and isinstance(children[0],Token):
+        if len(children) == 1:
             return children[0]
         raise Exception("factor")
     
@@ -194,3 +194,29 @@ def constract_ast (code : str,start : Literal["com","aexp","bexp"] = "com") :
     simplified_tree = RemoveRedundant().transform(parse_tree)
     
     return simplified_tree
+
+def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
+    if isinstance(ast, Token):
+        if ast.type in ["NUM","VAR"]:
+            return "aexp"
+        
+        if ast.type in ["TRUE","FALSE"]:
+            return "bexp"
+        
+        if ast.type in ["SKIP"]:
+            return "com"
+        
+        raise Exception("Unknown token type " + ast.type)
+    
+    data = ast.data
+    
+    if data in ["add","sub","mul","call"]:
+        return "aexp"
+    
+    if data in ["and","or","not","eq","lt"]:
+        return "bexp"
+    
+    if data in ["assign","ifelse","seq","while","print","def"]:
+        return "com"
+    
+    raise Exception("Unknown token type")
