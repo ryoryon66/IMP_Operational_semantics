@@ -87,7 +87,8 @@ def codegen(ast : Union[ParseTree,Token]):
         return
     
     if kind == "bexp":
-        pass
+        codegen_bexp(ast)
+        return
     
     if kind == "com":
         codegen_com(ast)
@@ -185,6 +186,98 @@ def codegen_aexp(ast:Aexp):
     print (data)
     raise Exception(f"codegen_aexp cannot handle {data}")
 
+
+def codegen_bexp(ast:Bexp):
+    """インタプリタのときとは違って、コンパイラの方ではAexpと同じように整数が返ってくると考えてコンパイルする. true=1,false=0として扱う.
+    """
+    
+    if isinstance(ast,Token) and ast.type == "TRUE":
+        print (f"LI {RAX_ALC} {1}") # RAX = 1
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
+        print (f"SUB {RSP_ALC} {RAX_ALC}") # rsp -= 1　RAXを使って短縮
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}")
+        return
+    
+    if isinstance(ast,Token) and ast.type == "FALSE":
+        print (f"LI {RAX_ALC} {0}") # RAX = 0
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
+        print (f"LI {RT1_ALC} {1}")    # RT1 = 1
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        return
+    
+    data = ast.data
+    
+    if data == "eq":
+        aexp1 = ast.children[0]
+        aexp2 = ast.children[1]
+        
+        # フラグレジスタを使いたいけどそういう命令がない...
+        #　引き算して0かどうかで判断するかな。sete欲しい。。。
+        
+        raise Exception("eq is not implemented")
+    
+    if data == "lt":
+        
+        # フラグレジスタを使いたいけどそういう命令がない...
+        #　引き算して符号が分かったら勝ちかな。setl欲しい。。。
+        
+        raise Exception("lt is not implemented")
+    
+    if data == "and":
+        bexp1 = ast.children[0]
+        bexp2 = ast.children[1]
+        
+        codegen_bexp(bexp1)
+        codegen_bexp(bexp2)
+        
+        # bexp1の結果をRT1にLD
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        # RAXにbexp2の結果が入っているので、RT1とのANDをとる
+        print (f"AND {RAX_ALC} {RT1_ALC}") # RAX = RAX & RT1
+        # RAXを*(rsp+2)にST
+        print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
+        
+        # pop 2 push 1なのでrspを1減らす
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        return
+    
+    if data == "or":
+        bexp1 = ast.children[0]
+        bexp2 = ast.children[1]
+        
+        codegen_bexp(bexp1)
+        codegen_bexp(bexp2)
+        
+        # bexp1の結果をRT1にLD
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        # RAXにbexp2の結果が入っているので、RT1とのANDをとる
+        print (f"OR {RAX_ALC} {RT1_ALC}") # RAX = RAX & RT1
+        # RAXを*(rsp+2)にST
+        print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
+        
+        # pop 2 push 1なのでrspを1減らす
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        return
+    
+    if data == "not":
+        bexp = ast.children[0]
+        codegen_bexp(bexp)
+        
+        # 1をLIして、RAXとのXORをとる
+        print (f"LI {RT1_ALC} {1}") # RT1 = 1
+        print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX = RAX ^ RT1
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
+        
+        # pop 1 push 1なのでrspは変わらない
+        
+        return
+    
+    raise Exception(f"codegen_bexp cannot handle {data}")
+
+
 def init_register():
     print (f"LI {RBP_ALC} {1}")
     print (f"SLL {RBP_ALC} {10}") # RBP = 1024
@@ -216,8 +309,10 @@ if __name__ == "__main__":
     # program = "x := 1 + 2 - (8 + 4); print x + x + x"
     # program = "x := 7; y := x + 2 + x; print x-y"
     # program = "x := 7; y := x; print x-y; print x + y"
-    program = "x := 7; y := 7; print x-7"
-    program = "x := 1; if x = 1 then print 100 else print 200 end"
+    # program = "x := 7; y := 7; print x-7"
+    # program = "x := 1; if x = 1 then print 100 else print 200 end"
+    # program = "skip;skip;skip"
+    program = "int1 := 2 - (3 + 5);int2 := 4;print int1 + int2;skip;print int1 + int2 - int1"
     
 
     
