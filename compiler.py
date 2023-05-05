@@ -13,6 +13,8 @@ from utils import  tree_to_string,constract_ast,is_ast_of
 # recursion limit
 import sys
 
+DEBUG = True
+
 sys.setrecursionlimit(10 ** 9)
 
 Aexp = Union[Token,ParseTree]
@@ -51,10 +53,12 @@ class Variables():
         if var_name in self._variables:
             offset = self._variables[var_name]
             # ST
+            if DEBUG: print(f"// update_variable {var_name} {reg_id} {offset}({RBP_ALC})")
             print (f"ST {reg_id} {offset}({RBP_ALC})") #既存の変数なのでrspは更新しない
             return
         
         # 新規変数
+        if DEBUG: print(f"// create_variable {var_name} {reg_id} {self._offset}({RBP_ALC})")
         offset = self._offset
         self._offset += 1
         self._variables[var_name] = offset
@@ -127,6 +131,11 @@ def codegen_com(ast:Com):
     
     if data == "ifelse":
         
+        if DEBUG: print (f"//codegen_com:ifelse")
+         
+        LABEL_COUNT_FOR_THIS_IFELSE : final = label_count
+        label_count += 1 # ラベルの通し番号をここで更新しておかないと内側のラベルと被る                                                             
+        
         bexp : Bexp = ast.children[0]
         com1 : Com = ast.children[1]
         com2 : Com = ast.children[2]
@@ -136,18 +145,20 @@ def codegen_com(ast:Com):
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならelseに飛ぶ
-        print (f"BE .Lelse{label_count}")
+        print (f"BE .Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
         
         codegen_com(com1)
         
-        print (f"B .Lend{label_count}")
+        print (f"B .Lend{LABEL_COUNT_FOR_THIS_IFELSE}")
         
         
-        print (f".Lelse{label_count}")
+        print (f".Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
         codegen_com(com2)
-        print (f".Lend{label_count}")
+        print (f".Lend{LABEL_COUNT_FOR_THIS_IFELSE}")
         
-        label_count += 1
+  
+        
+        if DEBUG: print (f"//codegen_com:ifelse end")
         
         
         return
@@ -213,7 +224,14 @@ def codegen_aexp(ast:Aexp):
         print (f"LI {RT1_ALC} {1}")
         print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
         
-        return 
+        return
+    
+    if data == "input":
+        print (f"IN {RAX_ALC} {0}") # RAX = input()
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})")
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        return
     
     print (data)
     raise Exception(f"codegen_aexp cannot handle {data}")
@@ -369,7 +387,7 @@ if __name__ == "__main__":
     program = "x := 1; if x = 1 then print 100 else print x end"
     
     program = """
-                a := 2;
+                a := <input>;
                 b := 3;
 
                 if a + b = 4 or a + b = 6 then
@@ -392,7 +410,7 @@ if __name__ == "__main__":
 
                 skip
                 
-                # expected output
+                # expected output if input is 2
                 # output on 110 : 5
                 # output on 115 : 3
                 # output on 172 : 101

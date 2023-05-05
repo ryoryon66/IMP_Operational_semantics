@@ -63,7 +63,7 @@ def tree_to_string(tree:Union[ParseTree,Token]):
         return tree.value
     
     data = tree.data
-    is_aexp = data in ["aexp","term","factor","add","sub","mul","call"]
+    is_aexp = data in ["aexp","term","factor","add","sub","mul","call","input"]
     is_bexp = data in ["bexp","batom","and","or","not","eq","lt"]
     is_com = data in ["com","skip","assign","ifelse","while","seq","print","def"]
     
@@ -103,6 +103,9 @@ def aexp_tree_to_string(tree:Union[ParseTree,Token]):
         args_str = " ".join([aexp_tree_to_string(arg) for arg in args])
         
         return funcname + "(" + args_str + ")"
+    
+    if data == "input":
+        return "input"
 
     print (data)
     
@@ -212,7 +215,7 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     
     data = ast.data
     
-    if data in ["add","sub","mul","call"]:
+    if data in ["add","sub","mul","call","input"]:
         return "aexp"
     
     if data in ["and","or","not","eq","lt","le"]:

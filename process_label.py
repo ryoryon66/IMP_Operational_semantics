@@ -96,6 +96,9 @@ if __name__ == "__main__":
         d = target_line - (pc + 1)
         instractions_merged[pc] = instractions_merged[pc].replace(f".{label_name}", f"{d}")
         instractions_merged[pc] += " // " + "might jump to " + label_name
+        
+        if d < - 2 ** 7 or d > 2 ** 7 - 1:
+            raise Exception(f"jump distance is too far... displacement = {d} in binary = {bin(d)}")
     
     # print (67 * "-")
     

@@ -11,6 +11,7 @@ start:com
           | VAR
           | VAR "(" (aexp ",")* ")" -> call
           | "(" aexp ")"
+          | "<input>" -> input // only supported for compiler
 
     bexp: band
         | bexp "or" band   -> or
