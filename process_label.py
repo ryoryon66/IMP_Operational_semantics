@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # print (code_with_label)
     
     def find_target_line(label_name:str) -> int:
-        assert label_name.count("@") == 0
+        assert label_name.count("@") == 0, "label name should not contain @ ..." + label_name
         assert label_name.count(".") == 0
         target = "@" + label_name
         for target_line in range(len(instractions_merged)):
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             continue
         assert dot_count == 1
         
-        label_name = instractions_merged[pc].split(".")[1]
+        label_name = instractions_merged[pc].split(".")[1].split(" ")[0].split(r'/')[0]
         
         target_line = find_target_line(label_name)
         

@@ -13,7 +13,7 @@ from utils import  tree_to_string,constract_ast,is_ast_of
 # recursion limit
 import sys
 
-DEBUG = True
+DEBUG = False
 
 sys.setrecursionlimit(10 ** 9)
 
@@ -142,10 +142,16 @@ def codegen_com(ast:Com):
         
         codegen_bexp(bexp)
         
+        # rsp
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならelseに飛ぶ
         print (f"BE .Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
+        
+        
         
         codegen_com(com1)
         
@@ -162,6 +168,38 @@ def codegen_com(ast:Com):
         
         
         return
+    
+    if data == "while":
+        
+        if DEBUG: print (f"//codegen_com:while")
+        
+        LABEL_COUNT_FOR_THIS_WHILE : final = label_count
+        label_count += 1 # ラベルの通し番号をここで更新しておかないと内側のラベルと被る
+        
+        bexp : Bexp = ast.children[0]
+        com : Com = ast.children[1]
+        
+        print (f".Lbegin{LABEL_COUNT_FOR_THIS_WHILE}")
+        
+        codegen_bexp(bexp)
+        
+        # rsp
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        # RAXと0を比較する
+        print (f"LI {RT1_ALC} {0}")
+        print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならendに飛ぶ
+        print (f"BE .Lend{LABEL_COUNT_FOR_THIS_WHILE}")
+        
+        codegen_com(com)
+        
+        print (f"B .Lbegin{LABEL_COUNT_FOR_THIS_WHILE}")
+        print (f".Lend{LABEL_COUNT_FOR_THIS_WHILE}")
+        
+        if DEBUG: print (f"//codegen_com:while end")
+        
+        return
 
         
     
@@ -169,6 +207,10 @@ def codegen_com(ast:Com):
         aexp : Aexp = ast.children[0]
         codegen_aexp(aexp)
         print(f"OUT {RAX_ALC} // print {aexp}")
+        
+        # rsp
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
         return
     
     raise Exception(f"codegen_com cannot handle {data}")
@@ -295,6 +337,28 @@ def codegen_bexp(ast:Bexp):
         
         raise Exception("lt is not implemented")
     
+    if data == "le": # aexp1 <= aexp2 TODO ほんまにあってんのか？ たぶん引き算でOVFしたら壊れるのであまり大きな値は扱えない　OVF対策もできるけどさぼってる
+        
+        aexp1 = ast.children[0]
+        aexp2 = ast.children[1]
+        
+        codegen_aexp(aexp1)
+        codegen_aexp(aexp2)
+        
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        # RAXから引き算して、正負が見たい
+        print (f"SUB {RAX_ALC} {RT1_ALC}") # RAX -= RT1 ここでaexp2 - aexp1がおわり。0以上かの判定には論理右シフトが使えると思う TODO
+        print (f"SRL {RAX_ALC} {15}") # RAX >>= 15 論理シフト　これで差が0以上の時RAXが0になる 0未満の時は1になる
+        print (f"LI {RT1_ALC} {1}")
+        print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX ^= RT1 ここでnotをとる。
+        
+        print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        return
+        
+    
     if data == "and":
         bexp1 = ast.children[0]
         bexp2 = ast.children[1]
@@ -384,43 +448,40 @@ if __name__ == "__main__":
     # program = "skip;skip;skip"
     # program = "int1 := 2 - (3 + 5);int2 := 4;print int1 + int2;skip;print int1 + int2 - int1"
     # program = "x := 1; if x = 1 then print 100 else print 90 end"
-    program = "x := 1; if x = 1 then print 100 else print x end"
+    program = "x := 1; if x <= 1 then print 100 else print x end"
     
     program = """
-                a := <input>;
-                b := 3;
-
-                if a + b = 4 or a + b = 6 then
-                    print 0
+            # this code calculates GCD of 2 inputs. a should be larger or equal to b.
+            
+            a := <input>; 
+            b := <input>;
+            i := 0;
+            
+            while not a = b do
+                
+                if a <= b then
+                    tmp := a;
+                    a := b;
+                    b := tmp
                 else 
-                    print a + b; # 5
-                    print b;     # 3
-                    c := a - b + 1; # 0
-                    if c = 0 then
-                        print 101
-                    else
-                        print 102
-                    end
+                    skip
                 end;
-
-                print 100;
-                print -34;
-                a := 0 - b;
-                print a + ( (b - 9) + c); # -9
-
-                skip
                 
-                # expected output if input is 2
-                # output on 110 : 5
-                # output on 115 : 3
-                # output on 172 : 101
-                # output on 185 : 100
-                # output on 191 : -34
-                # output on 243 : -9
-
-                
-                
+                a := a - b;
+                i := i + 1
+            end;
+            
+            print i;
+            print a
+            
             """
+    
+
+    # program = """
+        
+    #     while true do print 6 end
+    #     """
+    
 
     
 
@@ -434,3 +495,62 @@ if __name__ == "__main__":
 # program = "false or true and not false"
 #program = "3 = 1 + 3"
 # program = "x := 1; if x = 1 then print 100 else print 90 end"
+
+
+# program = """
+#             a := <input>;
+#             b := 3;
+
+#             if a + b = 4 or a + b = 6 then
+#                 print 0
+#             else 
+#                 print a + b; # 5
+#                 print b;     # 3
+#                 c := a - b + 1; # 0
+#                 if c = 0 then
+#                     print 101
+#                 else
+#                     print 102
+#                 end
+#             end;
+
+#             print 100;
+#             print -34;
+#             a := 0 - b;
+#             print a + ( (b - 9) + c); # -9
+
+#             skip
+            
+#             # expected output if input is 2
+#             # output on 110 : 5
+#             # output on 115 : 3
+#             # output on 172 : 101
+#             # output on 185 : 100
+#             # output on 191 : -34
+#             # output on 243 : -9
+
+            
+            
+#         """
+
+# program = """
+#         n := <input>;
+#         i := 0;
+#         sum := 0;
+        
+#         while not i = n + 1 do
+#             sum := sum + i;
+#             i := i + 1;
+            
+#             if i = 5 then
+#                 print sum
+#             else
+#                 skip;
+#                 skip;
+#                 skip
+#             end
+#         end;
+        
+#         print sum
+        
+#         """

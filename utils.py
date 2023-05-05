@@ -1,4 +1,5 @@
-from typing import  Union,Literal
+from typing import  Union
+from typing_extensions import Literal
 
 from lark import Lark, Token, Transformer
 from lark.lexer import Token
@@ -225,3 +226,4 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
         return "com"
     
     raise Exception("Unknown token type")
+

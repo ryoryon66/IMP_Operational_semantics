@@ -1,3 +1,10 @@
+# 引数でlog fileをつくるかどうかを指定する
+# 例: ./compile.sh 1
+
+
+
+
+
 python compiler.py > simple_asm_with_label.txt
 python process_label.py --input simple_asm_with_label.txt --output simple_asm.txt
 
@@ -6,6 +13,13 @@ echo "---------------------"
 java -jar SimpleSimulator.jar   -m  simple_asm.txt
 
 echo "---------------------"
+
+# log fileをつくるかどうか
+
+if [ $# -eq 0 ]; then
+    echo "fin. did not make log file"
+    exit 1
+fi
 
 
 # 標準エラー出力をファイルにリダイレクト
