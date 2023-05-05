@@ -23,7 +23,8 @@ start:com
     
     batom: TRUE 
         | FALSE 
-        | aexp "<" aexp -> lt
+        | aexp "<" aexp -> lt // only supported for interpreter
+        | aexp "<=" aexp -> le // only supported for compiler
         | aexp "=" aexp -> eq
         | "(" bexp ")"
 

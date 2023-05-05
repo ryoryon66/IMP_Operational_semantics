@@ -78,6 +78,8 @@ class Variables():
 
 variables = Variables()
 
+label_count : int = 0 # アセンブリに吐くラベルの通し番号
+
 
 def codegen(ast : Union[ParseTree,Token]):
     kind = is_ast_of(ast)
@@ -97,6 +99,8 @@ def codegen(ast : Union[ParseTree,Token]):
     raise Exception(f"codegen cannot handle {kind}")
 
 def codegen_com(ast:Com):
+    
+    global label_count
     
     if isinstance(ast,Token):
         if ast.type == "SKIP":
@@ -120,12 +124,40 @@ def codegen_com(ast:Com):
         codegen_aexp(aexp)
         variables.update_variable(variable_name,RAX_ALC)
         return
+    
+    if data == "ifelse":
+        
+        bexp : Bexp = ast.children[0]
+        com1 : Com = ast.children[1]
+        com2 : Com = ast.children[2]
+        
+        codegen_bexp(bexp)
+        
+        # RAXと0を比較する
+        print (f"LI {RT1_ALC} {0}")
+        print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならelseに飛ぶ
+        print (f"BE .Lelse{label_count}")
+        
+        codegen_com(com1)
+        
+        print (f"B .Lend{label_count}")
+        
+        
+        print (f".Lelse{label_count}")
+        codegen_com(com2)
+        print (f".Lend{label_count}")
+        
+        label_count += 1
+        
+        
+        return
+
         
     
     if data == "print":
         aexp : Aexp = ast.children[0]
         codegen_aexp(aexp)
-        print(f"OUT {RAX_ALC} // print")
+        print(f"OUT {RAX_ALC} // print {aexp}")
         return
     
     raise Exception(f"codegen_com cannot handle {data}")
@@ -212,15 +244,36 @@ def codegen_bexp(ast:Bexp):
         aexp1 = ast.children[0]
         aexp2 = ast.children[1]
         
-        # フラグレジスタを使いたいけどそういう命令がない...
-        #　引き算して0かどうかで判断するかな。sete欲しい。。。
+        codegen_aexp(aexp1)
+        codegen_aexp(aexp2)
         
-        raise Exception("eq is not implemented")
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        # RAXから引き算して、RAXが0か判定する
+        print (f"SUB {RAX_ALC} {RT1_ALC}") # RAX -= RT1
+        
+        # フラグレジスタを使いたいけどそういう命令がない...
+        #　0は符号反転しても符号が変わらないつまりx or -xの符号ビットが0となる唯一の数(これxorでもいいのか？コーナーケースがあるかも　TODO)
+        print (f"LI {RT1_ALC} {0}")
+        print (f"SUB {RT1_ALC} {RAX_ALC}") # RT1 = 0 - RAX
+        print (f"OR {RAX_ALC} {RT1_ALC}") # RAX or RAX
+        print (f"SRL {RAX_ALC} {15}") # RAX >>= 15 論理シフト　等号成立なら0になる XORをとって反転
+        print (f"LI {RT1_ALC} {1}")
+        print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX ^= RT1 等号成立なら1になる
+        
+        print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        return
+        
+
     
     if data == "lt":
         
         # フラグレジスタを使いたいけどそういう命令がない...
         #　引き算して符号が分かったら勝ちかな。setl欲しい。。。
+        # 論理→シフト15ビットで符号が分かる
+        # 引き算してからシフトして、0かどうかで判断するかな。
         
         raise Exception("lt is not implemented")
     
@@ -294,7 +347,7 @@ def run_compiler(program:str):
     
     codegen(tree)
     
-    print (f"OUT {RAX_ALC}")
+    # print (f"OUT {RAX_ALC}")
     
     print (f"HLT")
     
@@ -310,9 +363,47 @@ if __name__ == "__main__":
     # program = "x := 7; y := x + 2 + x; print x-y"
     # program = "x := 7; y := x; print x-y; print x + y"
     # program = "x := 7; y := 7; print x-7"
-    # program = "x := 1; if x = 1 then print 100 else print 200 end"
     # program = "skip;skip;skip"
-    program = "int1 := 2 - (3 + 5);int2 := 4;print int1 + int2;skip;print int1 + int2 - int1"
+    # program = "int1 := 2 - (3 + 5);int2 := 4;print int1 + int2;skip;print int1 + int2 - int1"
+    # program = "x := 1; if x = 1 then print 100 else print 90 end"
+    program = "x := 1; if x = 1 then print 100 else print x end"
+    
+    program = """
+                a := 2;
+                b := 3;
+
+                if a + b = 4 or a + b = 6 then
+                    print 0
+                else 
+                    print a + b; # 5
+                    print b;     # 3
+                    c := a - b + 1; # 0
+                    if c = 0 then
+                        print 101
+                    else
+                        print 102
+                    end
+                end;
+
+                print 100;
+                print -34;
+                a := 0 - b;
+                print a + ( (b - 9) + c); # -9
+
+                skip
+                
+                # expected output
+                # output on 110 : 5
+                # output on 115 : 3
+                # output on 172 : 101
+                # output on 185 : 100
+                # output on 191 : -34
+                # output on 243 : -9
+
+                
+                
+            """
+
     
 
     
@@ -322,3 +413,6 @@ if __name__ == "__main__":
 
 # program = "(8 + 2) - (3 + 4) + (5 - (6 + 7))"    
 # program = "skip"
+# program = "false or true and not false"
+#program = "3 = 1 + 3"
+# program = "x := 1; if x = 1 then print 100 else print 90 end"

@@ -422,6 +422,9 @@ class DeriviationTreeNode:
             res = ancestor1.eval() < ancestor2.eval()
             self.res = res
             return res
+        
+        if data == "le":
+            raise Exception("Currently not supported. le is supported only for compiler")
 
         print (data)
         raise Exception("Unknown token type")

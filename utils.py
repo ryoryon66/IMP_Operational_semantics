@@ -136,6 +136,8 @@ def bexp_tree_to_string(tree:Union[ParseTree,Token]):
         return "" + aexp_tree_to_string(tree.children[0]) + "=" + aexp_tree_to_string(tree.children[1]) + ""
     elif data ==  "lt":
         return "(" + aexp_tree_to_string(tree.children[0]) + "<" + aexp_tree_to_string(tree.children[1]) + ")"
+    elif data == "le":
+        return "(" + aexp_tree_to_string(tree.children[0]) + "<=" + aexp_tree_to_string(tree.children[1]) + ")"
     print (tree.pretty())
     raise Exception("Unknown token type")
 
@@ -213,7 +215,7 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     if data in ["add","sub","mul","call"]:
         return "aexp"
     
-    if data in ["and","or","not","eq","lt"]:
+    if data in ["and","or","not","eq","lt","le"]:
         return "bexp"
     
     if data in ["assign","ifelse","seq","while","print","def"]:

@@ -1,0 +1,13 @@
+
+# gitignore for python
+
+# Byte-compiled / optimized / DLL files
+
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+
+.vscode/
+*.txt
+*.mif
