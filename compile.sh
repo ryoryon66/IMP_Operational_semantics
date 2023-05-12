@@ -6,7 +6,7 @@
 
 
 python compiler.py > simple_asm_with_label.txt
-python process_label.py --input simple_asm_with_label.txt --output simple_asm.txt
+python resolve_address.py --input simple_asm_with_label.txt --output simple_asm.txt
 
 echo "---------------------" 
 

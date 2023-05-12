@@ -12,6 +12,8 @@ from utils import  tree_to_string,constract_ast,is_ast_of
 
 # recursion limit
 import sys
+import argparse
+
 
 DEBUG = False
 
@@ -476,11 +478,52 @@ if __name__ == "__main__":
             
             """
     
+    program = """
+            # this code calculates GCD of 2 inputs. a should be larger or equal to b.
+            
+            a := <input>; 
+            b := <input>;
+            i := 0;
+            
+            while not a = b do
+                
+                if a <= b then
+                    if i <= 5 then
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 57;
+                        skip
+                    else 
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 1 + 2 + 3 -1 - 2 - 3;
+                        dummy := 89;
+                        skip
+                    end; 
+                    tmp := a;
+                    a := b;
+                    b := tmp
+                else 
+                    skip
+                end;
+                
+                a := a - b;
+                i := i + 1
+            end;
+            
+            print i;
+            print a
+            
+            """
 
     # program = """
         
     #     while true do print 6 end
     #     """
+    
     
 
     
@@ -554,3 +597,45 @@ if __name__ == "__main__":
 #         print sum
         
 #         """
+
+
+    # program = """
+    #         # this code calculates GCD of 2 inputs. a should be larger or equal to b.
+            
+    #         a := <input>; 
+    #         b := <input>;
+    #         i := 0;
+            
+    #         while not a = b do
+                
+    #             if a <= b then
+    #                 if i <= 50 then
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 57;
+    #                     print dummy
+    #                 else 
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
+    #                     dummy := -57;
+    #                     print dummy
+    #                 end; 
+    #                 tmp := a;
+    #                 a := b;
+    #                 b := tmp
+    #             else 
+    #                 skip
+    #             end;
+                
+    #             a := a - b;
+    #             i := i + 1
+    #         end;
+            
+    #         print i;
+    #         print a
+            
+    #         """
