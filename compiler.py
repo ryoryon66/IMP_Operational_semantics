@@ -128,6 +128,11 @@ def codegen_com(ast:Com):
         aexp : Aexp = ast.children[1]
         
         codegen_aexp(aexp)
+        
+        # rsp += 1
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}")
+           
         variables.update_variable(variable_name,RAX_ALC)
         return
     
@@ -406,7 +411,7 @@ def codegen_bexp(ast:Bexp):
         # 1をLIして、RAXとのXORをとる
         print (f"LI {RT1_ALC} {1}") # RT1 = 1
         print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX = RAX ^ RT1
-        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
+        print (f"ST {RAX_ALC} {-1}({RSP_ALC})") # *(rsp-1) = RAX
         
         # pop 1 push 1なのでrspは変わらない
         
@@ -524,7 +529,36 @@ if __name__ == "__main__":
     #     while true do print 6 end
     #     """
     
+    program = """
     
+    n := <input>;
+    i := n - 1;
+    print -1;
+    while 2 <= i do
+        r := n;
+        while i <= r do
+            r := r - i
+        end;
+        if r = 0 then
+            print i
+        else
+            skip
+        end;
+        i := i - 1
+    end
+    
+    """
+
+
+
+
+
+
+
+
+
+
+
 
     
 
