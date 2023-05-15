@@ -341,6 +341,7 @@ def codegen_bexp(ast:Bexp):
         #　引き算して符号が分かったら勝ちかな。setl欲しい。。。
         # 論理→シフト15ビットで符号が分かる
         # 引き算してからシフトして、0かどうかで判断するかな。
+        # TODO FIXME これ、CMP命令でBLT命令使って0,1storeする場合を分ければいいのでは？他のとこでもこのテク使えそう。
         
         raise Exception("lt is not implemented")
     
