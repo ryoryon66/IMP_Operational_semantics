@@ -434,6 +434,32 @@ def run_compiler(program:str):
     
     init_register()
     
+    # 変数のメモリを全て確保する
+    
+    def extract_unique_var(ast):
+        if isinstance(ast,Token):
+                return []
+        
+        if ast.data == "assign":
+            var = ast.children[0].value
+            return [var]
+       
+        
+        res = []
+        for child in ast.children:
+            res += extract_unique_var(child)
+        
+        # uniqueにする
+        res = list(set(res))
+        return res
+    
+    unique_var = extract_unique_var(tree)
+    
+    # print (unique_var)
+    
+    for var in unique_var:
+        variables.update_variable(var,RAX_ALC)
+    
     codegen(tree)
     
     # print (f"OUT {RAX_ALC}")
@@ -548,6 +574,16 @@ if __name__ == "__main__":
     end
     
     """
+    
+    # use argparse to get the file name
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file", help="input file name")
+    args = parser.parse_args()
+    
+    # read the file
+    with open(args.file, "r") as f:
+        program = f.read()
+    
 
 
 
