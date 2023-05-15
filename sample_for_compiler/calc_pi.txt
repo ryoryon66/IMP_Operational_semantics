@@ -1,0 +1,74 @@
+# 円周率をライプニッツ級数で近似するプログラム10000を入力すると31416が返ってくる。割り算が切り捨てなので近似が荒い
+
+n := <input>;
+
+
+pi := 0;
+# shifter = 10000
+shifter := 100 + 100 + 100 + 100 + 100 + 100 + 100 + 100 + 100 + 100;
+shifter := shifter + shifter +  shifter + shifter +   shifter + shifter +   shifter + shifter +   shifter + shifter ;
+i := 1;
+
+while i <= n do
+
+    bunbo := -1;
+
+    j := 1;
+
+    while j <= i do 
+        bunbo := bunbo + 2;
+        j := j + 1
+    end ;
+
+    div := 0;
+    bunshi := shifter;
+    bunshi := bunshi;
+
+    # print bunshi;
+    
+
+    # 足し引きする項を計算　この割り算が切り捨てなので精度が下がる。
+    while bunbo <= bunshi do
+        div := div + 1;
+        bunshi := bunshi - bunbo
+    end;
+    
+    # i % 2 を計算し符号を決める
+    
+    tmp := i;
+    
+    while 2 <= tmp do
+        tmp := tmp - 2
+    end;
+    
+    if tmp = 0 then
+        div := 0-div
+    else
+        div := div
+    end;
+    
+    pi := pi + div;
+
+   
+    # print bunbo;
+    # print div;
+    print pi + pi + pi + pi;
+
+    i := i + 1;
+
+    if div = 0 then
+        i := n + 1
+    else
+        skip
+    end
+
+
+end;
+
+print n;
+print pi + pi + pi + pi
+
+
+
+
+
