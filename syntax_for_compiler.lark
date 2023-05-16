@@ -24,8 +24,10 @@ start:com
     
     batom: TRUE 
         | FALSE 
-        | aexp "<" aexp -> lt // only supported for interpreter
-        | aexp "<=" aexp -> le // only supported for compiler
+        | aexp "<=" aexp -> le
+        | aexp ">=" aexp -> ge 
+        | aexp "<" aexp -> lt 
+        | aexp ">" aexp -> gt 
         | aexp "=" aexp -> eq
         | "(" bexp ")"
 
@@ -41,8 +43,7 @@ start:com
         |  "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" defs
 
     
-    program : com 
-            | com defs
+
 
     %import common.CNAME -> NAME
     %import common.INT   -> INT

@@ -468,7 +468,7 @@ def init_register():
 
 
 def run_compiler(program:str):
-    tree = constract_ast(program,"com")
+    tree = constract_ast(program,"com",grammar_file="syntax_for_compiler.lark")
     
     init_register()
     

@@ -32,6 +32,18 @@ class RemoveRedundant(Transformer):
             return children[0]
         raise Exception("bexp")
     
+    def gt(self,children):
+        assert len(children) == 2
+        
+        #  0 > 1 は 1 < 0 と同じ
+        return ParseTree("lt",children[::-1])
+    
+    def ge(self,children):
+        assert len(children) == 2
+        
+        #  0 >= 1 は 1 <= 0 と同じ
+        return ParseTree("le",children[::-1])
+    
     def band(self,children):
         if len(children) == 1:
             return children[0]
@@ -182,10 +194,10 @@ def com_tree_to_string(tree:Union[ParseTree,Token]):
     raise Exception("Unknown token type")
 
 
-def constract_ast (code : str,start : Literal["com","aexp","bexp"] = "com") :
+def constract_ast (code : str,start : Literal["com","aexp","bexp"] = "com",grammar_file : str = "syntax.lark") -> ParseTree:
     IMP_grammar = ""
 
-    with open("syntax.lark", "r") as f:
+    with open(grammar_file, "r") as f:
         IMP_grammar = f.read()
 
     parser = Lark(IMP_grammar, start=start, parser='lalr',propagate_positions=True)
@@ -195,6 +207,7 @@ def constract_ast (code : str,start : Literal["com","aexp","bexp"] = "com") :
 
         import traceback
         traceback.print_exc(1)
+        print (e)
 
         exit (1)
     simplified_tree = RemoveRedundant().transform(parse_tree)
