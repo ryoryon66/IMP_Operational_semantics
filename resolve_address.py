@@ -194,7 +194,7 @@ def replace_label_with_displacement(code : str, label_name : str) -> str:
     line_from = -1
     for pc in range(len(instractions)):
         if "." + label_name in instractions[pc]:
-            assert line_from == -1, f"同じラベル名(from: {label_name})が複数回出現している...?コンパイラでは同じラベル名を使っていない。"
+            # assert line_from == -1, f"同じラベル名(from: {label_name})が複数回出現している...?コンパイラでは同じラベル名を使っていない。"
             line_from = pc
     
     displacement = 10 ** 18

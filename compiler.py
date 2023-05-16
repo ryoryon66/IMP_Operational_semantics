@@ -1,13 +1,18 @@
 import argparse
+import code
+from threading import local
 import time
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import  Union,final,Literal
 from collections import Counter
+from copy import deepcopy
+from xml.dom import registerDOMImplementation
 
 
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
+from numpy import std
 
 from utils import  tree_to_string,constract_ast,is_ast_of
 
@@ -16,7 +21,7 @@ import sys
 import argparse
 
 
-DEBUG = False
+DEBUG = True
 
 sys.setrecursionlimit(10 ** 9)
 
@@ -30,9 +35,16 @@ RegisterID = Literal[0,1,2,3,4,5,6,7]
 # レジスタの割り当てALC Allocation
 RSP_ALC   : final = 7 # 次に書き込む場所
 RBP_ALC   : final = 6 # ベースレジスタ このレジスタからのオフセットで変数を指定する 返り先のアドレスを保存する
+
+
+
 RT1_ALC   : final = 1
 RT2_ALC   : final = 2
-RAX_ALC   : final = 3 # 演算結果 aexpが評価された後の値が入る
+RT3_ALC   : final = 3
+RT4_ALC   : final = 4
+
+
+RAX_ALC   : final = 5 # 演算結果 aexpが評価された後の値が入る
 
 RZERO_ALC : final = 0 # 0 register
 
@@ -69,11 +81,22 @@ class Variables():
     def update_variable(self,var_name:str,reg_id:RegisterID):
         """すでに確保されていることを前提して,変数の値をレジスタの値で更新する。"""
         
-        if var_name in self._variables:
+        if DEBUG : print (f"// update_variable called: {self._variables}")
+        
+        assert reg_id != RT3_ALC and reg_id != RT4_ALC , f"RT3_ALC,RT4_ALCは変数のロードに使えません。"
+        
+
+        
+        if var_name in self._variables.keys():
             offset = self._variables[var_name]
             # ST
-            if DEBUG: print(f"// update_variable {var_name} {reg_id} {offset}({RBP_ALC})")
-            print (f"ST {reg_id} {offset}({RBP_ALC})") #既存の変数なのでrspは更新しない
+            if DEBUG: print(f"// update_variable {var_name} {reg_id} {-offset}({RBP_ALC})")
+            print (f"MOV {RT3_ALC} {RBP_ALC}") # RT3_ALC = RBP_ALC
+            print (f"LI {RT4_ALC} {offset}") # RT4_ALC = offset
+            print (f"SUB {RT3_ALC} {RT4_ALC}") # RT3_ALC -= RT4_ALC
+            
+            print (f"ST {reg_id} {0}({RT3_ALC})") # *(RBP-offset) = R[reg_id]
+            # print (f"ST {reg_id} {-offset}({RBP_ALC})") #既存の変数なのでrspは更新しない たぶんSTも即値マイナスでバグってそう LDと同じように書き換えたら円周率計算が動いた.
             return
         
         raise Exception(f"変数{var_name}は宣言されていません。")
@@ -82,9 +105,20 @@ class Variables():
     def load_variable(self,var_name:str,reg_id:RegisterID):
         """変数を指定されたレジスタにロードします。"""
         assert var_name in self._variables , f"変数{var_name}は宣言されていません。"
+        assert reg_id != RT3_ALC and reg_id != RT4_ALC , f"RT3_ALC,RT4_ALCは変数のロードに使えません。"
         offset = self._variables[var_name]
         # LD
-        print (f"LD {reg_id} {offset}({RBP_ALC})") # R[reg_id] = *(RBP+offset)
+        # if  DEBUG : print (f"OUT {RBP_ALC}")
+        
+        print (f"MOV {RT3_ALC} {RBP_ALC}") # RT3_ALC = RBP_ALC
+        print (f"LI {RT4_ALC} {offset}") # RT4_ALC = offset
+        print (f"SUB {RT3_ALC} {RT4_ALC}") # RT3_ALC -= RT4_ALC
+        
+        print (f"LD {reg_id} {0}({RT3_ALC})") # R[reg_id] = *(RBP+offset)
+        
+        
+        
+        # print (f"LD {reg_id} {0-offset}({RBP_ALC})") # R[reg_id] = *(RBP+offset) # LDが即値マイナスでバグっているというissueがある。
         return
     
 
@@ -115,6 +149,8 @@ def codegen(ast : Union[ParseTree,Token]):
 def codegen_com(ast:Com):
     
     global label_count
+    global variables
+        
     
     if isinstance(ast,Token):
         if ast.type == "SKIP":
@@ -132,6 +168,8 @@ def codegen_com(ast:Com):
         return
     
     if data == "assign":
+        if DEBUG: print (f"//codegen_com:assign")
+        
         variable_name = ast.children[0].value
         aexp : Aexp = ast.children[1]
         
@@ -142,6 +180,8 @@ def codegen_com(ast:Com):
         print (f"ADD {RSP_ALC} {RT1_ALC}")
            
         variables.update_variable(variable_name,RAX_ALC)
+        
+        if DEBUG: print (f"//codegen_com:assign end")
         return
     
     if data == "ifelse":
@@ -219,6 +259,7 @@ def codegen_com(ast:Com):
         
     
     if data == "print":
+        if DEBUG : print (f"//codegen_com:print")
         aexp : Aexp = ast.children[0]
         codegen_aexp(aexp)
         print(f"OUT {RAX_ALC} // print {aexp}")
@@ -226,13 +267,15 @@ def codegen_com(ast:Com):
         # rsp
         print (f"LI {RT1_ALC} {1}")
         print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        if DEBUG : print (f"//codegen_com:print end")
         return
     
     
     if data == "def":
         
         global function_call_counter
-        
+
         function_name = ast.children[0].value
         arg_names : list[str] = [child.value for child in ast.children[1:-2]]
         arg_count = len(arg_names)
@@ -245,59 +288,77 @@ def codegen_com(ast:Com):
         label_count += 1
         
         # 回り道
-        print (f"B .def_{function_name}_end:{label_count_for_detour}")
+        print (f"B .definition_{function_name}:{label_count_for_detour}")
         
-        function_start_labels = [ f".call_{function_name}_begin:{i}" for i in range(1,function_call_count+1)]
+        function_start_labels = [ f"call_{function_name}_begin:{i}" for i in range(1,function_call_count+1)]
         
         for label in function_start_labels:
-            print (f"{label}")
+            print (f".{label}")
         
         local_variables_name  = extract_unique_var(ast)
         local_variables_name += arg_names
         local_variables_name = list(set(local_variables_name))
         
+        outer_variables = deepcopy(variables)
         local_variable = Variables()
         
+        # 変数領域の確保
         for local_variable_name in local_variables_name:
-            # local_variable.update_variable(local_v
-            pass
-            
-        
-            
+            # print (local_variable_name)
+            # print (local_variable._variables)
+            local_variable.create_variable(local_variable_name)
 
         
+        # 関数の引数を変数領域にコピー 引数は先頭から奥に積まれている
+        for i in range(arg_count):
+            offset = -2 - i
+            # print (local_variable._variables)
+            print (f"LD {RT1_ALC} {offset}({RBP_ALC})")
+            local_variable.update_variable(arg_names[i],RT1_ALC)
+        
+        variables = local_variable # 中身のコンパイルはローカル変数のみ見えるようにする
+        
+        codegen_com(com)
+        
+        codegen_aexp(ret_aexp)
+        
+        variables = outer_variables # 以降のコンパイルでは外側の変数が見えるようにする
         
         
+        # この段階でスタックには返り先rbp,返り先ラベルid,返り値が積まれている.またRAXには返り値が入っている。
+        # RT1にidを、RT2にrbpを入れる
+        print (f"LD {RT1_ALC} {-1}({RBP_ALC})")
+        print (f"LD {RT2_ALC} {0}({RBP_ALC})")
+        
+        # RAXをスタックに積む
+        print (f"ST {RAX_ALC} {0}({RBP_ALC})")
         
         
+        # これから戻るだけなのでrbpを復元する
+        print (f"MOV {RBP_ALC} {RT2_ALC}")
+        # rspを更新
+        print (f"LI {RT1_ALC} {3}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}")
         
         
+        # idを参照して戻り先ラベルにジャンプ 関数ごとにおよそ128種類の戻り先を区別できる
+        for i in range(1,function_call_count+1):
+            print (f"LI {RT2_ALC} {i}")
+            if DEBUG: print (f"OUT {RT1_ALC}","// debug return id")
+            print (f"CMP {RT1_ALC} {RT2_ALC}")
+            print (f"BE .call_{function_name}_end:{i}")
         
+        print (f"OUT {RZERO_ALC}", "// something wrong. can't find return label")
+        print ("HLT")
+    
+        print (f".definition_{function_name}:{label_count_for_detour}")
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        print (f".def_{function_name}_begin:{label_count_for_detour}")
-        
-        raise Exception("not implemented_________________")
-        
-        
-        
-        
+        return
+
     
     raise Exception(f"codegen_com cannot handle {data}")
         
-    
+
 
 def codegen_aexp(ast:Aexp):
     """aexpをコンパイルします。
@@ -316,12 +377,14 @@ def codegen_aexp(ast:Aexp):
         return
     
     if isinstance(ast,Token) and ast.type == "VAR":
+        if DEBUG : print (f"//codegen_aexp:var start")
         var_name : str = ast.value
         assert isinstance(var_name,str)
         variables.load_variable(var_name,RAX_ALC)
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
         print (f"LI {RT1_ALC} {1}")
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        if DEBUG : print (f"//codegen_aexp:var end")
         return
 
     data = ast.data
@@ -357,7 +420,66 @@ def codegen_aexp(ast:Aexp):
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         return
     
-    print (data)
+    if data == "call":
+        
+
+        
+        
+        # 今のrbpをpush
+        print (f"ST {RBP_ALC} {0}({RSP_ALC})")
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        # idをpush
+        function_id : int = ast.call_id
+        
+        print ("// call id",function_id)
+
+
+        print (f"LI {RT1_ALC} {function_id}")
+        print (f"ST {RT1_ALC} {0}({RSP_ALC})")
+        
+        if DEBUG: print (f"OUT {RT1_ALC}","// debug call id")
+        
+        
+        
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        function_name : str = ast.children[0].value
+        arg_aexprs = ast.children[1:]
+        arg_count = len(arg_aexprs)
+        
+        # 引数の値を全部評価してpush
+        for child in arg_aexprs:
+            codegen_aexp(child)
+            # codegenすれば勝手にpushされるので以下は不要
+            # print (f"ST {RAX_ALC} {0}({RSP_ALC})")
+            # print (f"LI {RT1_ALC} {1}")
+            # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        # rbpの更新は引数を評価してからしかできない
+        print (f"MOV {RBP_ALC} {RSP_ALC}") # rbp = rsp
+        print (f"LI {RT1_ALC} {arg_count + 1 + 1}") # 引数の数 + 戻りidの分 + rbpの分
+        print (f"SUB {RBP_ALC} {RT1_ALC}") 
+        
+        if DEBUG :
+            print (f"OUT {RT1_ALC}","// debug rbp")
+            print (f"OUT {RBP_ALC}","// debug rbp")
+            print (f"OUT {RSP_ALC}","// debug rsp")
+        
+        # 関数呼び出し
+        print (f"B .call_{function_name}_begin") # 関数の先頭に飛ぶ
+        
+
+        print (f".call_{function_name}_end:{function_id}") # 関数から戻ってくる用
+
+        
+        return
+        
+        # raise NotImplementedError("call")
+    
+    
     raise Exception(f"codegen_aexp cannot handle {data}")
 
 
@@ -471,7 +593,6 @@ def codegen_bexp(ast:Bexp):
         print ("." + label_name)
         
         
-        
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
         print (f"LI {RT1_ALC} {1}")
         print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
@@ -537,7 +658,7 @@ def init_register():
     print (f"LI {RBP_ALC} {1}")
     print (f"SLL {RBP_ALC} {10}") # RBP = 1024
     print (f"MOV {RSP_ALC} {RBP_ALC}") # RSP = RBP
-    print (f"LI {RT1_ALC} {1}")
+    print (f"LI {RT1_ALC} {2}")
     print (f"SUB {RSP_ALC} {RT1_ALC}") # RSP = RSP - 1
     return
 
