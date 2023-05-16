@@ -289,6 +289,7 @@ def codegen_aexp(ast:Aexp):
 def codegen_bexp(ast:Bexp):
     """インタプリタのときとは違って、コンパイラの方ではAexpと同じように整数が返ってくると考えてコンパイルする. true=1,false=0として扱う.
     """
+    global label_count
     
     if isinstance(ast,Token) and ast.type == "TRUE":
         print (f"LI {RAX_ALC} {1}") # RAX = 1
@@ -314,18 +315,22 @@ def codegen_bexp(ast:Bexp):
         codegen_aexp(aexp1)
         codegen_aexp(aexp2)
         
-        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
-        # RAXから引き算して、RAXが0か判定する
-        print (f"SUB {RAX_ALC} {RT1_ALC}") # RAX -= RT1
+        label_name = f"eq_label_{label_count}"
+        label_count += 1
         
-        # フラグレジスタを使いたいけどそういう命令がない...
-        #　0は符号反転しても符号が変わらないつまりx or -xの符号ビットが0となる唯一の数(これxorでもいいのか？コーナーケースがあるかも　TODO)
-        print (f"LI {RT1_ALC} {0}")
-        print (f"SUB {RT1_ALC} {RAX_ALC}") # RT1 = 0 - RAX
-        print (f"OR {RAX_ALC} {RT1_ALC}") # RAX or RAX
-        print (f"SRL {RAX_ALC} {15}") # RAX >>= 15 論理シフト　等号成立なら0になる XORをとって反転
-        print (f"LI {RT1_ALC} {1}")
-        print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX ^= RT1 等号成立なら1になる
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        print (f"LD {RT2_ALC} {1}({RSP_ALC})") # RT2 = *(rsp+1)
+        
+        print (f"LI {RAX_ALC} {1}") # RAX = 1
+        
+        print (f"CMP {RT1_ALC} {RT2_ALC}") 
+        print (f"BE .{label_name}") # RT1 == RT2ならばlabel_nameに飛ぶ
+        
+        print (f"LI {RAX_ALC} {0}") # RT1 != RT2ならばRAX = 0
+        
+        print (f".{label_name}")
+        
+        
         
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
         print (f"LI {RT1_ALC} {1}")
@@ -353,12 +358,23 @@ def codegen_bexp(ast:Bexp):
         codegen_aexp(aexp1)
         codegen_aexp(aexp2)
         
+        label_name = f"le_label_{label_count}"
+        label_count += 1
+        
         print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
-        # RAXから引き算して、正負が見たい
-        print (f"SUB {RAX_ALC} {RT1_ALC}") # RAX -= RT1 ここでaexp2 - aexp1がおわり。0以上かの判定には論理右シフトが使えると思う TODO
-        print (f"SRL {RAX_ALC} {15}") # RAX >>= 15 論理シフト　これで差が0以上の時RAXが0になる 0未満の時は1になる
-        print (f"LI {RT1_ALC} {1}")
-        print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX ^= RT1 ここでnotをとる。
+        print (f"LD {RT2_ALC} {1}({RSP_ALC})") # RT2 = *(rsp+1)
+        
+        print (f"LI {RAX_ALC} {1}") # RAX = 1
+        
+        print (f"CMP {RT1_ALC} {RT2_ALC}")
+        print (f"BLE .{label_name}") # RAX <= RT1なら飛ぶ
+        
+        print (f"LI {RAX_ALC} {0}") # RAX = 0
+
+        
+        print ("." + label_name)
+        
+        
         
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
         print (f"LI {RT1_ALC} {1}")
@@ -453,6 +469,8 @@ def run_compiler(program:str):
         # uniqueにする
         res = list(set(res))
         return res
+    
+    
     
     unique_var = extract_unique_var(tree)
     
