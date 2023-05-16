@@ -1,0 +1,14 @@
+def test () {
+    skip
+    return 12
+};
+
+a := test();
+
+print a;
+print a;
+print a;
+
+print 101;
+
+skip

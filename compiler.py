@@ -311,9 +311,16 @@ def codegen_com(ast:Com):
         
         # 関数の引数を変数領域にコピー 引数は先頭から奥に積まれている
         for i in range(arg_count):
-            offset = -2 - i
-            # print (local_variable._variables)
-            print (f"LD {RT1_ALC} {offset}({RBP_ALC})")
+
+            print ("//",local_variable._variables)
+            offset = -2 - i 
+            print (f"LI {RT3_ALC} {offset}")
+            print (f"MOV {RT2_ALC} {RBP_ALC}")
+            print (f"ADD {RT2_ALC} {RT3_ALC}")
+            
+            print (f"LD {RT1_ALC} {0}({RT2_ALC})")
+
+            # print (f"LD {RT1_ALC} {offset}({RBP_ALC})") # TODO 負の即値をいれるとバグる。issue
             local_variable.update_variable(arg_names[i],RT1_ALC)
         
         variables = local_variable # 中身のコンパイルはローカル変数のみ見えるようにする
@@ -327,7 +334,11 @@ def codegen_com(ast:Com):
         
         # この段階でスタックには返り先rbp,返り先ラベルid,返り値が積まれている.またRAXには返り値が入っている。
         # RT1にidを、RT2にrbpを入れる
-        print (f"LD {RT1_ALC} {-1}({RBP_ALC})")
+        print (f"MOV {RT3_ALC} {RBP_ALC}")
+        print (f"LI {RT4_ALC} {1}")
+        print (f"SUB {RT3_ALC} {RT4_ALC}")
+        print (f"LD {RT1_ALC} {0}({RT3_ALC})")
+        # print (f"LD {RT1_ALC} {-1}({RBP_ALC})") # TODO 負の即値をいれるとバグる。issue
         print (f"LD {RT2_ALC} {0}({RBP_ALC})")
         
         # RAXをスタックに積む
@@ -337,13 +348,15 @@ def codegen_com(ast:Com):
         # これから戻るだけなのでrbpを復元する
         print (f"MOV {RBP_ALC} {RT2_ALC}")
         # rspを更新
-        print (f"LI {RT1_ALC} {3}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}")
+        print (f"LI {RT4_ALC} {2}")
+        print (f"SUB {RSP_ALC} {RT4_ALC}")
         
         
         # idを参照して戻り先ラベルにジャンプ 関数ごとにおよそ128種類の戻り先を区別できる
         for i in range(1,function_call_count+1):
             print (f"LI {RT2_ALC} {i}")
+            if DEBUG: print (f"OUT {RT1_ALC}","// debug return id")
+            if DEBUG: print (f"OUT {RT1_ALC}","// debug return id")
             if DEBUG: print (f"OUT {RT1_ALC}","// debug return id")
             print (f"CMP {RT1_ALC} {RT2_ALC}")
             print (f"BE .call_{function_name}_end:{i}")
@@ -422,8 +435,10 @@ def codegen_aexp(ast:Aexp):
     
     if data == "call":
         
-
+        if DEBUG: print (f"//codegen_aexp:call start")
         
+        if DEBUG : print (f"OUT {RSP_ALC}")
+        if DEBUG : print (f"OUT {RSP_ALC}")
         
         # 今のrbpをpush
         print (f"ST {RBP_ALC} {0}({RSP_ALC})")
@@ -442,7 +457,6 @@ def codegen_aexp(ast:Aexp):
         if DEBUG: print (f"OUT {RT1_ALC}","// debug call id")
         
         
-        
         print (f"LI {RT1_ALC} {1}")
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         
@@ -452,27 +466,36 @@ def codegen_aexp(ast:Aexp):
         
         # 引数の値を全部評価してpush
         for child in arg_aexprs:
+
             codegen_aexp(child)
             # codegenすれば勝手にpushされるので以下は不要
             # print (f"ST {RAX_ALC} {0}({RSP_ALC})")
             # print (f"LI {RT1_ALC} {1}")
             # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         
-        # rbpの更新は引数を評価してからしかできない
+        # rbpの更新は引数を評価してからしかできない TODO ここのrbpの更新がバグってる
         print (f"MOV {RBP_ALC} {RSP_ALC}") # rbp = rsp
-        print (f"LI {RT1_ALC} {arg_count + 1 + 1}") # 引数の数 + 戻りidの分 + rbpの分
-        print (f"SUB {RBP_ALC} {RT1_ALC}") 
+        print (f"LI {RT1_ALC} {arg_count + 1 + 1 + 0}") # 引数の数 + 戻りidの分 + rbpの分
+        print (f"ADD {RBP_ALC} {RT1_ALC}") 
         
         if DEBUG :
             print (f"OUT {RT1_ALC}","// debug rbp")
             print (f"OUT {RBP_ALC}","// debug rbp")
             print (f"OUT {RSP_ALC}","// debug rsp")
+            
+            # print (f"LD {RT1_ALC} {3}({RBP_ALC})")
+            # print (f"OUT {RT1_ALC}","// debug rbp[0]")
+            
+            # print (f"LD {RT1_ALC} {4}({RBP_ALC})") #なぜか無引数だとここが戻りrbpになってる。
+            # print (f"OUT {RT1_ALC}","// debug rbp[0]")
         
         # 関数呼び出し
         print (f"B .call_{function_name}_begin") # 関数の先頭に飛ぶ
         
 
         print (f".call_{function_name}_end:{function_id}") # 関数から戻ってくる用
+        
+        if DEBUG : print (f"OUT {RAX_ALC}","// debug call return value")
 
         
         return
@@ -656,10 +679,10 @@ def codegen_bexp(ast:Bexp):
 
 def init_register():
     print (f"LI {RBP_ALC} {1}")
-    print (f"SLL {RBP_ALC} {10}") # RBP = 1024
+    print (f"SLL {RBP_ALC} {12}") # RBP = 1024
     print (f"MOV {RSP_ALC} {RBP_ALC}") # RSP = RBP
     print (f"LI {RT1_ALC} {2}")
-    print (f"SUB {RSP_ALC} {RT1_ALC}") # RSP = RSP - 1
+    print (f"SUB {RSP_ALC} {RT1_ALC}") # RSP = RSP - 2
     return
 
 
