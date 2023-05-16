@@ -39,11 +39,6 @@ start:com
         | "print" aexp              -> print
         | "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" -> def
     
-    defs :  "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" -> def
-        |  "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" defs
-
-    
-
 
     %import common.CNAME -> NAME
     %import common.INT   -> INT

@@ -3,6 +3,7 @@ import time
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import  Union,final,Literal
+from collections import Counter
 
 
 from lark.lexer import Token
@@ -41,16 +42,32 @@ class Variables():
     またオフセットの限界値が256なので変数の宣言は前に固めた方がいい
     """
     
-    def __init__(self):
+    def __init__(self,):
         self._variables : dict[str,int]= {} # 変数名 -> RBPからのオフセット
-        self._offset : int = 1 # 次に書き込む場所を相対で表す
+        self._offset : int = 2 # 次に書き込む場所を相対で表す *(rbp)には前のフレームのrbpが入り、*(rbp+1)には戻り先のラベルidが入るので2から始める
     
     def __contains__(self, key):
         return key in self._variables
+    
+
+    def create_variable(self,var_name:str):
+        "変数領域を確保する。"
+        
+        if var_name in self._variables:
+            return
+
+        offset = self._offset
+        self._offset += 1
+        self._variables[var_name] = offset
+        
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        return
+        
 
     def update_variable(self,var_name:str,reg_id:RegisterID):
-        """新規変数の時のみrspを更新してくれます。
-        """
+        """すでに確保されていることを前提して,変数の値をレジスタの値で更新する。"""
         
         if var_name in self._variables:
             offset = self._variables[var_name]
@@ -59,19 +76,8 @@ class Variables():
             print (f"ST {reg_id} {offset}({RBP_ALC})") #既存の変数なのでrspは更新しない
             return
         
-        # 新規変数
-        if DEBUG: print(f"// create_variable {var_name} {reg_id} {self._offset}({RBP_ALC})")
-        offset = self._offset
-        self._offset += 1
-        self._variables[var_name] = offset
-        # ST
-        print (f"ST {reg_id} {offset}({RBP_ALC})")
-        
-        # 変数用でメモリを確保したのでスタックを伸ばす
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
-        return
-            
+        raise Exception(f"変数{var_name}は宣言されていません。")
+
     
     def load_variable(self,var_name:str,reg_id:RegisterID):
         """変数を指定されたレジスタにロードします。"""
@@ -85,6 +91,8 @@ class Variables():
 variables = Variables()
 
 label_count : int = 0 # アセンブリに吐くラベルの通し番号
+
+function_call_counter : Counter = Counter() # 関数呼び出しの回数を関数名ごとにカウントする
 
 
 def codegen(ast : Union[ParseTree,Token]):
@@ -219,6 +227,73 @@ def codegen_com(ast:Com):
         print (f"LI {RT1_ALC} {1}")
         print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
         return
+    
+    
+    if data == "def":
+        
+        global function_call_counter
+        
+        function_name = ast.children[0].value
+        arg_names : list[str] = [child.value for child in ast.children[1:-2]]
+        arg_count = len(arg_names)
+        com : Com = ast.children[-2]
+        ret_aexp : Aexp = ast.children[-1]
+        
+        function_call_count = function_call_counter[function_name]
+        
+        label_count_for_detour = label_count
+        label_count += 1
+        
+        # 回り道
+        print (f"B .def_{function_name}_end:{label_count_for_detour}")
+        
+        function_start_labels = [ f".call_{function_name}_begin:{i}" for i in range(1,function_call_count+1)]
+        
+        for label in function_start_labels:
+            print (f"{label}")
+        
+        local_variables_name  = extract_unique_var(ast)
+        local_variables_name += arg_names
+        local_variables_name = list(set(local_variables_name))
+        
+        local_variable = Variables()
+        
+        for local_variable_name in local_variables_name:
+            # local_variable.update_variable(local_v
+            pass
+            
+        
+            
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        print (f".def_{function_name}_begin:{label_count_for_detour}")
+        
+        raise Exception("not implemented_________________")
+        
+        
+        
+        
     
     raise Exception(f"codegen_com cannot handle {data}")
         
@@ -467,29 +542,51 @@ def init_register():
     return
 
 
+def count_function_call_and_add_id(ast):
+    """関数呼び出しを数えながらidをつける"""
+    global function_call_counter # Counter object
+    
+    
+    if isinstance(ast,Token):
+        return
+    
+    if ast.data == "call":
+        function_name = ast.children[0].value
+        function_call_counter[function_name] += 1
+        ast.call_id = function_call_counter[function_name]
+        return
+    
+    for child in ast.children:
+        count_function_call_and_add_id(child)
+
+    return
+
+
+def extract_unique_var(ast) -> list[str]:
+    if isinstance(ast,Token):
+            return []
+    
+    if ast.data == "assign":
+        var = ast.children[0].value
+        return [var]
+    
+    
+    res = []
+    for child in ast.children:
+        res += extract_unique_var(child)
+    
+    # uniqueにする
+    res = list(set(res))
+    return res
+
 def run_compiler(program:str):
-    tree = constract_ast(program,"com",grammar_file="syntax_for_compiler.lark")
+    tree = constract_ast(program,"com", "syntax_for_compiler.lark")
     
     init_register()
     
     # 変数のメモリを全て確保する
     
-    def extract_unique_var(ast):
-        if isinstance(ast,Token):
-                return []
-        
-        if ast.data == "assign":
-            var = ast.children[0].value
-            return [var]
-       
-        
-        res = []
-        for child in ast.children:
-            res += extract_unique_var(child)
-        
-        # uniqueにする
-        res = list(set(res))
-        return res
+
     
     
     
@@ -498,7 +595,9 @@ def run_compiler(program:str):
     # print (unique_var)
     
     for var in unique_var:
-        variables.update_variable(var,RAX_ALC)
+        variables.create_variable(var)
+    
+    count_function_call_and_add_id(tree)
     
     codegen(tree)
     
