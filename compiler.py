@@ -342,15 +342,36 @@ def codegen_bexp(ast:Bexp):
     
     if data == "lt":
         
-        # フラグレジスタを使いたいけどそういう命令がない...
-        #　引き算して符号が分かったら勝ちかな。setl欲しい。。。
-        # 論理→シフト15ビットで符号が分かる
-        # 引き算してからシフトして、0かどうかで判断するかな。
-        # TODO FIXME これ、CMP命令でBLT命令使って0,1storeする場合を分ければいいのでは？他のとこでもこのテク使えそう。
+        aexp1 = ast.children[0]
+        aexp2 = ast.children[1]
         
-        raise Exception("lt is not implemented")
+        codegen_aexp(aexp1)
+        codegen_aexp(aexp2)
+        
+        label_name = f"lt_label_{label_count}"
+        label_count += 1
+        
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        print (f"LD {RT2_ALC} {1}({RSP_ALC})") # RT2 = *(rsp+1)
+        
+        print (f"LI {RAX_ALC} {1}") # RAX = 1
+        
+        print (f"CMP {RT1_ALC} {RT2_ALC}")
+        print (f"BLT .{label_name}") # RAX < RT1なら飛ぶ
+        
+        print (f"LI {RAX_ALC} {0}") # RAX = 0
+        
+        print (f".{label_name}")
+        
+        print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        return
+        
+        
     
-    if data == "le": # aexp1 <= aexp2 TODO ほんまにあってんのか？ たぶん引き算でOVFしたら壊れるのであまり大きな値は扱えない　OVF対策もできるけどさぼってる
+    if data == "le": # aexp1 <= aexp2 
         
         aexp1 = ast.children[0]
         aexp2 = ast.children[1]

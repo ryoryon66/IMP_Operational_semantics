@@ -1,0 +1,8 @@
+a := <input>;
+
+i := -100;
+
+while i < a do
+    print i;
+    i := i + 1
+end
