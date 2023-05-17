@@ -17,7 +17,8 @@ import sys
 import argparse
 
 
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 sys.setrecursionlimit(10 ** 9)
 
@@ -112,8 +113,6 @@ class Variables():
         
         print (f"LD {reg_id} {0}({RT3_ALC})") # R[reg_id] = *(RBP+offset)
         
-        
-        
         # print (f"LD {reg_id} {0-offset}({RBP_ALC})") # R[reg_id] = *(RBP+offset) # LDが即値マイナスでバグっているというissueがある。
         return
     
@@ -202,8 +201,6 @@ def codegen_com(ast:Com):
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならelseに飛ぶ
         print (f"BE .Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
         
-        
-        
         codegen_com(com1)
         
         print (f"B .Lend{LABEL_COUNT_FOR_THIS_IFELSE}")
@@ -248,7 +245,8 @@ def codegen_com(ast:Com):
         print (f"B .Lbegin{LABEL_COUNT_FOR_THIS_WHILE}")
         print (f".Lend{LABEL_COUNT_FOR_THIS_WHILE}")
         
-        if DEBUG: print (f"//codegen_com:while end")
+        if DEBUG: 
+            print (f"//codegen_com:while end")
         
         return
 
@@ -292,7 +290,7 @@ def codegen_com(ast:Com):
             print (f".{label}")
         
         local_variables_name  = extract_unique_var(ast)
-        local_variables_name += arg_names
+        local_variables_name = deepcopy(local_variables_name + arg_names)
         local_variables_name = list(set(local_variables_name))
         # 辞書順にソート(ソートしないと実行するたびに順番変わるっぽい)
         local_variables_name.sort()
@@ -301,7 +299,7 @@ def codegen_com(ast:Com):
             local_variables_name.remove(arg_name)
         
         #最初に引数を持ってくる。
-        local_variables_name = arg_names + local_variables_name
+        local_variables_name = deepcopy( arg_names + local_variables_name)
         
         outer_variables = deepcopy(variables)
         local_variable = Variables()
@@ -327,13 +325,31 @@ def codegen_com(ast:Com):
             # print (f"LD {RT1_ALC} {offset}({RBP_ALC})") # TODO 負の即値をいれるとバグる。issue
             local_variable.update_variable(arg_names[i],RT1_ALC)
         
-        variables = local_variable # 中身のコンパイルはローカル変数のみ見えるようにする
+        variables = deepcopy(local_variable) # 中身のコンパイルはローカル変数のみ見えるようにする
         
         codegen_com(com)
         
         codegen_aexp(ret_aexp)
         
-        variables = outer_variables # 以降のコンパイルでは外側の変数が見えるようにする
+
+        
+        # この段階でスタックのトップとRAXの内容は一致しているはず。
+        if DEBUG:
+            print (f"LD {RT1_ALC} {1}({RSP_ALC})") # ret_v = *(rsp+1)
+            print (f"CMP {RT1_ALC} {RAX_ALC}")
+            print (f"BE .Label_DEBUG_RAX_{function_name}_end:{label_count}")
+            print (f"LI {RT1_ALC} {1}")
+            print (f"OUT {RZERO_ALC}")
+            print (f"HLT")
+            print (f".Label_DEBUG_RAX_{function_name}_end:{label_count}")
+        
+        # rsp codegenは勝手にrspを更新してくれるのでここでは更新しない。またRAXに返り値がはいってる。
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        #今、rsp = rbp + 1 + arg_count + 1 + 1のはずである。 rbp id arg1 arg2 ... argn ret_v 
+        
+        variables = deepcopy(outer_variables) # 以降のコンパイルでは外側の変数が見えるようにする
         
         
         # この段階でスタックには返り先rbp,返り先ラベルid,返り値が積まれている.またRAXには返り値が入っている。
@@ -345,14 +361,19 @@ def codegen_com(ast:Com):
         # print (f"LD {RT1_ALC} {-1}({RBP_ALC})") # TODO 負の即値をいれるとバグる。issue
         print (f"LD {RT2_ALC} {0}({RBP_ALC})")
         
-        # RAXをスタックに積む
+        # RAXをRBPが入っていたところに入れる RBPはRT2に退避済み
         print (f"ST {RAX_ALC} {0}({RBP_ALC})")
         
         
         # これから戻るだけなのでrbpを復元する
         print (f"MOV {RBP_ALC} {RT2_ALC}")
         # rspを更新
-        print (f"LI {RT4_ALC} {3 + len(local_variables_name)}")
+        if DEBUG:
+            print (f"// rspを更新")
+            print (f"// local_variables_name:{local_variables_name}",len (local_variables_name))
+        # assert local_variables_names are unique
+        assert len(local_variables_name) == len(set(local_variables_name))
+        print (f"LI {RT4_ALC} {2 + len(local_variables_name)}")
         print (f"ADD {RSP_ALC} {RT4_ALC}")
         
         
@@ -439,6 +460,8 @@ def codegen_aexp(ast:Aexp):
     
     if data == "call":
         
+        global label_count
+        
         if DEBUG: print (f"//codegen_aexp:call start")
         
         if DEBUG : print (f"OUT {RSP_ALC}")
@@ -468,6 +491,8 @@ def codegen_aexp(ast:Aexp):
         arg_aexprs = ast.children[1:]
         arg_count = len(arg_aexprs)
         
+        if DEBUG : print (f"//codegen_aexp:call:arg_count",arg_count)
+        
         # 引数の値を全部評価してpush
         for child in arg_aexprs:
 
@@ -481,6 +506,25 @@ def codegen_aexp(ast:Aexp):
         print (f"MOV {RBP_ALC} {RSP_ALC}") # rbp = rsp
         print (f"LI {RT1_ALC} {arg_count + 1 + 1 + 0}") # 引数の数 + 戻りidの分 + rbpの分
         print (f"ADD {RBP_ALC} {RT1_ALC}") 
+        
+        # rbpとrspの関係をテストする
+        if DEBUG : 
+        
+            label_count += 1
+            print (f"MOV {RT1_ALC} {RBP_ALC}")
+            print (f"SUB {RT1_ALC} {RSP_ALC}")
+            print (f"LI {RT2_ALC}  {arg_count + 1 + 1 + 0}")
+            print (f"CMP {RT1_ALC} {RT2_ALC}")
+            print (f"BE .call_DEBUG_rbprsp{function_name}_end:{label_count}")
+            print (f"OUT {RZERO_ALC}")
+            print (f"OUT {RT1_ALC}")
+            print (f"OUT {RT2_ALC}")
+            print (f"LI {RT1_ALC} {arg_count}")
+            print (f"OUT {RT1_ALC}")
+            print (f"HLT")
+            print (f".call_DEBUG_rbprsp{function_name}_end:{label_count}")
+            
+            pass
         
         if DEBUG :
             print (f"OUT {RT1_ALC}","// debug rbp")
@@ -502,6 +546,11 @@ def codegen_aexp(ast:Aexp):
         if DEBUG : print (f"//end of call {function_name}")
         
         if DEBUG : print (f"OUT {RAX_ALC}","// debug call return value")
+        
+        # 戻り値をpush
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})")
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
 
         
         return
@@ -683,9 +732,12 @@ def codegen_bexp(ast:Bexp):
     raise Exception(f"codegen_bexp cannot handle {data}")
 
 
+
+
+
 def init_register():
     print (f"LI {RBP_ALC} {1}")
-    print (f"SLL {RBP_ALC} {12}") # RBP = 1024
+    print (f"SLL {RBP_ALC} {12}") # RBP = 1024,2048,4096
     print (f"MOV {RSP_ALC} {RBP_ALC}") # RSP = RBP
     print (f"LI {RT1_ALC} {2}")
     print (f"SUB {RSP_ALC} {RT1_ALC}") # RSP = RSP - 2
@@ -876,20 +928,6 @@ if __name__ == "__main__":
         program = f.read()
     
 
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    
     run_compiler(program)
 
 

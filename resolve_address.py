@@ -143,7 +143,7 @@ def insert_jump_helper(code : str, label_name : str,) -> str:
         if "." + label_name in instractions[pc]:
             line_from = pc
     
-    print (f"line_from = {line_from}, line_to = {line_to}")
+    print (f"line_from = {line_from}, line_to = {line_to}, label_name = {label_name}")
     
     assert line_from != -1 and line_to != -1
     # assert abs (line_from - line_to) > 100, "よっぽど入り組んでない限り100行以上離れているはず"

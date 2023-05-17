@@ -3,22 +3,31 @@ def test(a,b,){
     return ret
 };
 
+def double(a,){
+    skip
+    return a
+};
+
 def empty(){
     skip
     return 1
 };
 
+a := 1;
+
 while true do
-    a := 90;
-    a := a + a;
-    a := a - a;
-    if 1 + a = a + a then
-        print 1
-    else
-        a := a
-    end;
+    #a := 90;
+    #a := a + a;
+    #a := a - a;
+    #if 1 + a = a + a then
+    #    print 1
+    #else
+    #   a := a
+    #end;
     #a := test(a,a,);
-    #a := empty();
+    #a := empty(); a := empty();
+    #a := a + a + a + a + a;
+    a := double(a,);
 
 
     skip

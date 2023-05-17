@@ -37,15 +37,25 @@ def sumrec(m,){
     return ret
 };
 
-print sum (100,);
+#print sum (100,);
 # 多分いまのところローカル変数がグロバルとごっちゃになってそう
+# function callの左側に足し算があるとでたらめな値になるっぽい。4000番台後半の値になることからrbpをaexprの評価結果として読んでいるという説がある。
 
 
 print sumrec(3,);
 print sumrec(4,);
 
-while true do
+print 57;
+
+print sumrec (100,);
+
+#while true do
 # print sum(2,) + sum(2,);
-  a := sum (2,) + sum(3,);
-  a := sumrec(10,)
-end
+  print sum(4,);
+  a :=  3 + sum(4,);
+  print a;
+  print a;
+  print a;
+  print a # expected 3 + 10 = 13
+  #a := sumrec(10,)
+#end
