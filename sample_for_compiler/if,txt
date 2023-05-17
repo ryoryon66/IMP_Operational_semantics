@@ -1,0 +1,6 @@
+#a := 1;
+if true then 
+    print 1
+else 
+    print 0
+end 

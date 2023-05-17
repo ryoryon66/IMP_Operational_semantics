@@ -1,0 +1,10 @@
+def f(a,){
+    skip
+    return a
+};
+
+print f(2,);
+
+
+
+skip

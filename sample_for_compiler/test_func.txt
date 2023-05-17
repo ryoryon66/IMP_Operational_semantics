@@ -1,0 +1,16 @@
+def f(a,b,){
+    skip
+    return a + b
+};
+
+
+a := 1;
+a := f(2,1,);
+a := f(2,1,);
+a := f(2,1,);
+a := f(2,1,);
+print a;
+
+while true do
+    a := f(2,1,)
+end

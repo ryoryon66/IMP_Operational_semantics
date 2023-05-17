@@ -1,0 +1,44 @@
+def fibrec (i,){
+    ret := 0;
+    p := i;
+
+    if p <= 2 then
+        ret := 1
+    else
+        ret := fibrec (p-1,) + fibrec (p-2,)
+    end
+
+    return ret 
+};
+
+
+i := 1;
+
+while i <= 10 do 
+term := fibrec (i,);
+
+if term < 0 then 
+    i := 101
+else
+    # print i;
+    i := i +1;
+    print term
+end
+end
+
+    
+# output on 227 : 1
+# output on 227 : 1
+# output on 227 : 2
+# output on 227 : 3
+# output on 227 : 5
+# output on 227 : 8
+# output on 227 : 13
+# output on 227 : 21
+# output on 227 : 34
+# output on 227 : 55
+# output on 227 : 89
+# output on 227 : 144
+# output on 227 : 233
+# output on 227 : 377
+# output on 227 : 610

@@ -1,0 +1,14 @@
+n := <input>;
+i := n - 1;
+while 2 <= i do
+    r := n;
+    while i <= r do
+        r := r - i
+    end;
+    if r = 0 then
+        print i
+    else
+        skip
+    end;
+    i := i - 1
+end
