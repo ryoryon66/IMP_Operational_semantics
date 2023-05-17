@@ -723,7 +723,14 @@ def codegen_bexp(ast:Bexp):
         # 1をLIして、RAXとのXORをとる
         print (f"LI {RT1_ALC} {1}") # RT1 = 1
         print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX = RAX ^ RT1
-        print (f"ST {RAX_ALC} {-1}({RSP_ALC})") # *(rsp-1) = RAX
+        
+        # print (f"ST {RAX_ALC} {-1}({RSP_ALC})") # *(rsp-1) = RAX issue 
+        
+        print (f"MOV {RT2_ALC} {RSP_ALC}") # RT2 = RSP
+        print (f"SUB {RT2_ALC} {RT1_ALC}") # RT2 = RT2 - 1
+        print (f"ST {RAX_ALC} {0}({RT2_ALC})") # *(RT2) = RAX
+        
+
         
         # pop 1 push 1なのでrspは変わらない
         
@@ -793,7 +800,7 @@ def run_compiler(program:str):
 
     
     
-    
+    # これだと関数の中もとってしまうな
     unique_var = extract_unique_var(tree)
     
     # print (unique_var)
