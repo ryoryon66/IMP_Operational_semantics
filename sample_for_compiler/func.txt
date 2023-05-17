@@ -1,14 +1,51 @@
-def test () {
+def test (a,b,) {
     skip
-    return 12
+    return a + b
 };
 
-a := test();
+print a;
+
+a := test(8,6,);
 
 print a;
-print a;
-print a;
+
+
+b := test(7,a,);
+
+print b;
 
 print 101;
 
-skip
+def sum (n,) {
+    ret := 0;
+    while n >= 0 do
+        ret := ret + n;
+        n := n - 1
+    end
+    return ret
+};
+
+def sumrec(m,){
+    ret := 0;
+
+    if m = 0 then  
+        ret := 0
+    else
+        ret := sumrec(m-1,) + m
+    end
+
+    return ret
+};
+
+print sum (100,);
+# 多分いまのところローカル変数がグロバルとごっちゃになってそう
+
+
+print sumrec(3,);
+print sumrec(4,);
+
+while true do
+# print sum(2,) + sum(2,);
+  a := sum (2,) + sum(3,);
+  a := sumrec(10,)
+end

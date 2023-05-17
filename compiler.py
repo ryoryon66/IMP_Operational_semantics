@@ -1,18 +1,14 @@
 import argparse
-import code
-from threading import local
 import time
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import  Union,final,Literal
 from collections import Counter
 from copy import deepcopy
-from xml.dom import registerDOMImplementation
 
 
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
-from numpy import std
 
 from utils import  tree_to_string,constract_ast,is_ast_of
 
@@ -21,7 +17,7 @@ import sys
 import argparse
 
 
-DEBUG = True
+DEBUG = False
 
 sys.setrecursionlimit(10 ** 9)
 
@@ -298,14 +294,22 @@ def codegen_com(ast:Com):
         local_variables_name  = extract_unique_var(ast)
         local_variables_name += arg_names
         local_variables_name = list(set(local_variables_name))
+        # 辞書順にソート(ソートしないと実行するたびに順番変わるっぽい)
+        local_variables_name.sort()
+        # local variablesからarg_namesを除く
+        for arg_name in arg_names:
+            local_variables_name.remove(arg_name)
+        
+        #最初に引数を持ってくる。
+        local_variables_name = arg_names + local_variables_name
         
         outer_variables = deepcopy(variables)
         local_variable = Variables()
         
         # 変数領域の確保
         for local_variable_name in local_variables_name:
-            # print (local_variable_name)
-            # print (local_variable._variables)
+            if DEBUG :print ("//",local_variable_name)
+            if DEBUG :print ("//",local_variable._variables)
             local_variable.create_variable(local_variable_name)
 
         
@@ -313,7 +317,7 @@ def codegen_com(ast:Com):
         for i in range(arg_count):
 
             print ("//",local_variable._variables)
-            offset = -2 - i 
+            offset = -2 - i # まだ変数への書き込みをしていないのでcallする前に積んだ引数が残っているはず TODO これが嘘で変数領域にコピーしている最中に引数を書き換えられることがあるのか
             print (f"LI {RT3_ALC} {offset}")
             print (f"MOV {RT2_ALC} {RBP_ALC}")
             print (f"ADD {RT2_ALC} {RT3_ALC}")
@@ -348,8 +352,8 @@ def codegen_com(ast:Com):
         # これから戻るだけなのでrbpを復元する
         print (f"MOV {RBP_ALC} {RT2_ALC}")
         # rspを更新
-        print (f"LI {RT4_ALC} {2}")
-        print (f"SUB {RSP_ALC} {RT4_ALC}")
+        print (f"LI {RT4_ALC} {3 + len(local_variables_name)}")
+        print (f"ADD {RSP_ALC} {RT4_ALC}")
         
         
         # idを参照して戻り先ラベルにジャンプ 関数ごとにおよそ128種類の戻り先を区別できる
@@ -494,6 +498,8 @@ def codegen_aexp(ast:Aexp):
         
 
         print (f".call_{function_name}_end:{function_id}") # 関数から戻ってくる用
+        
+        if DEBUG : print (f"//end of call {function_name}")
         
         if DEBUG : print (f"OUT {RAX_ALC}","// debug call return value")
 
@@ -721,6 +727,8 @@ def extract_unique_var(ast) -> list[str]:
     
     # uniqueにする
     res = list(set(res))
+    # sortする
+    res.sort()
     return res
 
 def run_compiler(program:str):
@@ -992,3 +1000,5 @@ if __name__ == "__main__":
     #         print a
             
     #         """
+    
+    
