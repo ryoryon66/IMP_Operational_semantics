@@ -3,6 +3,11 @@ def test(a,b,){
     return ret
 };
 
+def empty(){
+    skip
+    return 1
+};
+
 while true do
     a := 90;
     a := a + a;
@@ -12,7 +17,8 @@ while true do
     else
         a := a
     end;
-    a := test(a,a,);
+    #a := test(a,a,);
+    #a := empty();
 
 
     skip
