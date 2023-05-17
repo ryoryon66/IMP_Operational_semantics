@@ -18,7 +18,7 @@ import argparse
 
 
 DEBUG = True
-# DEBUG = False
+DEBUG = False
 
 sys.setrecursionlimit(10 ** 9)
 
@@ -353,28 +353,40 @@ def codegen_com(ast:Com):
         
         
         # この段階でスタックには返り先rbp,返り先ラベルid,返り値が積まれている.またRAXには返り値が入っている。
-        # RT1にidを、RT2にrbpを入れる
+        # RT1にidを代入する
         print (f"MOV {RT3_ALC} {RBP_ALC}")
         print (f"LI {RT4_ALC} {1}")
         print (f"SUB {RT3_ALC} {RT4_ALC}")
-        print (f"LD {RT1_ALC} {0}({RT3_ALC})")
+        print (f"LD {RT1_ALC} {0}({RT3_ALC})") #id
         # print (f"LD {RT1_ALC} {-1}({RBP_ALC})") # TODO 負の即値をいれるとバグる。issue
-        print (f"LD {RT2_ALC} {0}({RBP_ALC})")
+
+
+
+
+        # assert local_variables_names are unique
+        assert len(local_variables_name) == len(set(local_variables_name))
+        # print (f"LI {RT4_ALC} {2 + len(local_variables_name)}")
+        # print (f"ADD {RSP_ALC} {RT4_ALC}")
+        
+        # rbpの一つ上が新たなrspの位置
+        print (f"LI {RT4_ALC} {1}")
+        print (f"MOV {RSP_ALC} {RBP_ALC}")
+        print (f"SUB {RSP_ALC} {RT4_ALC}")
+        
+        
+        if DEBUG: print (f"OUT {RBP_ALC}","// debug rbp")
+               
+        
+        print (f"LD {RT2_ALC} {0}({RBP_ALC})") # RT2 = *(rsp+0)
         
         # RAXをRBPが入っていたところに入れる RBPはRT2に退避済み
         print (f"ST {RAX_ALC} {0}({RBP_ALC})")
         
+        print (f"MOV {RBP_ALC} {RT2_ALC}") # RBP = *(rbp+0)
         
-        # これから戻るだけなのでrbpを復元する
-        print (f"MOV {RBP_ALC} {RT2_ALC}")
-        # rspを更新
-        if DEBUG:
-            print (f"// rspを更新")
-            print (f"// local_variables_name:{local_variables_name}",len (local_variables_name))
-        # assert local_variables_names are unique
-        assert len(local_variables_name) == len(set(local_variables_name))
-        print (f"LI {RT4_ALC} {2 + len(local_variables_name)}")
-        print (f"ADD {RSP_ALC} {RT4_ALC}")
+        if DEBUG: print (f"OUT {RBP_ALC}","// debug rbp")
+        
+        
         
         
         # idを参照して戻り先ラベルにジャンプ 関数ごとにおよそ128種類の戻り先を区別できる
@@ -483,7 +495,6 @@ def codegen_aexp(ast:Aexp):
         
         if DEBUG: print (f"OUT {RT1_ALC}","// debug call id")
         
-        
         print (f"LI {RT1_ALC} {1}")
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         
@@ -547,10 +558,6 @@ def codegen_aexp(ast:Aexp):
         
         if DEBUG : print (f"OUT {RAX_ALC}","// debug call return value")
         
-        # 戻り値をpush
-        print (f"ST {RAX_ALC} {0}({RSP_ALC})")
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
 
         
         return
@@ -782,6 +789,8 @@ def extract_unique_var(ast) -> list[str]:
     
     res = []
     for child in ast.children:
+        if isinstance(child,ParseTree) and child.data == "call":
+            continue
         res += extract_unique_var(child)
     
     # uniqueにする

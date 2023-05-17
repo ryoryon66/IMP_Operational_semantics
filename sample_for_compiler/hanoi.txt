@@ -58,9 +58,12 @@ def simulate_hanoi(state,from,to,disk_to_move,){ # state 000-999 from 0 to 2 to 
 
     if disk_to_move = 1 then
         # 土台をfromからtoへ移動
+
         ret_state := ret_state - base_from + base_to;
         operation_count := operation_count + 1;
-        print -1
+        print ret_state;
+        print -1;
+        skip
     else 
 
         # diskの移動 fromからmidへ
@@ -75,7 +78,7 @@ def simulate_hanoi(state,from,to,disk_to_move,){ # state 000-999 from 0 to 2 to 
         ret_state := simulate_hanoi(ret_state,mid,to,disk_to_move-1,)
     end;
 
-    print ret_state;
+
 
 
 
@@ -90,20 +93,14 @@ def simulate_hanoi(state,from,to,disk_to_move,){ # state 000-999 from 0 to 2 to 
 };
 
 n :=<input>;
-state :=  mult(n,10,) ;
-state := state + 100 + 100 +  100 + 100  +  100 + 100  +  100 + 100 +  100 + 100 ;
+state :=  mult(n,100,) ;
+state := state + pow(10,4,);
 
 print state;
 
-state := simulate_hanoi(state,1,0,n,);
+state := simulate_hanoi(state,2,0,n,);
 
-print state;
-
-while true do
-    state := n;
-    print 91;
-    state := simulate_hanoi(state,0,1,n,)
-end;
+# print state;
 
 
 
