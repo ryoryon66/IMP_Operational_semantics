@@ -1,0 +1,19 @@
+def test(a,b,){
+    ret := a + b
+    return ret
+};
+
+while true do
+    a := 90;
+    a := a + a;
+    a := a - a;
+    if 1 + a = a + a then
+        print 1
+    else
+        a := a
+    end;
+    a := test(a,a,);
+
+
+    skip
+end
