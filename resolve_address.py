@@ -237,7 +237,7 @@ if __name__ == "__main__":
             break
         code_with_label = insert_jump_helper(code_with_label, label_name)
 
-    print (code_with_label)
+    # print (code_with_label)
     # 最後に全てのラベルをdisplacementに置き換えて相対ジャンプを可能にする。
     
     label_names = []

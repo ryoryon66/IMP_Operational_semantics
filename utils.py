@@ -229,13 +229,13 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     
     data = ast.data
     
-    if data in ["add","sub","mul","call","input",]:
+    if data in ["add","sub","mul","call","input","ptr_read"]:
         return "aexp"
     
     if data in ["and","or","not","eq","lt","le"]:
         return "bexp"
     
-    if data in ["assign","ifelse","seq","while","print","def"]:
+    if data in ["assign","ifelse","seq","while","print","def","ptr_assign"]:
         return "com"
     
     raise Exception("Unknown token type")

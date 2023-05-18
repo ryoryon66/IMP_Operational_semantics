@@ -12,8 +12,8 @@ start:com
           | VAR "(" (aexp ",")* ")" -> call
           | "(" aexp ")"
           | "<input>" -> input // only supported for compiler
-          //　文字
           | "\""  CHAR "\"" 
+          | "*" (aexp) -> ptr_read
 
     bexp: band
         | bexp "or" band   -> or
@@ -35,6 +35,7 @@ start:com
 
     com: SKIP
         | VAR ":=" aexp              -> assign
+        | "*" aexp ":=" aexp ->  ptr_assign
         | com ";" com              -> seq
         | "if" bexp "then" com "else" com "end" -> ifelse
         | "while" bexp "do"  com "end"    -> while

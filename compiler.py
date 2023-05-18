@@ -9,6 +9,7 @@ from copy import deepcopy
 
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
+from pyparsing import replace_with
 
 from utils import  tree_to_string,constract_ast,is_ast_of
 
@@ -405,7 +406,29 @@ def codegen_com(ast:Com):
         
         return
 
-    
+    if data == "ptr_assign":
+        
+        aexp1 = ast.children[0]
+        aexp2 = ast.children[1]
+        
+        codegen_aexp(aexp1)
+        codegen_aexp(aexp2)
+        
+        print (f"// ptr_assign start")
+        
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") 
+        
+        print (f"ST {RAX_ALC} {0}({RT1_ALC})") # ポインタが指す先にRAXを代入
+        
+        # rspを更新 2つpopする
+        print (f"LI {RT1_ALC} {2}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}")
+        
+        print (f"// ptr_assign end")
+        
+        
+        return
+        
     raise Exception(f"codegen_com cannot handle {data}")
         
 
@@ -577,7 +600,26 @@ def codegen_aexp(ast:Aexp):
         
         return
         
-        # raise NotImplementedError("call")
+    
+    if data == "ptr_read":
+        
+        aexp = ast.children[0]
+        
+        codegen_aexp(aexp)
+        
+        print (f"LD {RAX_ALC} {0}({RAX_ALC})")
+        
+        # pop をまずする
+        print (f"LI {RT1_ALC} {1}")
+        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        # ST RAX 0(rsp)
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})")
+        
+        # push する
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        return
     
     
     raise Exception(f"codegen_aexp cannot handle {data}")
@@ -765,8 +807,16 @@ def codegen_bexp(ast:Bexp):
 
 
 def init_register():
+    
+    zurasu = 96
     print (f"LI {RBP_ALC} {1}")
     print (f"SLL {RBP_ALC} {12}") # RBP = 1024,2048,4096
+    
+    while zurasu > 0 :
+        print (f"LI {RT1_ALC} {zurasu % 128}")
+        zurasu = zurasu - zurasu % 128
+    
+    print (f"SUB {RBP_ALC} {RT1_ALC}") # RBP = RBP - zurasu 自由に使える領域を確保する。
     print (f"MOV {RSP_ALC} {RBP_ALC}") # RSP = RBP
     print (f"LI {RT1_ALC} {2}")
     print (f"SUB {RSP_ALC} {RT1_ALC}") # RSP = RSP - 2
@@ -816,6 +866,8 @@ def extract_unique_var(ast) -> list[str]:
 
 def run_compiler(program:str):
     tree = constract_ast(program,"com", "syntax_for_compiler.lark")
+
+        
     
     init_register()
     
@@ -844,6 +896,68 @@ def run_compiler(program:str):
     
 
 
+def preprocess_large_literal(program : str):
+    
+    # 行ごとに分割
+    lines = program.split("\n")
+    
+    import re
+    
+    # 行ごとに数字リテラルを探して、それ@@で囲む
+    for i in range(len(lines)):
+        line = lines[i]
+        # print (line)
+        # print (re.findall(r"\d+",line))
+        for literal in re.findall(r"\d+",line):
+            line = line.replace(literal,f"@@{literal}@@")
+            
+        
+        # コメントを削除する。 #以降を削除
+        line = line.split("#")[0]
+        
+        lines[i] = line
+    
+    #  @@で囲まれた数字リテラルを、0-127の整数の和に変換する 例えば 240 = 127 + 113なので"127+113"に変換する
+    for i,line in enumerate(lines):
+        reconstracted_line = deepcopy(line)
+        for literal in re.findall(r"@@\d+@@",line):
+            # print (literal)
+            literal_num = literal[2:-2]
+            assert literal_num.isdigit()
+            # print (literal_num)
+            
+            num = int(literal_num)
+
+            replace_with = ""
+            
+            if num == 0:
+                replace_with = "0"
+            
+
+            
+            while num > 0:
+                if num >= 127:
+                    replace_with += "127+"
+                    num -= 127
+                else:
+                    replace_with += f"{num}"
+                    num -= num
+            
+            replace_with = "(" + replace_with + ")"
+            
+            reconstracted_line = reconstracted_line.replace(literal,replace_with)
+        
+        # print (reconstracted_line)
+        lines[i] = reconstracted_line
+    
+    # print ("\n".join(lines))
+        
+    return "\n".join(lines)
+            
+
+
+
+
 if __name__ == "__main__":
     
     # program = "(8 + 2) - (3 + 4) + (5 - (6 + 7))"
@@ -856,99 +970,8 @@ if __name__ == "__main__":
     # program = "int1 := 2 - (3 + 5);int2 := 4;print int1 + int2;skip;print int1 + int2 - int1"
     # program = "x := 1; if x = 1 then print 100 else print 90 end"
     program = "x := 1; if x <= 1 then print 100 else print x end"
-    
-    program = """
-            # this code calculates GCD of 2 inputs. a should be larger or equal to b.
-            
-            a := <input>; 
-            b := <input>;
-            i := 0;
-            
-            while not a = b do
-                
-                if a <= b then
-                    tmp := a;
-                    a := b;
-                    b := tmp
-                else 
-                    skip
-                end;
-                
-                a := a - b;
-                i := i + 1
-            end;
-            
-            print i;
-            print a
-            
-            """
-    
-    program = """
-            # this code calculates GCD of 2 inputs. a should be larger or equal to b.
-            
-            a := <input>; 
-            b := <input>;
-            i := 0;
-            
-            while not a = b do
-                
-                if a <= b then
-                    if i <= 5 then
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 57;
-                        skip
-                    else 
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 1 + 2 + 3 -1 - 2 - 3;
-                        dummy := 89;
-                        skip
-                    end; 
-                    tmp := a;
-                    a := b;
-                    b := tmp
-                else 
-                    skip
-                end;
-                
-                a := a - b;
-                i := i + 1
-            end;
-            
-            print i;
-            print a
-            
-            """
+ 
 
-    # program = """
-        
-    #     while true do print 6 end
-    #     """
-    
-    program = """
-    
-    n := <input>;
-    i := n - 1;
-    print -1;
-    while 2 <= i do
-        r := n;
-        while i <= r do
-            r := r - i
-        end;
-        if r = 0 then
-            print i
-        else
-            skip
-        end;
-        i := i - 1
-    end
-    
-    """
-    
     # use argparse to get the file name
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="input file name")
@@ -957,6 +980,8 @@ if __name__ == "__main__":
     # read the file
     with open(args.file, "r") as f:
         program = f.read()
+        
+    program = preprocess_large_literal(program)
     
 
     run_compiler(program)
