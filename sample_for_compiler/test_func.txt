@@ -12,5 +12,6 @@ a := f(2,1,);
 print a;
 
 while true do
-    a := f(2,1,)
+    a := 3 + f(1,2,);
+    print a
 end
