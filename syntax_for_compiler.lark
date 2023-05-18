@@ -12,6 +12,8 @@ start:com
           | VAR "(" (aexp ",")* ")" -> call
           | "(" aexp ")"
           | "<input>" -> input // only supported for compiler
+          //　文字
+          | "\""  CHAR "\"" 
 
     bexp: band
         | bexp "or" band   -> or
@@ -51,3 +53,4 @@ start:com
     TRUE: "true"
     FALSE: "false"
     SKIP : "skip"
+    CHAR : /[a-zA-Z0-9!]/

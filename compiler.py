@@ -436,6 +436,21 @@ def codegen_aexp(ast:Aexp):
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         if DEBUG : print (f"//codegen_aexp:var end")
         return
+    
+    if isinstance(ast,Token) and ast.type == "CHAR":
+        if DEBUG : print (f"//codegen_aexp:char start")
+        c = ast.value
+        assert isinstance(c,str)
+        val = ord(c)
+        
+        print (f"LI {RAX_ALC} {val}") # RAX = val
+        
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        if DEBUG : print (f"//codegen_aexp:char end")
+        return
 
     data = ast.data
     
