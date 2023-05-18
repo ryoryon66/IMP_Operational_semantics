@@ -5,11 +5,13 @@ from dataclasses import dataclass
 from typing import  Union,final,Literal
 from collections import Counter
 from copy import deepcopy
+from arrow import now
 
 
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
 from pyparsing import replace_with
+from torch import abs_
 
 from utils import  tree_to_string,constract_ast,is_ast_of
 
@@ -204,12 +206,12 @@ def codegen_com(ast:Com):
         
         codegen_com(com1)
         
-        print (f"B .Lend{LABEL_COUNT_FOR_THIS_IFELSE}")
+        print (f"B .Lendifelse{LABEL_COUNT_FOR_THIS_IFELSE}")
         
         
         print (f".Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
         codegen_com(com2)
-        print (f".Lend{LABEL_COUNT_FOR_THIS_IFELSE}")
+        print (f".Lendifelse{LABEL_COUNT_FOR_THIS_IFELSE}")
         
   
         
@@ -239,12 +241,12 @@ def codegen_com(ast:Com):
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならendに飛ぶ
-        print (f"BE .Lend{LABEL_COUNT_FOR_THIS_WHILE}")
+        print (f"BE .Lendwhile{LABEL_COUNT_FOR_THIS_WHILE}")
         
         codegen_com(com)
         
         print (f"B .Lbegin{LABEL_COUNT_FOR_THIS_WHILE}")
-        print (f".Lend{LABEL_COUNT_FOR_THIS_WHILE}")
+        print (f".Lendwhile{LABEL_COUNT_FOR_THIS_WHILE}")
         
         if DEBUG: 
             print (f"//codegen_com:while end")
@@ -336,6 +338,7 @@ def codegen_com(ast:Com):
         
         # この段階でスタックのトップとRAXの内容は一致しているはず。
         if DEBUG:
+            label_count += 1
             print (f"LD {RT1_ALC} {1}({RSP_ALC})") # ret_v = *(rsp+1)
             print (f"CMP {RT1_ALC} {RAX_ALC}")
             print (f"BE .Label_DEBUG_RAX_{function_name}_end:{label_count}")
@@ -441,10 +444,47 @@ def codegen_aexp(ast:Aexp):
     
     """
     
+    global label_count
+    
     if isinstance(ast,Token) and ast.type == "NUM":
-        print (f"LI {RT1_ALC} {ast.value}") # RT1 = ast.value
-        print (f"ST {RT1_ALC} {0}({RSP_ALC})") # *(rsp+0) = RT1
-        print (f"MOV {RAX_ALC} {RT1_ALC}") # RAX = RT1
+        
+        assert ast.value.isdigit() or (ast.value[1:].isdigit() and ast.value[0] == "-")
+
+        val = int (ast.value)
+        
+        assert val >= - 2 ** 15 and val < 2 ** 15, "数値リテラルが符号付き16bit整数の範囲を超えています。"
+        
+        if val < 128 and val >= -128:
+        
+            print (f"LI {RT1_ALC} {val}") # RT1 = ast.value
+            print (f"ST {RT1_ALC} {0}({RSP_ALC})") # *(rsp+0) = RT1
+            print (f"MOV {RAX_ALC} {RT1_ALC}") # RAX = RT1
+            print (f"LI {RT1_ALC} {1}")
+            print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+            return
+        
+        # 2の補数表現を得る 16bit
+        if val < 0:
+            val = 0xffff + val + 1
+            
+        binary_form = bin(val & 0xffff)[2:]
+        
+        print (f"LI {RAX_ALC} {0}")
+        print (f"LI {RT1_ALC} {1}")
+        
+        for i in range(1,17):
+            ithbit = binary_form[-i] if i <= len(binary_form) else "0"
+            
+            if ithbit == "1":
+                print (f"ADD {RAX_ALC} {RT1_ALC}")
+            
+            print (f"SLL {RT1_ALC} {1}")
+ 
+            
+            
+            
+        
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
         print (f"LI {RT1_ALC} {1}")
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         return
@@ -510,7 +550,7 @@ def codegen_aexp(ast:Aexp):
     
     if data == "call":
         
-        global label_count
+
         
         if DEBUG: print (f"//codegen_aexp:call start")
         
@@ -896,66 +936,6 @@ def run_compiler(program:str):
     
 
 
-def preprocess_large_literal(program : str):
-    
-    # 行ごとに分割
-    lines = program.split("\n")
-    
-    import re
-    
-    # 行ごとに数字リテラルを探して、それ@@で囲む
-    for i in range(len(lines)):
-        line = lines[i]
-        # print (line)
-        # print (re.findall(r"\d+",line))
-        for literal in re.findall(r"\d+",line):
-            line = line.replace(literal,f"@@{literal}@@")
-            
-        
-        # コメントを削除する。 #以降を削除
-        line = line.split("#")[0]
-        
-        lines[i] = line
-    
-    #  @@で囲まれた数字リテラルを、0-127の整数の和に変換する 例えば 240 = 127 + 113なので"127+113"に変換する
-    for i,line in enumerate(lines):
-        reconstracted_line = deepcopy(line)
-        for literal in re.findall(r"@@\d+@@",line):
-            # print (literal)
-            literal_num = literal[2:-2]
-            assert literal_num.isdigit()
-            # print (literal_num)
-            
-            num = int(literal_num)
-
-            replace_with = ""
-            
-            if num == 0:
-                replace_with = "0"
-            
-
-            
-            while num > 0:
-                if num >= 127:
-                    replace_with += "127+"
-                    num -= 127
-                else:
-                    replace_with += f"{num}"
-                    num -= num
-            
-            replace_with = "(" + replace_with + ")"
-            
-            reconstracted_line = reconstracted_line.replace(literal,replace_with)
-        
-        # print (reconstracted_line)
-        lines[i] = reconstracted_line
-    
-    # print ("\n".join(lines))
-        
-    return "\n".join(lines)
-            
-
-
 
 
 if __name__ == "__main__":
@@ -972,17 +952,26 @@ if __name__ == "__main__":
     program = "x := 1; if x <= 1 then print 100 else print x end"
  
 
-    # use argparse to get the file name
-    parser = argparse.ArgumentParser()
-    parser.add_argument("file", help="input file name")
-    args = parser.parse_args()
-    
-    # read the file
-    with open(args.file, "r") as f:
-        program = f.read()
+
+    try :
+
+        # use argparse to get the file name
+        parser = argparse.ArgumentParser()
+        parser.add_argument("file", help="input file name")
+        args = parser.parse_args()
+        program_path = args.file
+    except:
         
-    program = preprocess_large_literal(program)
+        # if the file name is not given, use the default file name
+        program_path = "sample_for_compiler/test_ptr.txt"
+        
+    # read the file
+    with open(program_path, "r") as f:
+        program = f.read()
     
+
+            
+
 
     run_compiler(program)
 

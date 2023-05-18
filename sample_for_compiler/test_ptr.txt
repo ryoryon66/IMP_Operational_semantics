@@ -1,0 +1,60 @@
+a := "B" - "A" + 12344;
+print a;
+ptr := 4095;
+* (ptr) :=  a; # 4095番地にaの値を入れる。
+b := * (ptr) ; # 値を取り出す。
+
+print b;
+
+ptr2 := ptr - 13;
+ptr3 := ptr2 - 10;
+
+* (ptr2) := ptr;
+* (ptr3) := ptr2;
+
+print 0;
+
+print ptr;
+print ptr2;
+print ptr3;
+
+print 0;
+
+print * (ptr);
+print *(ptr2);
+print *(ptr3);
+
+print 0;
+
+* (ptr) := 32767;
+
+print * (ptr);
+
+print * ( * ( ptr2) );
+
+print * ( * ( * (ptr3 ) ) );
+
+print 0;
+
+* (ptr) := -32768;
+
+print * (ptr);
+
+print * ( * ( ptr2) );
+
+print * ( * ( * (ptr3 ) ) );
+
+
+print 0;
+
+* (ptr) := 777;
+
+print * (ptr);
+
+print * ( * ( ptr2) );
+
+print * ( * ( * (ptr3 ) ) );
+
+skip
+
+
