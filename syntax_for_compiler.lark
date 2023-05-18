@@ -13,7 +13,7 @@ start:com
           | "(" aexp ")"
           | "<input>" -> input // only supported for compiler
           | "\""  CHAR "\"" 
-          | "*" (aexp) -> ptr_read
+          | "*" aexp -> ptr_read
 
     bexp: band
         | bexp "or" band   -> or
@@ -41,6 +41,7 @@ start:com
         | "while" bexp "do"  com "end"    -> while
         | "print" aexp              -> print
         | "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" -> def
+        | "setstr" aexp (CHAR)* -> setstr
     
 
     %import common.CNAME -> NAME
