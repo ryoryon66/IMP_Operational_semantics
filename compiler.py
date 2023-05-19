@@ -43,7 +43,7 @@ RT4_ALC   : final = 4
 
 RAX_ALC   : final = 5 # 演算結果 aexpが評価された後の値が入る
 
-RZERO_ALC : final = 0 # 0 register
+RONE_ALC : final = 0 # 定数1が常に入ったレジスタ
 
 
 class Variables():
@@ -69,8 +69,10 @@ class Variables():
         self._offset += 1
         self._variables[var_name] = offset
         
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         
         return
         
@@ -171,8 +173,10 @@ def codegen_com(ast:Com):
         codegen_aexp(aexp)
         
         # rsp += 1
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}")
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}")
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
            
         variables.update_variable(variable_name,RAX_ALC)
         
@@ -193,8 +197,10 @@ def codegen_com(ast:Com):
         codegen_bexp(bexp)
         
         # rsp
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
@@ -232,8 +238,10 @@ def codegen_com(ast:Com):
         codegen_bexp(bexp)
         
         # rsp
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
@@ -259,8 +267,10 @@ def codegen_com(ast:Com):
         print(f"OUT {RAX_ALC} // print {aexp}")
         
         # rsp
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         if DEBUG : print (f"//codegen_com:print end")
         return
@@ -342,7 +352,7 @@ def codegen_com(ast:Com):
             print (f"CMP {RT1_ALC} {RAX_ALC}")
             print (f"BE .Label_DEBUG_RAX_{function_name}_end:{label_count}$")
             print (f"LI {RT1_ALC} {1}")
-            print (f"OUT {RZERO_ALC}")
+            print (f"OUT {RONE_ALC}")
             print (f"HLT")
             print (f".Label_DEBUG_RAX_{function_name}_end:{label_count}$")
         
@@ -372,9 +382,8 @@ def codegen_com(ast:Com):
         # print (f"ADD {RSP_ALC} {RT4_ALC}")
         
         # rbpの一つ上が新たなrspの位置
-        print (f"LI {RT4_ALC} {1}")
         print (f"MOV {RSP_ALC} {RBP_ALC}")
-        print (f"SUB {RSP_ALC} {RT4_ALC}")
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp = rbp - 1
         
         
         if DEBUG: print (f"OUT {RBP_ALC}","// debug rbp")
@@ -401,7 +410,7 @@ def codegen_com(ast:Com):
             print (f"CMP {RT1_ALC} {RT2_ALC}")
             print (f"BE .call_{function_name}_end:{i + 10000}$")
         
-        print (f"OUT {RZERO_ALC}", "// something wrong. can't find return label")
+        print (f"OUT {RONE_ALC}", "// something wrong. can't find return label")
         print ("HLT")
     
         print (f".definition_{function_name}:{label_count_for_detour}$")
@@ -458,8 +467,8 @@ def codegen_aexp(ast:Aexp):
             print (f"LI {RT1_ALC} {val}") # RT1 = ast.value
             print (f"ST {RT1_ALC} {0}({RSP_ALC})") # *(rsp+0) = RT1
             print (f"MOV {RAX_ALC} {RT1_ALC}") # RAX = RT1
-            print (f"LI {RT1_ALC} {1}")
-            print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+            # print (f"LI {RT1_ALC} {1}")
+            print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
             return
         
         # 2の補数表現を得る 16bit
@@ -481,8 +490,10 @@ def codegen_aexp(ast:Aexp):
         
         
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         
         return
  
@@ -505,8 +516,11 @@ def codegen_aexp(ast:Aexp):
             print (f"SLL {RT1_ALC} {1}") 
             
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
+        
         return
     
     if isinstance(ast,Token) and ast.type == "VAR":
@@ -515,8 +529,9 @@ def codegen_aexp(ast:Aexp):
         assert isinstance(var_name,str)
         variables.load_variable(var_name,RAX_ALC)
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         if DEBUG : print (f"//codegen_aexp:var end")
         return
     
@@ -529,8 +544,10 @@ def codegen_aexp(ast:Aexp):
         print (f"LI {RAX_ALC} {val}") # RAX = val
         
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         
         if DEBUG : print (f"//codegen_aexp:char end")
         return
@@ -548,8 +565,10 @@ def codegen_aexp(ast:Aexp):
         print (f"LD {RAX_ALC} {2}({RSP_ALC})") # RAX = *(rsp+2)
         print (f"ADD {RAX_ALC} {RT1_ALC}") # RAX += RT1
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         return
         
     
@@ -560,8 +579,10 @@ def codegen_aexp(ast:Aexp):
         print (f"LD {RAX_ALC} {2}({RSP_ALC})") # RAX = *(rsp+2)
         print (f"SUB {RAX_ALC} {RT1_ALC}") # RAX -= RT1
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         return
     
@@ -588,8 +609,10 @@ def codegen_aexp(ast:Aexp):
     if data == "input":
         print (f"IN {RAX_ALC} {0}") # RAX = input()
         print (f"ST {RAX_ALC} {0}({RSP_ALC})")
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         return
     
     if data == "call":
@@ -601,8 +624,10 @@ def codegen_aexp(ast:Aexp):
         
         # 今のrbpをpush
         print (f"ST {RBP_ALC} {0}({RSP_ALC})")
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         
         # idをpush
         function_id : int = ast.call_id
@@ -615,8 +640,10 @@ def codegen_aexp(ast:Aexp):
         
         if DEBUG: print (f"OUT {RT1_ALC}","// debug call id")
         
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         
         function_name : str = ast.children[0].value
         arg_aexprs = ast.children[1:]
@@ -647,7 +674,7 @@ def codegen_aexp(ast:Aexp):
             print (f"LI {RT2_ALC}  {arg_count + 1 + 1 + 0}")
             print (f"CMP {RT1_ALC} {RT2_ALC}")
             print (f"BE .call_DEBUG_rbprsp{function_name}_end:{label_count}$")
-            print (f"OUT {RZERO_ALC}")
+            print (f"OUT {RONE_ALC}")
             print (f"OUT {RT1_ALC}")
             print (f"OUT {RT2_ALC}")
             print (f"LI {RT1_ALC} {arg_count}")
@@ -692,14 +719,14 @@ def codegen_aexp(ast:Aexp):
         print (f"LD {RAX_ALC} {0}({RAX_ALC})")
         
         # pop をまずする
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
         
         # ST RAX 0(rsp)
-        print (f"ST {RAX_ALC} {0}({RSP_ALC})")
+        print (f"ST {RAX_ALC} {1}({RSP_ALC})")
         
         # push する
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
         
         return
     
@@ -723,8 +750,10 @@ def codegen_bexp(ast:Bexp):
     if isinstance(ast,Token) and ast.type == "FALSE":
         print (f"LI {RAX_ALC} {0}") # RAX = 0
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
-        print (f"LI {RT1_ALC} {1}")    # RT1 = 1
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")    # RT1 = 1
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         return
     
     data = ast.data
@@ -754,8 +783,10 @@ def codegen_bexp(ast:Bexp):
         
         
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         return
         
@@ -785,8 +816,10 @@ def codegen_bexp(ast:Bexp):
         print (f".{label_name}")
         
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         return
         
@@ -818,8 +851,10 @@ def codegen_bexp(ast:Bexp):
         
         
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
-        print (f"LI {RT1_ALC} {1}")
-        print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
         return
         
@@ -839,8 +874,9 @@ def codegen_bexp(ast:Bexp):
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
         
         # pop 2 push 1なのでrspを1減らす
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         return
     
     if data == "or":
@@ -858,8 +894,10 @@ def codegen_bexp(ast:Bexp):
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
         
         # pop 2 push 1なのでrspを1減らす
-        print (f"LI {RT1_ALC} {1}")
-        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
         return
     
     if data == "not":
@@ -890,7 +928,7 @@ def codegen_bexp(ast:Bexp):
 
 def init_register():
     
-    zurasu = 100
+    zurasu = 30
     print (f"LI {RBP_ALC} {1}")
     print (f"SLL {RBP_ALC} {12}") # RBP = 1024,2048,4096
     
@@ -905,6 +943,9 @@ def init_register():
     print (f"MOV {RSP_ALC} {RBP_ALC}") # RSP = RBP
     print (f"LI {RT1_ALC} {2}")
     print (f"SUB {RSP_ALC} {RT1_ALC}") # RSP = RSP - 2
+    
+    print (f"LI {RONE_ALC} {1}")
+    
     return
 
 

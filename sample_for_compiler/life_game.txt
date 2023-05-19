@@ -1,0 +1,205 @@
+display_ptr := (1 << 12) - 4; #4092
+
+
+i := <input>;
+j := <input>;
+#縦上から i　横右からj
+
+* (4092) := bin: 0000000000000000;
+* (4093) := bin: 0000110000000000;
+* (4094) := bin: 0001001000000000;
+* (4095) := bin: 0000110000000000;
+
+#ブロック
+#* (4092) := bin: 0000000000000000;
+#* (4093) := bin: 0000011000000000;
+#* (4094) := bin: 0000011000000000;
+#* (4095) := bin: 0000000000000000;
+
+#print 777;
+#print count_neibor(i,j,);
+#print 777;
+#print get_elem_ij_from_memory(i,j,display_ptr);
+#print 777;
+
+
+turn := 0;
+
+#誕生
+#死んでいるセルに隣接する生きたセルがちょうど3つあれば、次の世代が誕生する。
+#生存
+#生きているセルに隣接する生きたセルが2つか3つならば、次の世代でも生存する。
+#過疎
+#生きているセルに隣接する生きたセルが1つ以下ならば、過疎により死滅する。
+#過密
+#生きているセルに隣接する生きたセルが4つ以上ならば、過密により死滅する。
+
+
+
+
+spare_grid_ptr := 4080;
+
+
+
+while turn <= 0 do
+    turn := turn + 1;
+
+    #print turn;
+
+    i := 3;
+    j := 15;
+
+    # spareの方に生存判定を記述する。
+
+    while i >= 0 do 
+
+        next_state := bin: 0000000000000000;
+
+        j := 15;
+
+        while j >= 0 do
+
+            next_state := next_state << 1 ;
+
+            count := count_neibor(i,j);
+            is_survived := get_elem_ij_from_memory(i,j,display_ptr);
+
+            alive := 0;
+
+            if is_survived = 0 and count = 3 then
+                alive := 1
+            else 
+                if is_survived = 1 and (count = 2 or count = 3) then
+                    alive := 1
+                else
+                    if (is_survived = 1 and count <= 1) then
+                        alive := 0
+                    else 
+                        if is_survived = 1 and count >= 4 then
+                            alive := 1
+                        else 
+                            alive := is_survived
+                        end
+                    end
+                end
+            end;
+
+            next_state := next_state + alive;
+
+            print j;
+            print alive;
+
+
+            j := j - 1
+
+        end;
+
+        *(spare_grid_ptr + i) := next_state;
+
+        i := i - 1
+
+    end;
+
+
+
+    # コピーする。
+
+    * (display_ptr)     := * (spare_grid_ptr);
+    * (display_ptr + 1) := * (spare_grid_ptr + 1);
+    * (display_ptr + 2) := * (spare_grid_ptr + 2);
+    * (display_ptr + 3) := * (spare_grid_ptr + 3);
+
+
+    print (1 << 10);
+
+    print * (display_ptr);
+    print * (display_ptr + 1);
+    print * (display_ptr + 2);
+    print * (display_ptr + 3);
+
+    print turn;
+
+    print (1 << 10);
+
+    skip
+end;
+
+
+
+
+#ポインタの後に足し算をするときにはカッコをつけないとsyntaxが全体で* aexpになってしまう。
+
+
+
+def ithbit_of(val,n,){ # tested
+    m := n;
+    while m > 0 do
+        val := val >> 1;
+        m := m - 1
+    end;
+    if n = 0 then
+        #符号ビットがあるとあまりの計算でバグるので符号ビットを闇に葬る。
+        val := val << 1;
+        val := val >> 1
+    else
+        skip
+    end
+    return remainder(val,2,)
+};
+def remainder(a,b,){
+    while a >= b do
+        a := a - b
+    end
+    return a
+};
+def get_elem_ij_from_memory(i,j,grid_ptr){ # i 0 ~ 3 j 0 ~ 15 tested gridの最初の要素の番地を引数に入れること
+    pointer := grid_ptr;
+    pointer := pointer + i
+    return ithbit_of( (* (pointer) ) , j, )
+};
+def count_neibor(i,j,) {
+
+    ptr := (1 << 12) - 4; #4092
+
+    iplus := remainder (i + 1,4,);
+    iminus := remainder (i + 8 - 1,4,);
+    jplus := remainder (j + 1,16,);
+    jminus := remainder (j + 16 - 1,16,);
+    ret := 0;
+
+    next_i := i;
+    next_j := jplus;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    next_i := i;
+    next_j := jminus;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    next_i := iplus;
+    next_j := j;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    next_i := iminus;
+    next_j := j;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    next_i := iplus;
+    next_j := jplus;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    next_i := iplus;
+    next_j := jminus;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+    
+    next_i := iminus;
+    next_j := jplus;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    next_i := iminus;
+    next_j := jminus;
+    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+
+    skip
+    return ret
+};
+skip

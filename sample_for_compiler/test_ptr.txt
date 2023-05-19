@@ -55,6 +55,11 @@ print * ( * ( ptr2) );
 
 print * ( * ( * (ptr3 ) ) );
 
-skip
+
+while true do 
+    ptr := 4090;
+    * (ptr) := 45 + * ( *(ptr2) );
+    * (ptr) := (*(ptr) ) + (* (ptr))
+end
 
 
