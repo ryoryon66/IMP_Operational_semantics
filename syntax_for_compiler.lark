@@ -7,9 +7,14 @@ start:com
     term: factor
         | term "*" factor  -> mul // only supported for interpreter
 
-    factor: NUM
+    factor : atom 
+           | factor ">>" NUM -> rshift
+           | factor "<<" NUM -> lshift 
+
+    atom: NUM
+          | "bin:" BINARY
           | VAR
-          | VAR "(" (aexp ",")* ")" -> call
+          | VAR  "(" (aexp ( "," aexp)* (",")?)?   ")"  -> call
           | "(" aexp ")"
           | "<input>" -> input // only supported for compiler
           | "\""  CHAR "\"" 
@@ -40,7 +45,7 @@ start:com
         | "if" bexp "then" com "else" com "end" -> ifelse
         | "while" bexp "do"  com "end"    -> while
         | "print" aexp              -> print
-        | "def" VAR "(" (VAR ",")*  ")" "{" com  "return" aexp "}" -> def
+        | "def" VAR    "(" (VAR ( "," VAR)* (",")?)?   ")" "{" com  "return" aexp "}" -> def
         | "setstr" aexp (CHAR)* -> setstr
     
 
@@ -50,9 +55,12 @@ start:com
     %ignore WS
     %ignore /(#).*/ //comment
 
-    VAR: /(?!(if|then|else|end|while|do|print|not|and|or|true|false|def|return)\b)[a-zA-Z_]\w*/
+    VAR: /(?!(if|then|else|end|while|do|print|not|and|or|true|false|def|return|bin)\b)[a-zA-Z_]\w*/
     NUM: INT | "-" INT
+    // 16bit binary number
+    BINARY : /[01]{16}/
     TRUE: "true"
     FALSE: "false"
     SKIP : "skip"
     CHAR : /[a-zA-Z0-9!]/
+

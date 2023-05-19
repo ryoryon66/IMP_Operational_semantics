@@ -5,6 +5,8 @@ import re
 DISPLACEMENT_MIN = -128
 DISPLACEMENT_MAX = 127
 
+USE_RANDOM_LABEL_ALLOCATION = True
+
 #  unique label name generator
 class LabelGenerator:
     def __init__(self):
@@ -87,6 +89,8 @@ def find_destination_line(code : str, label_name : str) -> int:
     
     instractions = code.split("\n")
     
+
+    
     # assert do not appear same label name twice
     label_name_set = set()
     for pc in range(len(instractions)):
@@ -114,15 +118,28 @@ def detect_too_far_labels(code : str) -> Union[str, None]:
     
     for pc in range(len(instractions)): # extract from .labelname
         if "." in instractions[pc]:
+            # print (instractions[pc])
             label_name = instractions[pc].split(".")[1].split(" ")[0].split(r'/')[0]
             all_label_appearence.append( (label_name, pc) )
             
+    # print (all_label_appearence)
+
+            
     for label_name, pc in all_label_appearence:
+        # print (label_name,"for")
         destination_line = find_destination_line(code, label_name)
         d = destination_line - (pc + 1)
         
+        # print (unresolved_labels)
+        
         if d < DISPLACEMENT_MIN or d > DISPLACEMENT_MAX:
+            print (label_name)
             return label_name
+    
+    # print (unresolved_labels)
+    
+    # if len(unresolved_labels) > 0:
+    #     return unresolved_labels[0]
     
     return None
     
@@ -136,19 +153,33 @@ def insert_jump_helper(code : str, label_name : str,) -> str:
     line_from = -1
     line_to = -1
     
+    d = 0
+    
     instractions = code.split("\n")
     for pc in range(len(instractions)):
         if "@" + label_name in instractions[pc]:
+            assert line_to == -1, f"{line_to}, {pc}, {instractions[pc]}, {instractions[line_to]}"
             line_to = pc
+            
+    for pc in range (len(instractions)):
         if "." + label_name in instractions[pc]:
             line_from = pc
+            
+            if line_to != -1:
+                d = line_to - (line_from + 1)
+                # 離れているものを拾ったら即離脱。
+                if d < DISPLACEMENT_MIN  or d > DISPLACEMENT_MAX :
+                    break
+    
+    assert d < DISPLACEMENT_MIN or d > DISPLACEMENT_MAX, f"line_from = {line_from}, line_to = {line_to}, label_name = {label_name} {d}"
     
     print (f"line_from = {line_from}, line_to = {line_to}, label_name = {label_name}")
     
     assert line_from != -1 and line_to != -1
     # assert abs (line_from - line_to) > 100, "よっぽど入り組んでない限り100行以上離れているはず"
     
-    mid = line_from + (line_to - line_from) // 2
+    mid = ( line_from + line_to )// 2
+    
     altnative_label = label_generator.generate() + "_altnative"
     
     # fromの方を新しいラベル名に置き換えて中間行にも新しいラベル名を挿入する
@@ -170,7 +201,7 @@ def insert_jump_helper(code : str, label_name : str,) -> str:
     """
     
     new_instractions =  instractions[:mid] + \
-                        [f"B .{label_for_detour}", f"B .{label_name} // @{altnative_label}"] + \
+                        [f"B .{label_for_detour}", f"B .{label_name} // @{altnative_label}  // {line_from} to {line_to}"] + \
                         [ instractions[mid] + f" // @{label_for_detour}"] + \
                         instractions[mid+1:]
     
@@ -216,26 +247,43 @@ if __name__ == "__main__":
     parser.add_argument("--input", help="target file name")
     parser.add_argument("--output", help="output file name")
     args = parser.parse_args()
+    
+    
 
     if args.input is None or args.output is None:
         print ("Please specify target file name")
-        exit(1)
+        filename = "simple_asm_with_label.txt"
+    else:
+        filename = args.input
     
     # read target file
     code_with_label = ""
-    with open(args.input, "r") as f:
+    with open(filename, "r") as f:
         code_with_label = f.read()
     
     
     code_with_label = preprocess_raw_code(code_with_label)
     
+    print (". count:",code_with_label.count("."))
+    
+    # save to tmp file
+    
+    with open("tmp.txt", "w") as f:
+        f.write(code_with_label)
+    
     
     # 相対ジャンプができるように補助ラベルを挿入する
+    i = 0
     while True:
         label_name = detect_too_far_labels(code_with_label)
         if label_name is None:
             break
         code_with_label = insert_jump_helper(code_with_label, label_name)
+        
+        # save to file
+        i +=1
+        with open(f"tmp_{i}.txt", "w") as f:
+            f.write(code_with_label)
 
     # print (code_with_label)
     # 最後に全てのラベルをdisplacementに置き換えて相対ジャンプを可能にする。

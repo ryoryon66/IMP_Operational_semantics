@@ -1,4 +1,12 @@
+# base pointer
+* (4090) := 7;
 
+
+*(4092) := 0; # 3 コメの塔　
+*(4093) := 0; # 2 コメの塔
+*(4094) := 0; # 1 コメの塔
+
+* (4095) := 0; # 操作回数
 
 def mult(a,b,){
     ret := 0;
@@ -10,23 +18,23 @@ def mult(a,b,){
     return ret
 };
 
-# def div(a,b,){
-#     ret := 0;
-#     while a >= b do
-#         a := a - b;
-#         ret := ret + 1
-#     end
+ def div(a,b,){
+     ret := 0;
+     while a >= b do
+         a := a - b;
+         ret := ret + 1
+     end
 
-#     return ret
-# };
+     return ret
+ };
 
-# def mod(a,b,){
-#     while a >= b do
-#         a := a - b
-#     end
+ def mod(a,b,){
+     while a >= b do
+         a := a - b
+     end
 
-#     return a
-# };
+     return a
+ };
 
 def pow(a,b,){
     ret := 1;
@@ -38,21 +46,55 @@ def pow(a,b,){
     return ret
 };
 
+def remainder(a,b,){ 
+    while a >= b do 
+        a := a - b
+    end
+
+    return a
+};
+
+def fill_ones(n){
+    ret := 0;
+    while n > 0 do
+        ret := ret + pow(2,n-1,);
+        n := n - 1
+    end
+
+    return ret
+};
+
+def dispalay_hanoi(state){
+    digit1 := remainder(state,10,); # 1の位 ハノイの塔1
+    state := div(state,10,);
+    digit2 := remainder(state,10,); # 10の位 ハノイの塔2
+    state := div(state,10,);
+    digit3 := remainder(state,10,); # 100の位 ハノイの塔3
+
+    *(4092) := fill_ones(digit3);
+    *(4093) := fill_ones(digit2);
+    *(4094) := fill_ones(digit1);
+
+
+
+    skip
+
+
+
+
+
+    return 1
+};
+
 def simulate_hanoi(state,from,to,disk_to_move,){ # state 000-999 from 0 to 2 to 0 to 2, disk_to_move この操作で動かすディスクの枚数
     ret_state := state;
     
-    # print  57;
-    # print state;
-    # print from;
-    # print to;
-    # print disk_to_move;
-    # print 57;
+
 
     base_from := pow(10,from,);
     base_to := pow(10,to,);
 
-    # print base_from;
-    # print base_to;
+
 
     mid := 3 - from - to;
 
@@ -60,9 +102,14 @@ def simulate_hanoi(state,from,to,disk_to_move,){ # state 000-999 from 0 to 2 to 
         # 土台をfromからtoへ移動
 
         ret_state := ret_state - base_from + base_to;
-        operation_count := operation_count + 1;
-        print ret_state;
-        print -1;
+
+        *(4095) := (*(4095)) + 1;
+        print *(4095);
+        
+        #print ret_state;
+
+        dev_null := dispalay_hanoi(ret_state,);
+
         skip
     else 
 
@@ -72,6 +119,8 @@ def simulate_hanoi(state,from,to,disk_to_move,){ # state 000-999 from 0 to 2 to 
         # 土台をfromからtoへ移動
         # ret_state := ret_state - base_from + base_to;
         ret_state := simulate_hanoi(ret_state,from,to,1,);
+
+
 
         # diskの移動 midからtoへ
 
@@ -96,32 +145,10 @@ n :=<input>;
 state :=  mult(n,100,) ;
 state := state + pow(10,4,);
 
-print state;
+*(4092) := fill_ones(n);
 
 state := simulate_hanoi(state,2,0,n,);
 
-# print state;
-
-
-
-# print mult (4,4,);
-
-# print div (12,3,);
-
-# print mod (10,3,);
-
-# print pow (2,10,);
-
-# a := 10;
-# b := 3;
-
-# while a >= b do
-#     a := a - b
-# end;
-
-# print a;
-
-
-
+print *(4095);
 
 skip

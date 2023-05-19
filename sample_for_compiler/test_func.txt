@@ -1,3 +1,4 @@
+
 def f(a,b,){
     skip
     return a + b
@@ -5,13 +6,22 @@ def f(a,b,){
 
 
 a := 1;
+a := g(2,1,);
 a := f(2,1,);
 a := f(2,1,);
-a := f(2,1,);
-a := f(2,1,);
+a := g(2,1,);
 print a;
 
 while true do
-    a := 3 + f(1,2,);
-    print a
-end
+    a := 3 + f(1,2,)
+    #print a
+end;
+
+def g(a,b,){
+    skip
+    return a + b
+};
+
+
+
+skip

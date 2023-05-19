@@ -5,13 +5,10 @@ from dataclasses import dataclass
 from typing import  Union,final,Literal
 from collections import Counter
 from copy import deepcopy
-from arrow import now
-
 
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
 from pyparsing import replace_with
-from torch import abs_
 
 from utils import  tree_to_string,constract_ast,is_ast_of
 
@@ -122,7 +119,7 @@ class Variables():
 
 variables = Variables()
 
-label_count : int = 0 # アセンブリに吐くラベルの通し番号
+label_count : int = 100000 # アセンブリに吐くラベルの通し番号
 
 function_call_counter : Counter = Counter() # 関数呼び出しの回数を関数名ごとにカウントする
 
@@ -202,16 +199,16 @@ def codegen_com(ast:Com):
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならelseに飛ぶ
-        print (f"BE .Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
+        print (f"BE .Lelse{LABEL_COUNT_FOR_THIS_IFELSE}$")
         
         codegen_com(com1)
         
-        print (f"B .Lendifelse{LABEL_COUNT_FOR_THIS_IFELSE}")
+        print (f"B .Lendifelse{LABEL_COUNT_FOR_THIS_IFELSE}$")
         
         
-        print (f".Lelse{LABEL_COUNT_FOR_THIS_IFELSE}")
+        print (f".Lelse{LABEL_COUNT_FOR_THIS_IFELSE}$")
         codegen_com(com2)
-        print (f".Lendifelse{LABEL_COUNT_FOR_THIS_IFELSE}")
+        print (f".Lendifelse{LABEL_COUNT_FOR_THIS_IFELSE}$")
         
   
         
@@ -230,7 +227,7 @@ def codegen_com(ast:Com):
         bexp : Bexp = ast.children[0]
         com : Com = ast.children[1]
         
-        print (f".Lbegin{LABEL_COUNT_FOR_THIS_WHILE}")
+        print (f".Lbegin{LABEL_COUNT_FOR_THIS_WHILE}$")
         
         codegen_bexp(bexp)
         
@@ -241,12 +238,12 @@ def codegen_com(ast:Com):
         # RAXと0を比較する
         print (f"LI {RT1_ALC} {0}")
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならendに飛ぶ
-        print (f"BE .Lendwhile{LABEL_COUNT_FOR_THIS_WHILE}")
+        print (f"BE .Lendwhile{LABEL_COUNT_FOR_THIS_WHILE}$")
         
         codegen_com(com)
         
-        print (f"B .Lbegin{LABEL_COUNT_FOR_THIS_WHILE}")
-        print (f".Lendwhile{LABEL_COUNT_FOR_THIS_WHILE}")
+        print (f"B .Lbegin{LABEL_COUNT_FOR_THIS_WHILE}$")
+        print (f".Lendwhile{LABEL_COUNT_FOR_THIS_WHILE}$")
         
         if DEBUG: 
             print (f"//codegen_com:while end")
@@ -285,12 +282,14 @@ def codegen_com(ast:Com):
         label_count += 1
         
         # 回り道
-        print (f"B .definition_{function_name}:{label_count_for_detour}")
+        print (f"B .definition_{function_name}:{label_count_for_detour}$")
         
-        function_start_labels = [ f"call_{function_name}_begin:{i}" for i in range(1,function_call_count+1)]
+        #function_start_labels = [ f"call_{function_name}_begin:{i}" for i in range(1,function_call_count+1)]
         
-        for label in function_start_labels:
-            print (f".{label}")
+        # for label in function_start_labels:
+        #     print (f".{label}")
+        
+        print (f".call_{function_name}_begin$")
         
         local_variables_name  = extract_unique_var(ast)
         local_variables_name = deepcopy(local_variables_name + arg_names)
@@ -341,11 +340,11 @@ def codegen_com(ast:Com):
             label_count += 1
             print (f"LD {RT1_ALC} {1}({RSP_ALC})") # ret_v = *(rsp+1)
             print (f"CMP {RT1_ALC} {RAX_ALC}")
-            print (f"BE .Label_DEBUG_RAX_{function_name}_end:{label_count}")
+            print (f"BE .Label_DEBUG_RAX_{function_name}_end:{label_count}$")
             print (f"LI {RT1_ALC} {1}")
             print (f"OUT {RZERO_ALC}")
             print (f"HLT")
-            print (f".Label_DEBUG_RAX_{function_name}_end:{label_count}")
+            print (f".Label_DEBUG_RAX_{function_name}_end:{label_count}$")
         
         # rsp codegenは勝手にrspを更新してくれるのでここでは更新しない。またRAXに返り値がはいってる。
         # print (f"LI {RT1_ALC} {1}")
@@ -400,12 +399,12 @@ def codegen_com(ast:Com):
             if DEBUG: print (f"OUT {RT1_ALC}","// debug return id")
             if DEBUG: print (f"OUT {RT1_ALC}","// debug return id")
             print (f"CMP {RT1_ALC} {RT2_ALC}")
-            print (f"BE .call_{function_name}_end:{i}")
+            print (f"BE .call_{function_name}_end:{i + 10000}$")
         
         print (f"OUT {RZERO_ALC}", "// something wrong. can't find return label")
         print ("HLT")
     
-        print (f".definition_{function_name}:{label_count_for_detour}")
+        print (f".definition_{function_name}:{label_count_for_detour}$")
         
         return
 
@@ -479,11 +478,32 @@ def codegen_aexp(ast:Aexp):
                 print (f"ADD {RAX_ALC} {RT1_ALC}")
             
             print (f"SLL {RT1_ALC} {1}")
- 
-            
-            
-            
         
+        
+        print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
+        print (f"LI {RT1_ALC} {1}")
+        print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        
+        return
+ 
+    
+    if isinstance(ast,Token) and ast.type == "BINARY":
+        
+        binary_form : str = ast.value # 16 bit signed format : xxxxxxxxxxxxxxxx
+        
+        print (f"//codegen_aexp:binary start")
+        
+        print (f"LI {RAX_ALC} {0}")
+        print (f"LI {RT1_ALC} {1}")
+        
+        for i in range (1,17):
+            ithbit = binary_form[-i] if i <= len(binary_form) else "0"
+            
+            if ithbit == "1":
+                print (f"ADD {RAX_ALC} {RT1_ALC}")
+            
+            print (f"SLL {RT1_ALC} {1}") 
+            
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
         print (f"LI {RT1_ALC} {1}")
         print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
@@ -514,8 +534,12 @@ def codegen_aexp(ast:Aexp):
         
         if DEBUG : print (f"//codegen_aexp:char end")
         return
+    
+    try :
+        data = ast.data
 
-    data = ast.data
+    except AttributeError:
+        raise Exception(f"codegen_aexp cannot handle {ast}")
     
     if data == "add":
         codegen_aexp(ast.children[0]) # aexp compile... rsp -= 1
@@ -541,6 +565,26 @@ def codegen_aexp(ast:Aexp):
         
         return
     
+    if data == "rshift" or data == "lshift":
+        
+        aexp1 = ast.children[0]
+        shiftd = ast.children[1]
+        
+        assert int (shiftd) <= 16, "シフト量が16bit整数の範囲を超えています。"
+        assert int (shiftd) >= 0,  "シフト量が負の数です。"
+        
+        codegen_aexp(aexp1)
+        
+        OPERATIOON = "SRL" if data == "rshift" else "SLL"
+        
+        print (f"{OPERATIOON} {RAX_ALC} {shiftd}")
+        
+        print (f"ST {RAX_ALC} {1}({RSP_ALC})") # *(rsp+2) = RAX
+        
+        
+        return
+    
+    
     if data == "input":
         print (f"IN {RAX_ALC} {0}") # RAX = input()
         print (f"ST {RAX_ALC} {0}({RSP_ALC})")
@@ -549,8 +593,6 @@ def codegen_aexp(ast:Aexp):
         return
     
     if data == "call":
-        
-
         
         if DEBUG: print (f"//codegen_aexp:call start")
         
@@ -604,14 +646,14 @@ def codegen_aexp(ast:Aexp):
             print (f"SUB {RT1_ALC} {RSP_ALC}")
             print (f"LI {RT2_ALC}  {arg_count + 1 + 1 + 0}")
             print (f"CMP {RT1_ALC} {RT2_ALC}")
-            print (f"BE .call_DEBUG_rbprsp{function_name}_end:{label_count}")
+            print (f"BE .call_DEBUG_rbprsp{function_name}_end:{label_count}$")
             print (f"OUT {RZERO_ALC}")
             print (f"OUT {RT1_ALC}")
             print (f"OUT {RT2_ALC}")
             print (f"LI {RT1_ALC} {arg_count}")
             print (f"OUT {RT1_ALC}")
             print (f"HLT")
-            print (f".call_DEBUG_rbprsp{function_name}_end:{label_count}")
+            print (f".call_DEBUG_rbprsp{function_name}_end:{label_count}$")
             
             pass
         
@@ -627,10 +669,10 @@ def codegen_aexp(ast:Aexp):
             # print (f"OUT {RT1_ALC}","// debug rbp[0]")
         
         # 関数呼び出し
-        print (f"B .call_{function_name}_begin") # 関数の先頭に飛ぶ
+        print (f"B .call_{function_name}_begin$") # 関数の先頭に飛ぶ
         
 
-        print (f".call_{function_name}_end:{function_id}") # 関数から戻ってくる用
+        print (f".call_{function_name}_end:{function_id + 10000}$") # 関数から戻ってくる用
         
         if DEBUG : print (f"//end of call {function_name}")
         
@@ -694,7 +736,7 @@ def codegen_bexp(ast:Bexp):
         codegen_aexp(aexp1)
         codegen_aexp(aexp2)
         
-        label_name = f"eq_label_{label_count}"
+        label_name = f"eq_label_{label_count}$"
         label_count += 1
         
         print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
@@ -727,7 +769,7 @@ def codegen_bexp(ast:Bexp):
         codegen_aexp(aexp1)
         codegen_aexp(aexp2)
         
-        label_name = f"lt_label_{label_count}"
+        label_name = f"lt_label_{label_count}$"
         label_count += 1
         
         print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
@@ -758,7 +800,7 @@ def codegen_bexp(ast:Bexp):
         codegen_aexp(aexp1)
         codegen_aexp(aexp2)
         
-        label_name = f"le_label_{label_count}"
+        label_name = f"le_label_{label_count}$"
         label_count += 1
         
         print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
@@ -848,12 +890,15 @@ def codegen_bexp(ast:Bexp):
 
 def init_register():
     
-    zurasu = 96
+    zurasu = 100
     print (f"LI {RBP_ALC} {1}")
     print (f"SLL {RBP_ALC} {12}") # RBP = 1024,2048,4096
     
+    print (f"LI {RT1_ALC} {0}")
+    
     while zurasu > 0 :
-        print (f"LI {RT1_ALC} {zurasu % 128}")
+        print (f"LI {RT2_ALC} {zurasu % 128}")
+        print (f"ADD {RT1_ALC} {RT2_ALC}")
         zurasu = zurasu - zurasu % 128
     
     print (f"SUB {RBP_ALC} {RT1_ALC}") # RBP = RBP - zurasu 自由に使える領域を確保する。
@@ -976,112 +1021,3 @@ if __name__ == "__main__":
     run_compiler(program)
 
 
-
-# program = "(8 + 2) - (3 + 4) + (5 - (6 + 7))"    
-# program = "skip"
-# program = "false or true and not false"
-#program = "3 = 1 + 3"
-# program = "x := 1; if x = 1 then print 100 else print 90 end"
-
-
-# program = """
-#             a := <input>;
-#             b := 3;
-
-#             if a + b = 4 or a + b = 6 then
-#                 print 0
-#             else 
-#                 print a + b; # 5
-#                 print b;     # 3
-#                 c := a - b + 1; # 0
-#                 if c = 0 then
-#                     print 101
-#                 else
-#                     print 102
-#                 end
-#             end;
-
-#             print 100;
-#             print -34;
-#             a := 0 - b;
-#             print a + ( (b - 9) + c); # -9
-
-#             skip
-            
-#             # expected output if input is 2
-#             # output on 110 : 5
-#             # output on 115 : 3
-#             # output on 172 : 101
-#             # output on 185 : 100
-#             # output on 191 : -34
-#             # output on 243 : -9
-
-            
-            
-#         """
-
-# program = """
-#         n := <input>;
-#         i := 0;
-#         sum := 0;
-        
-#         while not i = n + 1 do
-#             sum := sum + i;
-#             i := i + 1;
-            
-#             if i = 5 then
-#                 print sum
-#             else
-#                 skip;
-#                 skip;
-#                 skip
-#             end
-#         end;
-        
-#         print sum
-        
-#         """
-
-
-    # program = """
-    #         # this code calculates GCD of 2 inputs. a should be larger or equal to b.
-            
-    #         a := <input>; 
-    #         b := <input>;
-    #         i := 0;
-            
-    #         while not a = b do
-                
-    #             if a <= b then
-    #                 if i <= 50 then
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 57;
-    #                     print dummy
-    #                 else 
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := 1 + 2 + 3 -1 - 2 - 3;
-    #                     dummy := -57;
-    #                     print dummy
-    #                 end; 
-    #                 tmp := a;
-    #                 a := b;
-    #                 b := tmp
-    #             else 
-    #                 skip
-    #             end;
-                
-    #             a := a - b;
-    #             i := i + 1
-    #         end;
-            
-    #         print i;
-    #         print a
-            
-    #         """
-    
-    

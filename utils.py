@@ -27,6 +27,11 @@ class RemoveRedundant(Transformer):
             return children[0]
         raise Exception("factor")
     
+    def atom(self,children):
+        if len(children) == 1:
+            return children[0]
+        raise Exception("atom")
+    
     def bexp(self,children):
         if len(children) == 1:
             return children[0]
@@ -76,7 +81,7 @@ def tree_to_string(tree:Union[ParseTree,Token]):
         return tree.value
     
     data = tree.data
-    is_aexp = data in ["aexp","term","factor","add","sub","mul","call","input"]
+    is_aexp = data in ["aexp","term","factor","add","sub","mul","call","input","lshift","rshift"]
     is_bexp = data in ["bexp","batom","and","or","not","eq","lt"]
     is_com = data in ["com","skip","assign","ifelse","while","seq","print","def"]
     
@@ -216,7 +221,7 @@ def constract_ast (code : str,start : Literal["com","aexp","bexp"] = "com",gramm
 
 def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     if isinstance(ast, Token):
-        if ast.type in ["NUM","VAR","CHAR"]:
+        if ast.type in ["NUM","VAR","CHAR","BINARY"]:
             return "aexp"
         
         if ast.type in ["TRUE","FALSE"]:
@@ -229,7 +234,7 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     
     data = ast.data
     
-    if data in ["add","sub","mul","call","input","ptr_read"]:
+    if data in ["add","sub","mul","call","input","ptr_read","rshift","lshift"]:
         return "aexp"
     
     if data in ["and","or","not","eq","lt","le"]:
