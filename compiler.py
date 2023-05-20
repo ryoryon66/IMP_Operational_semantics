@@ -202,7 +202,7 @@ def codegen_com(ast:Com):
         
         print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         
-        # RAXと0を比較する
+        # RAXと0を比較する RAXがならelseに飛ぶ
         print (f"LI {RT1_ALC} {0}")
         print (f"SUB {RT1_ALC} {RAX_ALC}") # RAX = RT1 = 0かどうかを条件コードZからもらう Z=0ならelseに飛ぶ
         print (f"BE .Lelse{LABEL_COUNT_FOR_THIS_IFELSE}$")
@@ -874,9 +874,9 @@ def codegen_bexp(ast:Bexp):
         print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
         
         # pop 2 push 1なのでrspを1減らす
-        # print (f"LI {RT1_ALC} {1}")
-        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
-        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
+        # print (f"LI {RT1_ALC} {1}") 
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1 これ嘘では？
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         return
     
     if data == "or":
@@ -895,9 +895,9 @@ def codegen_bexp(ast:Bexp):
         
         # pop 2 push 1なのでrspを1減らす
         # print (f"LI {RT1_ALC} {1}")
-        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1
+        # print (f"SUB {RSP_ALC} {RT1_ALC}") # rsp -= 1 これ嘘では？
         
-        print (f"SUB {RSP_ALC} {RONE_ALC}") # rsp -= 1
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
         return
     
     if data == "not":
@@ -961,7 +961,7 @@ def count_function_call_and_add_id(ast):
         function_name = ast.children[0].value
         function_call_counter[function_name] += 1
         ast.call_id = function_call_counter[function_name]
-        return
+        
     
     for child in ast.children:
         count_function_call_and_add_id(child)

@@ -1,20 +1,45 @@
+
+
 display_ptr := (1 << 12) - 4; #4092
 
 
-i := <input>;
-j := <input>;
-#縦上から i　横右からj
 
-* (4092) := bin: 0000000000000000;
-* (4093) := bin: 0000110000000000;
-* (4094) := bin: 0001001000000000;
-* (4095) := bin: 0000110000000000;
+#縦上から i　横右からjの形式でライフゲームの初期盤面を指定
+
+
+#ハチの巣
+* (display_ptr)     := bin: 0000000000000000;
+* (display_ptr + 1) := bin: 0000110000000000;
+* (display_ptr + 2) := bin: 0001001000000000;
+* (display_ptr + 3) := bin: 0000110000000000;
+
+
 
 #ブロック
-#* (4092) := bin: 0000000000000000;
-#* (4093) := bin: 0000011000000000;
-#* (4094) := bin: 0000011000000000;
-#* (4095) := bin: 0000000000000000;
+* (display_ptr)     := bin: 0000000000000000;
+* (display_ptr + 1) := bin: 0000000000000000;
+* (display_ptr + 2) := bin: 0000000000000011;
+* (display_ptr + 3) := bin: 0000000000000011;
+
+
+#グライダー 4かける8だとろくなシミュレーションにならない。
+#* (display_ptr)     := bin: 0000000000000000;
+#* (display_ptr + 1) := bin: 0011100000000000;
+#* (display_ptr + 2) := bin: 0010000000000000;
+#* (display_ptr + 3) := bin: 0001000000000000;
+
+#ブリンカー
+* (display_ptr)     := bin: 0000000000000000;
+* (display_ptr + 1) := bin: 1000000000111000;
+* (display_ptr + 2) := bin: 1000000000000000;
+* (display_ptr + 3) := bin: 1000000000000000;
+
+print * (display_ptr);
+print * (display_ptr + 1);
+print * (display_ptr + 2);
+print * (display_ptr + 3);
+
+
 
 #print 777;
 #print count_neibor(i,j,);
@@ -39,9 +64,9 @@ turn := 0;
 
 spare_grid_ptr := 4080;
 
+turn_end := <input>;
 
-
-while turn <= 0 do
+while turn < turn_end do
     turn := turn + 1;
 
     #print turn;
@@ -64,30 +89,37 @@ while turn <= 0 do
             count := count_neibor(i,j);
             is_survived := get_elem_ij_from_memory(i,j,display_ptr);
 
-            alive := 0;
+            alive := is_survived;
 
+            # 誕生
             if is_survived = 0 and count = 3 then
                 alive := 1
-            else 
-                if is_survived = 1 and (count = 2 or count = 3) then
-                    alive := 1
-                else
-                    if (is_survived = 1 and count <= 1) then
-                        alive := 0
-                    else 
-                        if is_survived = 1 and count >= 4 then
-                            alive := 1
-                        else 
-                            alive := is_survived
-                        end
-                    end
-                end
+            else
+                skip
+            end;
+
+            # 生存
+            if is_survived = 1 and (count = 2 or count = 3) then
+                alive := 1
+            else
+                skip
+            end;
+
+            # 過疎
+            if is_survived = 1 and count <= 1 then
+                alive := 0
+            else
+                skip
+            end;
+
+            # 過密
+            if is_survived = 1 and count >= 4 then
+                alive := 0
+            else
+                skip
             end;
 
             next_state := next_state + alive;
-
-            print j;
-            print alive;
 
 
             j := j - 1
@@ -110,7 +142,7 @@ while turn <= 0 do
     * (display_ptr + 3) := * (spare_grid_ptr + 3);
 
 
-    print (1 << 10);
+    print (1 << 10) + 6;
 
     print * (display_ptr);
     print * (display_ptr + 1);
@@ -119,7 +151,7 @@ while turn <= 0 do
 
     print turn;
 
-    print (1 << 10);
+    print (1 << 10) + 6;
 
     skip
 end;
@@ -202,4 +234,5 @@ def count_neibor(i,j,) {
     skip
     return ret
 };
+
 skip

@@ -48,12 +48,15 @@ start:com
         | "def" VAR    "(" (VAR ( "," VAR)* (",")?)?   ")" "{" com  "return" aexp "}" -> def
         | "setstr" aexp (CHAR)* -> setstr
     
+    BLOCKCOMMENT : "$" /(.|\n|\r)+/ "$"  
+    
 
     %import common.CNAME -> NAME
     %import common.INT   -> INT
     %import common.WS
     %ignore WS
     %ignore /(#).*/ //comment
+
 
     VAR: /(?!(if|then|else|end|while|do|print|not|and|or|true|false|def|return|bin)\b)[a-zA-Z_]\w*/
     NUM: INT | "-" INT

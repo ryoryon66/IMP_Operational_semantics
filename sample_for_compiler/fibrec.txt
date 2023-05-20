@@ -14,16 +14,16 @@ def fibrec (i,){
 
 i := 1;
 
-while i <= 10 do 
-term := fibrec (i,);
+while i <= 10000 do 
+    term := fibrec (i,);
 
-if term < 0 then 
-    i := 101
-else
-    # print i;
-    i := i +1;
-    print term
-end
+    if term < 0 then 
+        i := 101
+    else
+        # print i;
+        i := i +1;
+        print term
+    end
 end
 
     
