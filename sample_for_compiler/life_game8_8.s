@@ -12,43 +12,78 @@ setstr (4060) "lifegame";
 
 #______________________________________________________________________________
 
-# #ハチの巣
-# * (display_ptr)     := bin: 0000000000000000;
-# * (display_ptr + 1) := bin: 0000110000000000;
-# * (display_ptr + 2) := bin: 0001001000000000;
-# * (display_ptr + 3) := bin: 0000110000000000;
-
-
-
-# #ブロック
-# * (display_ptr)     := bin: 0000000000000000;
-# * (display_ptr + 1) := bin: 0000000000000000;
-# * (display_ptr + 2) := bin: 0000000000000011;
-# * (display_ptr + 3) := bin: 0000000000000011;
-
-
-
-#グライダーとブロック 4かける8だとろくなシミュレーションにならない。 5かける８でも十分広い時のシミュレーションとは異なり消滅する。
-#* (display_ptr)     := bin: 0000000000000000;
-#* (display_ptr + 1) := bin: 0011100000110000;
-#* (display_ptr + 2) := bin: 0010000000110000;
-#* (display_ptr + 3) := bin: 0001000000000000;
-
-
-
-#ブリンカー
-#* (display_ptr)     := bin: 0000000000000000;
-#* (display_ptr + 1) := bin: 1000000000111000;
-#* (display_ptr + 2) := bin: 1000000000000000;
-#* (display_ptr + 3) := bin: 1000000000000000;
-
 
 
 #グライダー 4かける8だとろくなシミュレーションにならない。
-* (display_ptr)     := bin: 0000000000000000;
-* (display_ptr + 1) := bin: 0011100000000000;
-* (display_ptr + 2) := bin: 0010000000000000;
-* (display_ptr + 3) := bin: 0001000000000000;
+#* (display_ptr)     := bin: 0000000000000000;
+#* (display_ptr + 1) := bin: 0011100000000000;
+#* (display_ptr + 2) := bin: 0010000000000000;
+#* (display_ptr + 3) := bin: 0001000000000000;
+
+#ハチの巣とブロック　固定物体が二つ ついでにブロック生成のテストも兼ねる。
+#* (display_ptr)     := bin: 0000000000000000;
+#* (display_ptr + 1) := bin: 0001100011000000;
+#* (display_ptr + 2) := bin: 0010010010000000;
+#* (display_ptr + 3) := bin: 0001100000000000;
+
+
+#ブリンカー 正常に動く
+#* (display_ptr)     := bin: 0000000000000000;
+#* (display_ptr + 1) := bin: 1000000000000000;
+#* (display_ptr + 2) := bin: 1000000000000111;
+#* (display_ptr + 3) := bin: 1000000000000000;
+
+#グライダーとブロック 爆発してから消滅する。　面白い挙動。
+#* (display_ptr)     := bin: 0000000000000000;
+#* (display_ptr + 1) := bin: 0011100000010000;
+#* (display_ptr + 2) := bin: 0010000000110000;
+#* (display_ptr + 3) := bin: 0001000000000000;
+
+#市松模用 次のターンで消滅するのでつまらない。
+#* (display_ptr)     := bin: 0101010101010101;
+#* (display_ptr + 1) := bin: 1010101010101010;
+#* (display_ptr + 2) := bin: 0101010101010101;
+#* (display_ptr + 3) := bin: 1010101010101010;
+
+#グライダー 二個　干渉して最終的に固定物体ボートが1つ生成される。派手ではある。
+#* (display_ptr)     := bin: 0000000000000000;
+#* (display_ptr + 1) := bin: 1110000111000000;
+#* (display_ptr + 2) := bin: 1000000100000000;
+#* (display_ptr + 3) := bin: 0100000010000000;
+
+#　軽量級宇宙船　うごくけど見にくいな
+* (display_ptr)     := bin: 1001000000000000;
+* (display_ptr + 1) := bin: 0000100000000000;
+* (display_ptr + 2) := bin: 1000100000000000;
+* (display_ptr + 3) := bin: 0111100000000000;
+
+#　中量級宇宙船　うごくけど見にくいな 重量級以降は横幅の問題で爆発する。
+#* (display_ptr)     := bin: 1000100000000000;
+#* (display_ptr + 1) := bin: 0000010000000000;
+#* (display_ptr + 2) := bin: 1000010000000000;
+#* (display_ptr + 3) := bin: 0111110000100000;
+
+
+
+# random2 短期間でブリンカー　1の確率0.5
+
+* (display_ptr)     := 29479;
+* (display_ptr + 1) := 7218;
+* (display_ptr + 2) := -19274;
+* (display_ptr + 3) := 13114;
+
+# random1 1の確率 0.25 50ターン程度で消滅する。
+
+* (display_ptr)     := 321;
+* (display_ptr + 1) := -28652;
+* (display_ptr + 2) := 2608;
+* (display_ptr + 3) := 5216;
+
+
+
+
+
+
 
 #__________________________________________________________________________________________________
 
@@ -203,15 +238,10 @@ def ithbit_of(val,n,){ # tested
     else
         skip
     end
-    return remainder(val,2,)
+    return (val << 15) >> 15
+    #return remainder(val,2,)
 };
 
-def remainder(a,b,){
-    while a >= b do
-        a := a - b
-    end
-    return a
-};
 
 def get_elem_ij_from_memory(i,j,grid_ptr){ # i 0 ~ 3 j 0 ~ 15 tested gridの最初の要素の番地を引数に入れること
 
@@ -230,10 +260,17 @@ def count_neibor(i,j,) {
 
     ptr := (1 << 12) - 14; # grid_ptr
 
-    iplus := remainder (i + 1,8,);
-    iminus := remainder (i + 16 - 1,8,);
-    jplus := remainder (j + 1,8,);
-    jminus := remainder (j + 16 - 1,8,);
+    #iplus := remainder (i + 1,8,);
+    #iminus := remainder (i + 16 - 1,8,);
+    #jplus := remainder (j + 1,8,);
+    #jminus := remainder (j + 16 - 1,8,);
+
+    iplus := ((i + 1) << 13) >> 13;
+    iminus := ((i + 16 - 1) << 13) >> 13;
+    jplus := ((j + 1) << 13) >> 13;
+    jminus := ((j + 16 - 1) << 13) >> 13;
+
+
     ret := 0;
 
     next_i := i;
@@ -254,22 +291,36 @@ def count_neibor(i,j,) {
 
     next_i := iplus;
     next_j := jplus;
-    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+    ret := ret + get_elem_ij_from_memory2(next_i,next_j,ptr);
 
     next_i := iplus;
     next_j := jminus;
-    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+    ret := ret + get_elem_ij_from_memory2(next_i,next_j,ptr);
     
     next_i := iminus;
     next_j := jplus;
-    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+    ret := ret + get_elem_ij_from_memory2(next_i,next_j,ptr);
 
     next_i := iminus;
     next_j := jminus;
-    ret := ret + get_elem_ij_from_memory(next_i,next_j,ptr);
+    ret := ret + get_elem_ij_from_memory2(next_i,next_j,ptr);
 
     skip
     return ret
+};
+
+def get_elem_ij_from_memory2(i,j,grid_ptr){ # i 0 ~ 3 j 0 ~ 15 tested gridの最初の要素の番地を引数に入れること
+
+    if i < 4 then
+        j := j + 8
+    else
+        i := i - 4
+    end;
+
+    pointer := grid_ptr;
+    pointer := pointer + i
+
+    return ithbit_of( (* (pointer) ) , j, )
 };
 
 skip

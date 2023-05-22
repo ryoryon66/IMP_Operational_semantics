@@ -282,9 +282,9 @@ if __name__ == "__main__":
         
         # save to file
         i +=1
-        with open(f"tmp_{i}.txt", "w") as f:
-            f.write(code_with_label)
-
+        # with open(f"tmp_{i}.txt", "w") as f:
+        #     f.write(code_with_label)
+    print ("inserted", i, "helper labels")
     # print (code_with_label)
     # 最後に全てのラベルをdisplacementに置き換えて相対ジャンプを可能にする。
     
