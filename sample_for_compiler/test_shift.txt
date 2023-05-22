@@ -1,0 +1,25 @@
+a := 1;
+
+i := 0;
+
+while i < 20 do
+    a := a << 0;
+    i := i + 1;
+    print a
+end;
+
+
+print 7777;
+
+i := 0;
+
+a := 1 << 14;
+
+while i < 20 do
+    a := a >> 1;
+    i := i + 1;
+    print a
+end;
+
+
+skip
