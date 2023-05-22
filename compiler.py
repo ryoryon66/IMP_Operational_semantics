@@ -960,7 +960,7 @@ def codegen_bexp(ast:Bexp):
 
 def init_register():
     
-    zurasu = 30
+    zurasu = 46
     print (f"LI {RBP_ALC} {1}")
     print (f"SLL {RBP_ALC} {12}") # RBP = 1024,2048,4096
     
