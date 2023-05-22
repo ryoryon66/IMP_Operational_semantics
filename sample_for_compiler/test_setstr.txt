@@ -1,0 +1,17 @@
+setstr 4050 "abcd";
+
+i := 4050;
+
+while i <= 9000 do 
+ a := * (i);
+ i := i + 1;
+
+
+ print a;
+
+ if a = 0 then
+  i := 10000
+    else 
+        skip
+    end
+end
