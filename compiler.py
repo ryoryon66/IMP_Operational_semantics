@@ -439,6 +439,38 @@ def codegen_com(ast:Com):
         
         
         return
+    
+    if data == "setstr":
+        
+        aexp1 = ast.children[0]
+        
+        codegen_aexp(aexp1)
+        
+        #  rsp
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
+        
+        chars = ""
+        
+        for t in ast.children[1:]:
+            chars += t.value
+            
+        # print (chars)
+        
+        for i in range(len(chars)):
+            
+            num = ord(chars[i])
+            
+            print (f"LI {RT1_ALC} {num}")
+            print (f"ST {RT1_ALC} {0}({RAX_ALC})")
+            print (f"ADD {RAX_ALC} {RONE_ALC}") # rax += 1
+        
+        print (f"LI {RT1_ALC} {0}")
+        print (f"ST {RT1_ALC} {0}({RAX_ALC})") # null文字を入れる
+        
+        return
+        
+
         
     raise Exception(f"codegen_com cannot handle {data}")
         

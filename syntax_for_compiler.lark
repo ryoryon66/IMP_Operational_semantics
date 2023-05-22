@@ -46,7 +46,7 @@ start:com
         | "while" bexp "do"  com "end"    -> while
         | "print" aexp              -> print
         | "def" VAR    "(" (VAR ( "," VAR)* (",")?)?   ")" "{" com  "return" aexp "}" -> def
-        | "setstr" aexp (CHAR)* -> setstr
+        | "setstr" aexp "\"" (CHAR)* "\"" -> setstr
     
     BLOCKCOMMENT : "$" /(.|\n|\r)+/ "$"  
     
