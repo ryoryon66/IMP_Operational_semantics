@@ -636,7 +636,43 @@ def codegen_aexp(ast:Aexp):
         
         
         return
+
+    if data in ["bitand","bitor","bitxor"]:
+        
+        aexp1 = ast.children[0]
+        aexp2 = ast.children[1]
+        
+        codegen_aexp(aexp1)
+        codegen_aexp(aexp2)
+        
+        OPERATIOON = "AND" if data == "bitand" else "OR" if data == "bitor" else "XOR"
+        
+        print (f"LD {RT1_ALC} {2}({RSP_ALC})") # RT1 = *(rsp+2)
+        # print (f"LD {RAX_ALC} {1}({RSP_ALC})") # RAX = *(rsp+1)
+        
+        print (f"{OPERATIOON} {RAX_ALC} {RT1_ALC}") # RAX = RAX OPERATIOON RT1
+        
+        print (f"ST {RAX_ALC} {2}({RSP_ALC})") # *(rsp+2) = RAX
+        
+        # print (f"LI {RT1_ALC} {1}")
+        # print (f"ADD {RSP_ALC} {RT1_ALC}") # rsp += 1
+        
+        print (f"ADD {RSP_ALC} {RONE_ALC}") # rsp += 1
+        
+        return
     
+    if data == "bitnot":
+        aexp1 = ast.children[0]
+        codegen_aexp(aexp1)
+        
+        print (f"LI {RT1_ALC} {0}")
+        print (f"SUB {RT1_ALC} {RONE_ALC}") # RT1 = 0xffff
+        
+        print (f"XOR {RAX_ALC} {RT1_ALC}") # RAX = RAX ^ RT1
+        
+        print (f"ST {RAX_ALC} {1}({RSP_ALC})") # *(rsp+1) = RAX
+        
+        return
     
     if data == "input":
         print (f"IN {RAX_ALC} {0}") # RAX = input()

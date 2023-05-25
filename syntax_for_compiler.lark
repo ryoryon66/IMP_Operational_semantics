@@ -10,6 +10,10 @@ start:com
     factor : atom 
            | factor ">>" NUM -> rshift
            | factor "<<" NUM -> lshift 
+           | factor "&&" atom -> bitand
+           | factor "||" atom -> bitor
+           | factor "^" atom -> bitxor
+           | "~" factor -> bitnot
 
     atom: NUM
           | "bin:" BINARY

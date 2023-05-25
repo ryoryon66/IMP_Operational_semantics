@@ -234,7 +234,7 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     
     data = ast.data
     
-    if data in ["add","sub","mul","call","input","ptr_read","rshift","lshift"]:
+    if data in ["add","sub","mul","call","input","ptr_read","rshift","lshift","bitand","bitor","bitxor","bitnot"]:
         return "aexp"
     
     if data in ["and","or","not","eq","lt","le"]:
