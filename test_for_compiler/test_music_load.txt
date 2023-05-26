@@ -1,0 +1,23 @@
+music_start_ptr := 3000 ; # 3000番地から音楽データが始まると仮定してる。
+music_ptr := music_start_ptr;
+
+music_output_ptr := (1 << 12) - 35; # 4096 - 35 = 4061番地に音楽を書けばハードウェアが勝手に再生してくれる。
+while true do
+    
+    * music_output_ptr := * music_ptr;
+
+    music_ptr := music_ptr + 1;
+
+    if * (music_ptr) = 0 then # 音楽データの末端に達したら最初に戻る。
+        music_ptr := music_start_ptr
+    else 
+        skip
+    end;
+
+    print music_ptr;
+    print * music_output_ptr;
+
+    skip
+end
+
+    
