@@ -268,8 +268,8 @@ if __name__ == "__main__":
     
     # save to tmp file
     
-    with open("tmp.txt", "w") as f:
-        f.write(code_with_label)
+    # with open("tmp.txt", "w") as f:
+    #     f.write(code_with_label)
     
     
     # 相対ジャンプができるように補助ラベルを挿入する
