@@ -537,15 +537,38 @@ def codegen_aexp(ast:Aexp):
         print (f"//codegen_aexp:binary start")
         
         print (f"LI {RAX_ALC} {0}")
-        print (f"LI {RT1_ALC} {1}")
         
-        for i in range (1,17):
-            ithbit = binary_form[-i] if i <= len(binary_form) else "0"
+        
+        
+        # print (f"LI {RT1_ALC} {1}")
+        # for i in range (1,17):
+        #     ithbit = binary_form[-i] if i <= len(binary_form) else "0"
             
-            if ithbit == "1":
-                print (f"ADD {RAX_ALC} {RT1_ALC}")
+        #     if ithbit == "1":
+        #         print (f"ADD {RAX_ALC} {RT1_ALC}")
             
-            print (f"SLL {RT1_ALC} {1}") 
+        #     print (f"SLL {RT1_ALC} {1}") 
+        
+        # 4桁ずつみることで命令数を減らす
+        for i in range(0,4):
+            
+            print (f"SLL {RAX_ALC} {4}")
+
+            
+            digit0 =int(binary_form[-4*i-1] if 4*i <= len(binary_form) else "0")
+            digit1 =int(binary_form[-4*i-2] if 4*i+1 <= len(binary_form) else "0")
+            digit2 =int(binary_form[-4*i-3] if 4*i+2 <= len(binary_form) else "0")
+            digit3 =int(binary_form[-4*i-4] if 4*i+3 <= len(binary_form) else "0")
+            
+            num = int (digit0 + digit1 * 2 + digit2 * 4 + digit3 * 8)
+            
+            if num == 0:
+                continue
+            
+            print (f"LI {RT1_ALC} {num}")
+            print (f"ADD {RAX_ALC} {RT1_ALC}")
+            
+  
             
         print (f"ST {RAX_ALC} {0}({RSP_ALC})") # *(rsp+0) = RAX
         # print (f"LI {RT1_ALC} {1}")

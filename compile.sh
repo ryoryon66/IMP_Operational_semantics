@@ -7,6 +7,13 @@ program_path=$1
 
 python processing_system/compiler.py  $program_path > simple_asm_with_label.txt
 python  processing_system/resolve_address.py --input simple_asm_with_label.txt --output simple_asm.txt
+
+
+# simpleasmの行数をわかりやすく出力 コンパイル後の行数は:という形式で出力される
+echo "---------------------"
+echo "simple_asm.txt"
+wc -l simple_asm.txt | awk '{print $1}' | xargs echo "simple_asm.txt has"  "lines"
+
 python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/music.txt
 
 echo "---------------------" 

@@ -23,6 +23,7 @@ with open(args.input, "r") as f:
 program_list : List[str] = program.split("\n")
 
 #音楽の書き込み場所まで適当な値で埋める。
+assert len(program_list) < MUSIC_START_ADDRSS, f"プログラムの長さが長すぎます。音楽の書き込み場所を変更してください。"
 while len(program_list) < MUSIC_START_ADDRSS:
     program_list.append("0")
 
