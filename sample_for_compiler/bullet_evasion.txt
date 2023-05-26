@@ -1,0 +1,174 @@
+display_ptr := (1 << 12) - 4; #画面表示は4092 4093 4094 4095を用いるという規約である。
+
+* (display_ptr + 0) := bin: 0000000000000000; # 4092は弾幕
+* (display_ptr + 1) := bin: 0000000000000000; # 4093は弾幕
+* (display_ptr + 2) := bin: 0000000000000000; # 4094は弾幕
+* (display_ptr + 3) := bin: 0000000000000000; # 4095は自機を表示する。
+
+bullets_kinds := 32;
+bullets_ptr := (1 << 12) - 36; #弾幕を定義するメモリの先頭address
+
+*(bullets_ptr + 0)  := bin: 0100001000000100;
+*(bullets_ptr + 1)  := bin: 1010100010010001;
+*(bullets_ptr + 2)  := bin: 0010100100010010;
+*(bullets_ptr + 3)  := bin: 1001000100001001;
+*(bullets_ptr + 4)  := bin: 1101001000101001;
+*(bullets_ptr + 5)  := bin: 1000100001000100;
+*(bullets_ptr + 6)  := bin: 1000100000100100;
+*(bullets_ptr + 7)  := bin: 0010001000010010;
+*(bullets_ptr + 8)  := bin: 1010001010010010;
+*(bullets_ptr + 9)  := bin: 0010100000001010;
+*(bullets_ptr + 10) := bin: 0001000010000100;
+*(bullets_ptr + 11) := bin: 1000010010010010;
+*(bullets_ptr + 12) := bin: 0010000100100001;
+*(bullets_ptr + 13) := bin: 0110001100100100;
+*(bullets_ptr + 14) := bin: 0010101000010010;
+*(bullets_ptr + 15) := bin: 1001000100001100;
+*(bullets_ptr + 16) := bin: 0100100100001001;
+*(bullets_ptr + 17) := bin: 0001000001011000;
+*(bullets_ptr + 18) := bin: 0100000000100110;
+*(bullets_ptr + 19) := bin: 0000110001000001;
+*(bullets_ptr + 20) := bin: 0100001010000001;
+*(bullets_ptr + 21) := bin: 0000000100001000;
+*(bullets_ptr + 22) := bin: 1000101000100100;
+*(bullets_ptr + 23) := bin: 0001010001000001;
+*(bullets_ptr + 24) := bin: 0000101000000000;
+*(bullets_ptr + 25) := bin: 0001000000010001;
+*(bullets_ptr + 26) := bin: 0010000010001001;
+*(bullets_ptr + 27) := bin: 0100000001000000;
+*(bullets_ptr + 28) := bin: 1000000100100001;
+*(bullets_ptr + 29) := bin: 0100100110000100;
+*(bullets_ptr + 30) := bin: 0011000000100001;
+*(bullets_ptr + 31) := bin: 0000000010010010;
+
+next_bullets_pos := 0;
+
+
+turn := 0;
+is_dead := 0;
+
+user_input_history := 0; #ユーザのコマンド履歴をmod 8で保持する。
+
+player := bin: 0000000010000000;
+
+while (is_dead = 0) do
+
+    print turn;
+    turn := turn + 1;
+
+    user_operation := (<input> << 8) >> 15; # 7ビット目を抽出
+
+    if user_operation = (1) then
+        player := player << 1;
+        user_input_history := user_input_history + 1;
+        user_input_history := user_input_history && 7
+    else
+        player := player >> 1
+    end;
+
+    if player = 0 then
+        is_dead := 1
+    else 
+        skip
+    end;
+
+    #人間の操作を反映させる。
+    * (display_ptr + 3 ) := player;
+
+    now_bullets := *(display_ptr + 2); #　次にプレイヤーのところまでやってくる弾幕。　こいつとの当たり判定をとる。
+
+    if ( (now_bullets && player) = 0 ) then
+        skip
+    else
+        is_dead := 1
+    end;
+
+    #弾幕を動かす。
+
+    * (display_ptr + 2) := *(display_ptr + 1);
+    * (display_ptr + 1) := *(display_ptr + 0);
+    * (display_ptr + 0) := 0; #プレイヤーのところまでやってきた弾幕は消える仕様とする。
+
+    # 弾幕をロードする。
+    * (display_ptr + 0) := *(bullets_ptr + next_bullets_pos);
+
+    next_bullets_pos := next_bullets_pos + 1 + (user_input_history && 7);
+
+    # mod bullets_kinds
+    next_bullets_pos := next_bullets_pos && (bullets_kinds - 1);
+
+    # 人間が視認できるぐらいの速度にここで調整する。
+
+    counter := 0;
+    limit := 1500 - mul(turn, 8);
+    if limit < 100 then
+        limit := 100
+    else
+        skip
+    end;
+
+
+
+    while counter < limit do
+        counter := counter + 1;
+        if counter && 127 = 0 then
+            if (* (display_ptr + 3)  = 0) then
+                *(display_ptr + 3) := player
+            else 
+                *(display_ptr + 3) := 0
+            end
+        else
+            skip
+        end
+    end;
+
+    * (display_ptr + 3) := player;
+
+    skip
+
+end;
+
+def mul(a, b) {
+    ret := 0;
+    
+    while b > 0 do
+        ret := ret + a;
+        b := b - 1
+    end
+
+    return ret
+};
+
+#gameoverになったら画面をちかちかさせてプレイヤーを煽る。
+
+print turn;
+* (display_ptr + 0) := 0 - 1;
+* (display_ptr + 1) := 0 - 1;
+* (display_ptr + 2) := 0 - 1;
+* (display_ptr + 3) := 0 - 1;
+
+repetition := 10000;
+
+while repetition > 0 do
+
+    * (display_ptr + 0) := ~ *(display_ptr + 0);
+    * (display_ptr + 1) := ~ *(display_ptr + 1);
+    * (display_ptr + 2) := ~ *(display_ptr + 2);
+    * (display_ptr + 3) := ~ *(display_ptr + 3);
+
+    duration := 100;
+
+    while duration > 0 do
+        duration := duration - 1
+    end;
+
+    repetition := repetition - 1
+end;
+
+
+
+
+print turn;
+skip
+
+
