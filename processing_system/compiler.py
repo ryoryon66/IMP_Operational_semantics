@@ -539,7 +539,7 @@ def codegen_aexp(ast:Aexp):
         print (f"LI {RAX_ALC} {0}")
         
         
-        
+        # naive implementation
         # print (f"LI {RT1_ALC} {1}")
         # for i in range (1,17):
         #     ithbit = binary_form[-i] if i <= len(binary_form) else "0"
@@ -549,10 +549,11 @@ def codegen_aexp(ast:Aexp):
             
         #     print (f"SLL {RT1_ALC} {1}") 
         
-        # 4桁ずつみることで命令数を減らす
-        for i in range(0,4):
+        #4桁ずつみることで命令数を減らす 上位桁を先に読んで上に持っていく。
+        for i in reversed(range(4)):
             
-            print (f"SLL {RAX_ALC} {4}")
+            if i != 3:
+                print (f"SLL {RAX_ALC} {4}")
 
             
             digit0 =int(binary_form[-4*i-1] if 4*i <= len(binary_form) else "0")
@@ -567,6 +568,8 @@ def codegen_aexp(ast:Aexp):
             
             print (f"LI {RT1_ALC} {num}")
             print (f"ADD {RAX_ALC} {RT1_ALC}")
+        
+        #8桁ずつみることで命令数を減らせると思ったがLIで読んだときに符号拡張されてしまう。最初だけ8桁、あとは4桁とかなら大丈夫だが。。。
             
   
             
