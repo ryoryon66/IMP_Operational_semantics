@@ -5,8 +5,9 @@
 program_path=$1
 
 
-python compiler.py  $program_path > simple_asm_with_label.txt
-python resolve_address.py --input simple_asm_with_label.txt --output simple_asm.txt
+python processing_system/compiler.py  $program_path > simple_asm_with_label.txt
+python  processing_system/resolve_address.py --input simple_asm_with_label.txt --output simple_asm.txt
+python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/music.txt
 
 echo "---------------------" 
 

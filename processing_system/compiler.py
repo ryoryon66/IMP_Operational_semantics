@@ -8,7 +8,7 @@ from copy import deepcopy
 
 from lark.lexer import Token
 from lark.tree import Tree as ParseTree
-from pyparsing import replace_with
+
 
 from utils import  tree_to_string,constract_ast,is_ast_of
 
