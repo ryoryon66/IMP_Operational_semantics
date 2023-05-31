@@ -162,13 +162,13 @@ for i,line in enumerate(notes.split("\n")):
     note_count += sum_digit_in_paren_per_line(line)
 
 
-    if sum_digit_in_paren_per_line(line) != 8 and sum_digit_in_paren_per_line(line) != 4:
+    if sum_digit_in_paren_per_line(line) != 8 and sum_digit_in_paren_per_line(line) != 4 and "kouonchu" in args.music:
         print ("line : ", i)
         print (line)
         print (sum_digit_in_paren_per_line(line))
         print ("______________________________________________________")
 
-print ("note_count : ", note_count)
+print (f"note_count of {args.music}  : ", note_count)
 
 # 改行、半角空白、全角空白で区切る。
 # 半角空白、全角空白を改行に変換する。
