@@ -86,7 +86,7 @@ def scale_to_int(scale : str) -> int:
         "7" : 0b0000_0000_0000_0111,
     }
     
-    print (scale)
+    # print (scale)
     
     # 休符の場合
     if scale == "0":
@@ -104,8 +104,8 @@ def scale_to_int(scale : str) -> int:
     # 半角の # は全角に変換する。
     doremi = doremi.replace("#", "＃")
     
-    print (doremi)
-    print (octave)
+    # print (doremi)
+    # print (octave)
 
     
     #オクターブが全角の場合は半角に変換する。
@@ -141,9 +141,44 @@ notes : str = ""
 with open(args.music, "r") as f:
     notes = f.read()
 
+
+def sum_digit_in_paren_per_line(line: str) -> int :
+    
+    notes = line.split(" ")
+    notes = list(filter(lambda x: x != "", notes))
+    
+    sound_length_sum = 0
+    
+    for note in notes:
+        if "(" in note:
+            sound_length_sum += int(note[note.find("(")+1:note.find(")")])
+    
+    
+    return sound_length_sum
+##音の数があわなかったので、デバッグ用に出力した。
+note_count = 0
+for i,line in enumerate(notes.split("\n")):
+    
+    note_count += sum_digit_in_paren_per_line(line)
+
+
+    if sum_digit_in_paren_per_line(line) != 8 and sum_digit_in_paren_per_line(line) != 4:
+        print ("line : ", i)
+        print (line)
+        print (sum_digit_in_paren_per_line(line))
+        print ("______________________________________________________")
+
+print ("note_count : ", note_count)
+
 # 改行、半角空白、全角空白で区切る。
 # 半角空白、全角空白を改行に変換する。
 notes = notes.replace(" ", "\n")
+
+
+
+
+
+
 notes = notes.replace("　", "\n")
 # 空行を削除する。
 
@@ -156,7 +191,7 @@ for note in notes_list:
     note = note.replace("）", ")")
     
     sound_length = 1
-    print (note)
+    # print (note)
     
     if "(" in notes:
         # ()内の数字を取り出す。
