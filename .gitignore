@@ -10,3 +10,7 @@ venv/
 
 .vscode/
 *.mif
+
+SimpleSimulator.jar
+simple_asm.txt
+simple_asm_with_label.txt
