@@ -1,15 +1,30 @@
 display_ptr := (1 << 12) - 4; #画面表示は4092 4093 4094 4095を用いるという規約である。
 
+# LED表示設定
 * (display_ptr + 0) := bin: 0000000000000000; # 4092は弾幕
 * (display_ptr + 1) := bin: 0000000000000000; # 4093は弾幕
 * (display_ptr + 2) := bin: 0000000000000000; # 4094は弾幕
 * (display_ptr + 3) := bin: 0000000000000000; # 4095は自機を表示する。
 
+#　音楽の設定
+music_out_ptr := (1 << 12) - 35; # 4061番地が音楽という規約。
+game_music_start_ptr := bin: 0000101110111000;  # 星のカービィ　グリーングリーンズ 3000番地より
+game_over_music_start_ptr := game_music_start_ptr + 320; #　高音厨音域テストでゲームオーバー時に煽る。3320番地より
+tempo1 := 50; #ゲーム音楽の早さ もちろんクロックの影響を受ける。
+tempo2 := (1 << 14) ; #ゲームオーバー時の音楽の速さ
+
+music_counter := 0; #これをインクリメントしてテンポと一致したら音を書き換える。
+
+music_ptr := game_music_start_ptr; #次に読み出すべき音へのポインタ。
+
+
+
+#　弾幕の設定
 bullets_kinds := 32;
-bullets_ptr := (1 << 12) - 36; #弾幕を定義するメモリの先頭address
+bullets_ptr := (1 << 12) - 36; #弾幕を定義するメモリの先頭address 4060番地から
 
 *(bullets_ptr + 0)  := bin: 0100001000000100;
-*(bullets_ptr + 1)  := bin: 1010100010010001;
+*(bullets_ptr + 1)  :=                     0; # この子は音楽出力に予約されているメモリとかぶるので読み出された音楽がここに入るものとする。(音楽によって変わる弾幕とか言ったら聞こえはいいでしょ。薄めの弾幕になるけど)
 *(bullets_ptr + 2)  := bin: 0010100100010010;
 *(bullets_ptr + 3)  := bin: 1001000100001001;
 *(bullets_ptr + 4)  := bin: 1101001000101001;
@@ -51,7 +66,7 @@ user_input_history := 0; #ユーザのコマンド履歴をmod 8で保持する�
 
 player := bin: 0000000010000000;
 
-while (is_dead = 0) do
+while (is_dead = 0)  do
 
     print turn;
     turn := turn + 1;
@@ -100,7 +115,8 @@ while (is_dead = 0) do
     # 人間が視認できるぐらいの速度にここで調整する。
 
     counter := 0;
-    limit := 1500 - mul(turn, 8);
+    #limit := 1500 - mul(turn, 8);
+    limit := 1500 - (turn << 3); # 命令数節約のため掛け算をシフトに置き換えることに。
     if limit < 100 then
         limit := 100
     else
@@ -111,6 +127,8 @@ while (is_dead = 0) do
 
     while counter < limit do
         counter := counter + 1;
+
+        #自機点滅
         if counter && 127 = 0 then
             if (* (display_ptr + 3)  = 0) then
                 *(display_ptr + 3) := player
@@ -119,7 +137,30 @@ while (is_dead = 0) do
             end
         else
             skip
+        end;
+
+        #音楽再生
+        music_counter := music_counter + 1;
+
+        if music_counter >= tempo1 then
+            * (music_out_ptr) := *(music_ptr);
+            music_ptr := music_ptr + 1;
+            music_counter := 0;
+            #print * (music_out_ptr);
+            #print music_ptr;
+
+            if * (music_ptr) = 0 then
+                music_ptr := game_music_start_ptr
+            else
+                skip
+            end
+        else
+            skip # カウンタがtempo1に達していない場合は何もしない
         end
+
+
+
+
     end;
 
     * (display_ptr + 3) := player;
@@ -128,16 +169,16 @@ while (is_dead = 0) do
 
 end;
 
-def mul(a, b) {
-    ret := 0;
-    
-    while b > 0 do
-        ret := ret + a;
-        b := b - 1
-    end
-
-    return ret
-};
+#def mul(a, b) {
+#    ret := 0;
+#    
+#    while b > 0 do
+#        ret := ret + a;
+#        b := b - 1
+#    end
+#
+#    return ret
+#};
 
 #gameoverになったら画面をちかちかさせてプレイヤーを煽る。
 
@@ -147,9 +188,12 @@ print turn;
 * (display_ptr + 2) := 0 - 1;
 * (display_ptr + 3) := 0 - 1;
 
-repetition := 10000;
+repetition := (1 << 14);
 
-while repetition > 0 do
+music_ptr := game_over_music_start_ptr;
+music_counter := 0;
+
+while true do
 
     * (display_ptr + 0) := ~ *(display_ptr + 0);
     * (display_ptr + 1) := ~ *(display_ptr + 1);
@@ -159,7 +203,25 @@ while repetition > 0 do
     duration := 100;
 
     while duration > 0 do
-        duration := duration - 1
+        duration := duration - 1;
+
+        #music用の処理。
+        music_counter := music_counter + 1;
+
+        if music_counter >= tempo2 then
+            * (music_out_ptr) :=   * (music_ptr);
+            #print * (music_out_ptr);
+            #print music_ptr;
+            music_ptr := music_ptr + 1;
+            music_counter := 0;
+            if * (music_ptr) = 0 then
+                music_ptr := game_over_music_start_ptr
+            else
+                skip
+            end
+        else 
+            skip #counterがたまるまで何もしない。
+        end
     end;
 
     repetition := repetition - 1
