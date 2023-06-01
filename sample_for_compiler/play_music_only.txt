@@ -1,0 +1,20 @@
+music_ptr := 3320; # 3000 だとカービィ、 3320 だと高音厨
+music_out_ptr := 4061;
+music_start_pointer := music_ptr;
+
+
+
+while true do
+
+    * (music_out_ptr) := * (music_ptr);
+
+    music_ptr := music_ptr + 1;
+
+    print (music_ptr);
+
+    if * (music_ptr) = 0 then
+        music_ptr := music_start_pointer
+    else
+        skip
+    end
+end

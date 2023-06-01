@@ -14,10 +14,14 @@ echo "---------------------"
 echo "simple_asm.txt"
 wc -l simple_asm.txt | awk '{print $1}' | xargs echo "simple_asm.txt has"  "lines"
 
-python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/greengreens.txt --s 3000
+python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/greengreens.txt --s 3100
 # python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/legend_of_zelda.txt --s 3500 カービーの後にcopilot君の趣味か何かでゼルダ出てきて草
 
-python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/kouonchu.txt --s 3320
+python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/kouonchu.txt --s 3420
+
+python music/add_music.py --input simple_asm.txt --output simple_asm.txt --music ./music/music_files/kirby_death.txt --s 3950
+
+
 
 echo "---------------------" 
 

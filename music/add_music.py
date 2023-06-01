@@ -1,9 +1,6 @@
 from typing import List,Final
 import argparse
 
-from prettytable import DEFAULT
-
-
 
 DEFAULT_MUSIC_START_ADDRSS : Final = 3000
 MUSIC_FILE_PATH : Final = "music_files/" + "music.txt"
