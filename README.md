@@ -1,7 +1,8 @@
 # IMP_Operational_semantics
 
 
-IMPの操作的意味論の可視化
+IMPの操作的意味論の可視化インタプリタ。
+実験3のためにコンパイラも書きました。
 
 # install
 
