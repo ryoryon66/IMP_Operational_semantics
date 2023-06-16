@@ -12,11 +12,13 @@ pip install -r requirements.txt
 ```
 実行
 
+# インタプリタ
+
 ```
-python main.py
+実行方法
 ```
 
-# 例
+## 例
 
 ```
 S := S;
@@ -53,3 +55,7 @@ print gcd
 ```
 
 ![graphviz (3)](https://user-images.githubusercontent.com/46624038/235734994-a3846882-e15e-4a5a-ad3c-35d39944fe6f.svg)
+
+# コンパイラ
+
+TODO
