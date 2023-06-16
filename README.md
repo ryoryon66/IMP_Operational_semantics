@@ -10,7 +10,8 @@ IMPの操作的意味論の可視化インタプリタ。
 git clone https://github.com/ryoryon66/IMP_Operational_semantics.git
 pip install -r requirements.txt
 ```
-実行
+
+proceccing_system内にコンパイラ、インタプリタがあります。
 
 # インタプリタ
 
