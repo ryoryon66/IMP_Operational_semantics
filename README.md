@@ -15,11 +15,13 @@ proceccing_system内にコンパイラ、インタプリタがあります。
 
 # インタプリタ
 
+## 使用方法
+
 ```
-実行方法
+python processing_system/interpreter.py --input プログラムへのパス
 ```
 
-## 例
+## 可視化例
 
 ```
 S := S;
@@ -59,4 +61,7 @@ print gcd
 
 # コンパイラ
 
-TODO
+## 使い方
+
+
+
