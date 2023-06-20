@@ -8,6 +8,7 @@ IMPの操作的意味論の可視化インタプリタ。
 
 ```
 git clone https://github.com/ryoryon66/IMP_Operational_semantics.git
+apt -y install imagemagick
 pip install -r requirements.txt
 ```
 
