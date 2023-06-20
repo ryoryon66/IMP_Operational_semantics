@@ -1,0 +1,258 @@
+# 自然数を用いたリストの実装 数理論理学B参考
+
+def pair (x, y,){
+    skip
+    return (x + y) * (x + y + 1) / 2 + y
+};
+
+def first (z,) {
+    # z = pair(x, y)のとき、xを返す　探索する
+
+    x := 0;
+    y := 0;
+    ret := -1;
+
+    def pair (x, y,){
+        skip
+        return (x + y) * (x + y + 1) / 2 + y
+    };
+
+    while not ret = z do
+        ret := pair(x, y,);
+        if ret = z then
+            skip
+        else
+            x := x - 1;
+            y := y + 1;
+
+            if x < 0 then
+                x := y;
+                y := 0
+            else
+                skip
+            end
+        end
+    end
+
+    return x
+};
+
+def second (z,) {
+    # z = pair(x, y)のとき、yを返す　探索する
+
+    x := 0;
+    y := 0;
+    ret := -1;
+
+    def pair (x, y,){
+        skip
+        return (x + y) * (x + y + 1) / 2 + y
+    };
+
+    while not ret = z do
+        ret := pair(x, y,);
+        if ret = z then
+            skip
+        else
+            x := x - 1;
+            y := y + 1;
+
+            if x < 0 then
+                x := y;
+                y := 0
+            else
+                skip
+            end
+        end
+    end
+
+    return y
+};
+
+
+nil := 0;
+
+def cons (x, l,){
+    def pair (x, y,){
+        skip
+        return (x + y) * (x + y + 1) / 2 + y
+    };
+    res := pair(x, l,) + 1
+    return res
+};
+
+def nth (n, l,) {
+    # l = cons(x, l)のとき、n番目の要素を返す
+
+    def pair (x, y,){
+        skip
+        return (x + y) * (x + y + 1) / 2 + y
+    };
+
+    def first (z,) {
+        # z = pair(x, y)のとき、xを返す　探索する
+
+        x := 0;
+        y := 0;
+        ret := -1;
+
+        def pair (x, y,){
+            skip
+            return (x + y) * (x + y + 1) / 2 + y
+        };
+
+        while not ret = z do
+            ret := pair(x, y,);
+            if ret = z then
+                skip
+            else
+                x := x - 1;
+                y := y + 1;
+
+                if x < 0 then
+                    x := y;
+                    y := 0
+                else
+                    skip
+                end
+            end
+        end
+
+        return x
+    };
+
+    def second (z,) {
+        # z = pair(x, y)のとき、yを返す　探索する
+
+        x := 0;
+        y := 0;
+        ret := -1;
+
+        def pair (x, y,){
+            skip
+            return (x + y) * (x + y + 1) / 2 + y
+        };
+
+        while not ret = z do
+            ret := pair(x, y,);
+            if ret = z then
+                skip
+            else
+                x := x - 1;
+                y := y + 1;
+
+                if x < 0 then
+                    x := y;
+                    y := 0
+                else
+                    skip
+                end
+            end
+        end
+
+        return y
+    };
+
+    if n = 0 then
+        res := first(l - 1,pair,)
+    else
+        res := nth(n - 1, second(l - 1,pair,),pair,) 
+    end
+
+    return res
+};
+
+def length (l,) {
+    # l = cons(x, l)のとき、長さを返す
+
+    def pair (x, y,){
+        skip
+        return (x + y) * (x + y + 1) / 2 + y
+    };
+
+    def first (z,) {
+        # z = pair(x, y)のとき、xを返す　探索する
+
+        x := 0;
+        y := 0;
+        ret := -1;
+
+        def pair (x, y,){
+            skip
+            return (x + y) * (x + y + 1) / 2 + y
+        };
+
+        while not ret = z do
+            ret := pair(x, y,);
+            if ret = z then
+                skip
+            else
+                x := x - 1;
+                y := y + 1;
+
+                if x < 0 then
+                    x := y;
+                    y := 0
+                else
+                    skip
+                end
+            end
+        end
+
+        return x
+    };
+
+    def second (z,) {
+        # z = pair(x, y)のとき、yを返す　探索する
+
+        x := 0;
+        y := 0;
+        ret := -1;
+
+        def pair (x, y,){
+            skip
+            return (x + y) * (x + y + 1) / 2 + y
+        };
+
+        while not ret = z do
+            ret := pair(x, y,);
+            if ret = z then
+                skip
+            else
+                x := x - 1;
+                y := y + 1;
+
+                if x < 0 then
+                    x := y;
+                    y := 0
+                else
+                    skip
+                end
+            end
+        end
+
+        return y
+    };
+
+    res := 0;
+    while not l = nil do
+        res := res + 1;
+        l := second(l - 1,pair,) 
+    end
+
+    return res
+};
+
+
+# [3,1,2,]を作る
+
+l := cons(3, cons (1, cons (2, nil, ), ), );
+
+print  l;
+
+print nth(0, l,);
+print nth(1, l,);
+print nth(2, l,);
+print length(l,);
+
+skip

@@ -81,7 +81,7 @@ def tree_to_string(tree:Union[ParseTree,Token]):
         return tree.value
     
     data = tree.data
-    is_aexp = data in ["aexp","term","factor","add","sub","mul","call","input","lshift","rshift"]
+    is_aexp = data in ["aexp","term","factor","add","sub","mul","div","call","input","lshift","rshift"]
     is_bexp = data in ["bexp","batom","and","or","not","eq","lt"]
     is_com = data in ["com","skip","assign","ifelse","while","seq","print","def"]
     
@@ -108,6 +108,8 @@ def aexp_tree_to_string(tree:Union[ParseTree,Token]):
         return aexp_tree_to_string(tree.children[0]) + "-" + aexp_tree_to_string(tree.children[1])
     elif data == "mul":
         return "(" + aexp_tree_to_string(tree.children[0]) + ")*(" + aexp_tree_to_string(tree.children[1]) + ")"
+    elif data == "div":
+        return "(" + aexp_tree_to_string(tree.children[0]) + ")/(" + aexp_tree_to_string(tree.children[1]) + ")"
     elif data == "aexp":
         return "" + aexp_tree_to_string(tree.children[0]) + ""
     elif data == "term":
@@ -235,7 +237,7 @@ def is_ast_of(ast:Union[ParseTree,Token]) -> Literal["com","aexp","bexp"]:
     
     data = ast.data
     
-    if data in ["add","sub","mul","call","input","ptr_read","rshift","lshift","bitand","bitor","bitxor","bitnot"]:
+    if data in ["add","sub","mul","div","call","input","ptr_read","rshift","lshift","bitand","bitor","bitxor","bitnot"]:
         return "aexp"
     
     if data in ["and","or","not","eq","lt","le"]:

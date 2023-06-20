@@ -1,7 +1,13 @@
 result := 1;
 
 a := 1 + 2;
-if a = 3 then
+b := 1 - 2;
+c := 6 * 2;
+d := 6 / 2;
+e := 7 / 2;
+f := 5 * 5 / 2 ; # 12
+g := 5 / 2 * 5 ; # 10
+if a = 3 and b = -1 and c = 12 and d = 3 and e = 3 and f = 12 and g = 10 then
     skip
 else
     result := result - 1
@@ -47,7 +53,7 @@ else
     result := result - 1
 end;
 
-# hofun のテスト
+# high order function のテスト
 
 def hofun (f, x, y,){
     skip
@@ -103,6 +109,47 @@ if a=1 and b=0 and c=0 and d=1 then
 else
     result := result - 1
 end;
+
+
+
+
+
+# 足し算、かけざん、べき乗を一般化した関数を定義する　ハイパー演算
+
+def hyper (a, b, n,){
+    res := 0;
+    if n = 1 then
+        res := a + b
+    else 
+        res := a;
+        i := 0;
+        while i < b - 1 do
+            res := hyper(a, res, n - 1,);
+            i := i + 1
+        end
+    end
+
+    return res
+};
+
+
+
+a := hyper(2, 3, 1,); # 2 + 3 = 5
+b := hyper(2, 3, 2,); # 2 * 3 = 6
+c := hyper(2, 3, 3,); # 2 ^ 3 = 8
+d := hyper(2, 3, 4,); # 2 ^ 2 ^ 2 = 16 ちなみにhyper(2, 4, 4,) は終わらなかった
+
+
+
+
+if a = 5 and b = 6 and c = 8 and d = 16 then
+    skip
+else
+    result := result - 1
+end;
+
+
+
 
 
 # これが1ならすべてのテストが通ったことになる

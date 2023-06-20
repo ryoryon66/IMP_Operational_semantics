@@ -6,6 +6,7 @@ start:com
 
     term: factor
         | term "*" factor  -> mul
+        | term "/" factor  -> div
 
     factor: NUM
           | VAR

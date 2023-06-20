@@ -164,7 +164,7 @@ class DeriviationTreeNode:
         
         data = self.exp.data
         
-        is_aexp = data in ["aexp","term","factor","add","sub","mul","call"]
+        is_aexp = data in ["aexp","term","factor","add","sub","mul","div","call"]
         is_bexp = data in ["bexp","batom","and","or","not","eq","lt"]
         is_com = data in ["com","skip","assign","ifelse","while","seq","print","def"]
         
@@ -321,6 +321,15 @@ class DeriviationTreeNode:
             self.ancestors.append(ancestor1)
             self.ancestors.append(ancestor2)
             res = ancestor1.eval() * ancestor2.eval()
+            self.res = res
+            return res
+        
+        if data == "div":
+            ancestor1 = DeriviationTreeNode(self.exp.children[0],deepcopy(self.env))
+            ancestor2 = DeriviationTreeNode(self.exp.children[1],deepcopy(self.env))
+            self.ancestors.append(ancestor1)
+            self.ancestors.append(ancestor2)
+            res = ancestor1.eval() // ancestor2.eval()
             self.res = res
             return res
         
