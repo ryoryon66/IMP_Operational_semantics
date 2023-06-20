@@ -78,7 +78,7 @@ class DeriviationTreeNode:
         
         self.ancestors : list[DeriviationTreeNode] = []
         self._id = str(time.time()).replace(".","")
-        self.res = None
+        self.res = None #返り値　例えばcomなら環境情報
         return
 
     def get_node_label (self):
@@ -463,7 +463,7 @@ def run_code (code : str) :
         print ("number of nodes in deriviation tree (aborted) : {}".format(count_nodes(deriviation_tree)))
         
         print_profile()
-        exit ()
+        return deriviation_tree
         
     print ("finished constructing deriviation tree")
 
@@ -501,3 +501,10 @@ if __name__ == "__main__":
     with open(output_file_name, "w") as f:
         f.write(dot_graph)
     print ("finished saving deriviation tree to file")
+    
+    # save as png
+    print ("saving deriviation tree to png...")
+    import subprocess
+    # bigsize
+    subprocess.run(["dot", "-Tpng", "-Gsize=400,400\!", output_file_name, "-o", output_file_name.replace(".txt",".png")])
+    print ("finished saving deriviation tree to png")

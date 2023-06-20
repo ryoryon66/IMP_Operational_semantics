@@ -3,7 +3,7 @@ a2 := 1;
 
 print a2;
 
-n := 10;
+n := 5;
 i := 2;
 
 while i < n + 1 do

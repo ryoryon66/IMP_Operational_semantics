@@ -14,13 +14,14 @@ def sq(x,){
     return x*x
 };
 
-def tri (x,){
-    skip
-    return x*x *x
-};
+#def tri (x,){
+#    skip
+#    return x*x *x
+#};
 
-print sum(sq,2,);
+ans := sum(sq,2,);
+print ans;
 
-print sum(tri, sum(sq,2,),);
+#print sum(tri, sum(sq,2,),);
 
 skip

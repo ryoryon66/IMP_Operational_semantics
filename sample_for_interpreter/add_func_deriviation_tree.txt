@@ -1,0 +1,24 @@
+digraph G {
+node [shape=record];
+16872341940626988 [label="{\<def add\{...\};res:=add(1,2),[]\>→[(add, fun([x, y])), (res, 3)]}" color="black" penwidth="3.0" style="filled" fillcolor="gray"];
+1687234194062762 [label="{\<def add\{...\},[]\>→[(add, fun([x, y]))]}" color="green" penwidth="3.0" style="filled" fillcolor="gray"];
+1687234194062762 -> 16872341940626988;
+16872341940628572 [label="{\<res:=add(1,2),[(add, fun([x, y]))]\>→[(add, fun([x, y])), (res, 3)]}" color="green" penwidth="3.0" style="filled" fillcolor="gray"];
+1687234194062909 [label="{\<add(1,2),[(add, fun([x, y]))]\>→3}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940629694 [label="{\<1,[(add, fun([x, y]))]\>→1}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940629694 -> 1687234194062909;
+16872341940629857 [label="{\<2,[(add, fun([x, y]))]\>→2}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940629857 -> 1687234194062909;
+16872341940629942 [label="{\<sum:=x+y,[(x, 1), (y, 2), (add, fun([x, y]))]\>→[(x, 1), (y, 2), (add, fun([x, y])), (sum, 3)]}" color="green" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940630803 [label="{\<x+y,[(x, 1), (y, 2), (add, fun([x, y]))]\>→3}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940631971 [label="{\<x,[(x, 1), (y, 2), (add, fun([x, y]))]\>→1}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940631971 -> 16872341940630803;
+16872341940632484 [label="{\<y,[(x, 1), (y, 2), (add, fun([x, y]))]\>→2}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940632484 -> 16872341940630803;
+16872341940630803 -> 16872341940629942;
+16872341940629942 -> 1687234194062909;
+16872341940632646 [label="{\<sum,[(x, 1), (y, 2), (add, fun([x, y])), (sum, 3)]\>→3}" color="purple" penwidth="3.0" style="filled" fillcolor="gray"];
+16872341940632646 -> 1687234194062909;
+1687234194062909 -> 16872341940628572;
+16872341940628572 -> 16872341940626988;
+}

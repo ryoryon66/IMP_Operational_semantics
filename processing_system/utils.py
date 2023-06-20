@@ -118,7 +118,8 @@ def aexp_tree_to_string(tree:Union[ParseTree,Token]):
     if data == "call":
         funcname = tree.children[0].value
         args = tree.children[1:]
-        args_str = " ".join([aexp_tree_to_string(arg) for arg in args])
+
+        args_str = ",".join([aexp_tree_to_string(arg) for arg in args])
         
         return funcname + "(" + args_str + ")"
     
@@ -174,11 +175,11 @@ def com_tree_to_string(tree:Union[ParseTree,Token]):
     elif data == "assign":
         return "" + tree.children[0].value + ":=" + aexp_tree_to_string(tree.children[1]) + ""
     elif data == "ifelse":
-        return "if " + bexp_tree_to_string(tree.children[0]) + " then " + com_tree_to_string(tree.children[1]) + " else " + com_tree_to_string(tree.children[2]) + "end"
+        return "if " + bexp_tree_to_string(tree.children[0]) + " then " + com_tree_to_string(tree.children[1]) + " else " + com_tree_to_string(tree.children[2]) + " end"
     elif data == "seq":
         return "" + com_tree_to_string(tree.children[0]) + ";" + com_tree_to_string(tree.children[1]) + ""
     elif data == "while":
-        return "while " + bexp_tree_to_string(tree.children[0]) + " do " + com_tree_to_string(tree.children[1]) + "end"
+        return "while " + bexp_tree_to_string(tree.children[0]) + " do " + com_tree_to_string(tree.children[1]) + " end"
     elif data == "com":
         return "" + com_tree_to_string(tree.children[0]) + ""
     elif data == "print":
@@ -189,7 +190,7 @@ def com_tree_to_string(tree:Union[ParseTree,Token]):
         args = tree.children[1:-2]
         args_str = ""
         for arg in args:
-            args_str += arg.value + " "
+            args_str += arg.value + ","
         com_str = com_tree_to_string(tree.children[-2])
         returned_aexp_str = aexp_tree_to_string(tree.children[-1])
         return "def "+func_name+"{...}"

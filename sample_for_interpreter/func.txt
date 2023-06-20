@@ -1,6 +1,6 @@
-def const4() {
+def const() {
     skip
-    return 4
+    return 3
 };
 
 def fact(n,) {
@@ -14,7 +14,7 @@ def fact(n,) {
     return a
 };
 
-a := const4();
+a := const();
 
 b := fact(a,);
 

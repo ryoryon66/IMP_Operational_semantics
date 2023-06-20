@@ -1,14 +1,11 @@
 a := 2;
 
 if a = 2 then
- skip
+ a := 20
 else 
- print 1;
- print 2
+ a := 10
 end;
 
-print 100;
-
-print 200;
+print a;
 
 skip
