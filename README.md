@@ -12,15 +12,41 @@ apt -y install imagemagick
 pip install -r requirements.txt
 ```
 
-proceccing_system内にコンパイラ、インタプリタがあります。
+proceccing_system内にコンパイラ、インタプリタがあります。またサンプルコードもリポジトリ内にあります。インタプリタとコンパイラで微妙に機能が異なっています。
+
+# コンパイラ
+
+実験で作成した自作CPUのためのコンパイラです。円周率計算、ハノイの塔シミュレーション、ライフゲーム、弾除けゲームなどを作成しました。
+
+## 使い方
+
+SIMPLEの命令レベルシミュレーターが必要です。
+
+```
+bash compile.sh プログラムへのパス
+```
+
+文法はsyntax_for_compiler.larkを参照してください。
+
+## 工夫点
+
+- 一回のジャンプで飛べる行数が最大128なのでラベル解決のために複数回ジャンプを行うようにした。
+
+- BR命令やJALR命令に相当するものがないのでスタックに戻り先のcallのラベルに割り付けたidを積むようにして戻り先が分かるようにしました。
+
+
 
 # インタプリタ
 
-## 使用方法
+IMPの機能に加えて関数定義、関数呼び出しを実装した自作言語のインタプリタです。操作的意味論での導出木の構築を愚直にシミュレーションするので計算は遅いです。
+
+## 使い方
 
 ```
-python processing_system/interpreter.py --input プログラムへのパス
+python processing_system/interpreter.py --input プログラムへのパス(.txt)
 ```
+
+文法はsyntax.larkを参照してください。
 
 ## 可視化例
 
@@ -106,10 +132,6 @@ end
 ```
 
 ![eternalwhile_deriviation_tree](https://github.com/ryoryon66/IMP_Operational_semantics/assets/46624038/bef662d5-c2e1-4408-af4f-864c3301d93d)
-
-# コンパイラ
-
-## 使い方
 
 
 
