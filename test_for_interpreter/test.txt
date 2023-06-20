@@ -1,0 +1,110 @@
+result := 1;
+
+a := 1 + 2;
+if a = 3 then
+    skip
+else
+    result := result - 1
+end;
+
+# while 関数　のテスト
+def mult(x, y,){
+    result := 0;
+    while 0 < y do
+        result := result + x;
+        y := y - 1
+    end
+
+    return result
+};
+
+a := mult(a, a,);
+
+if a = 9 then
+    skip
+else
+    result := result - 1
+end;
+
+# 再帰関数のテスト
+
+def fact (x,){
+    
+    if x = 0 then
+        res := 1
+    else
+        res := x * fact(x - 1,)
+    end
+
+    return res
+};
+
+a := fact(6,);
+
+if a = 720 then
+    skip
+else
+    result := result - 1
+end;
+
+# hofun のテスト
+
+def hofun (f, x, y,){
+    skip
+    return f(x, y,)
+};
+
+def add (x, y,){
+    skip
+    return x + y
+};
+
+a := hofun(add, 1, 2,);
+
+if a = 3 then
+    skip
+else
+    result := result - 1
+end;
+
+#　相互再帰を高階関数で実現するテスト　外のスコープが見えないので引数で渡す
+
+def even (x,odd,){
+
+    res := 0;
+    if x = 0 then
+        res := 1
+    else
+        res := odd(x - 1,even,)
+    end
+
+    return res
+};
+
+def odd (x,even,){
+
+    res := 0;
+    if x = 0 then
+        res := 0
+    else
+        res := even(x - 1,odd,)
+    end
+
+    return res
+};
+
+a := even(10,odd,);
+b := odd(10,even,);
+c := even(11,odd,);
+d := odd(11,even,);
+
+if a=1 and b=0 and c=0 and d=1 then
+    skip
+else
+    result := result - 1
+end;
+
+
+# これが1ならすべてのテストが通ったことになる
+
+print result
