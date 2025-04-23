@@ -1,0 +1,3975 @@
+LI 6 1
+SLL 6 12
+LI 1 0
+LI 2 46
+ADD 1 2
+SUB 6 1
+MOV 7 6
+LI 1 2
+SUB 7 1
+LI 0 1
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+LI 5 0
+LI 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LI 1 7
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 2(7)
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+LI 5 0
+LI 1 1
+SLL 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 2(7)
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+LI 5 0
+LI 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 2(7)
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+LI 5 0
+LI 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 2(7)
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+LI 5 0
+LI 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 2(7)
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+B 118
+SUB 7 0 // @call_mult_begin$
+SUB 7 0
+SUB 7 0
+LI 3 -2
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 2
+SUB 3 4
+ST 1 0(3)
+LI 3 -3
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 3
+SUB 3 4
+ST 1 0(3)
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+ADD 7 0
+MOV 3 6
+LI 4 4
+SUB 3 4
+ST 5 0(3)
+LI 1 0 // @Lbegin100001$
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 2(7)
+LD 2 1(7)
+LI 5 1
+CMP 1 2
+BLT 1
+LI 5 0
+ST 5 2(7) // @lt_label_100002$
+ADD 7 0
+ADD 7 0
+LI 1 0
+SUB 1 5
+BE 43
+MOV 3 6
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+ADD 5 1
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+LI 4 4
+SUB 3 4
+ST 5 0(3)
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LI 1 1
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+ST 5 0(3)
+B -65
+MOV 3 6 // @Lendwhile100001$
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 1
+SUB 3 4
+LD 1 0(3)
+B 1
+B -105 // @label_unique_37_altnative  // 424 to 218
+MOV 7 6 // @label_unique_38_for_detour
+SUB 7 0
+LD 2 0(6)
+ST 5 0(6)
+MOV 6 2
+LI 2 1
+CMP 1 2
+BE 74
+LI 2 2
+CMP 1 2
+BE 90
+OUT 0 
+HLT
+B 66 // @definition_mult:100000$
+SUB 7 0 // @call_div_begin$
+SUB 7 0
+SUB 7 0
+LI 3 -2
+B 1
+B -125 // @label_unique_491_altnative  // 465 to 218
+MOV 2 6 // @label_unique_492_for_detour
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 2
+SUB 3 4
+ST 1 0(3)
+LI 3 -3
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 3
+SUB 3 4
+ST 1 0(3)
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+ADD 7 0
+MOV 3 6
+LI 4 4
+SUB 3 4
+ST 5 0(3)
+MOV 3 6 // @Lbegin100004$
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 2(7)
+LD 2 1(7)
+LI 5 1
+CMP 1 2
+BLE 1
+LI 5 0
+ST 5 2(7) // @le_label_100005$
+ADD 7 0
+ADD 7 0
+LI 1 0
+SUB 1 5
+BE 55
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+B 1
+B 67 // @label_unique_175_altnative  // 336 to 465
+B 1 // @label_unique_176_for_detour
+B 81 // @label_unique_3_altnative  // 328 to 469
+SUB 7 0 // @label_unique_4_for_detour
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+ST 5 0(3)
+MOV 3 6
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+B 1
+B 95 // @label_unique_11_altnative  // 331 to 504
+LI 1 1 // @label_unique_12_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+B 3
+B -109 // @label_unique_35_altnative  // 629 to 218
+B 1
+B -96 // @label_unique_143_altnative  // 517 to 337
+LD 1 1(7) // @label_unique_36_for_detour // @label_unique_144_for_detour
+LD 5 2(7)
+ADD 5 1
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+LI 4 4
+B 1
+B -106 // @label_unique_173_altnative  // 538 to 337
+SUB 3 4 // @label_unique_174_for_detour
+ST 5 0(3)
+B -79
+MOV 3 6 // @Lendwhile100004$
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 1
+SUB 3 4
+LD 1 0(3)
+MOV 7 6
+SUB 7 0
+LD 2 0(6)
+ST 5 0(6)
+MOV 6 2
+LI 2 1
+CMP 1 2
+BE 69
+LI 2 2
+CMP 1 2
+B 1
+B -126 // @label_unique_489_altnative  // 710 to 218
+BE 78 // @label_unique_490_for_detour
+OUT 0 
+HLT
+B 98 // @definition_div:100003$
+SUB 7 0 // @call_mod_begin$
+SUB 7 0
+LI 3 -2
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 2
+SUB 3 4
+ST 1 0(3)
+LI 3 -3
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+B 1
+B 81 // @label_unique_1_altnative  // 328 to 608
+MOV 3 6 // @label_unique_2_for_detour
+LI 4 3
+SUB 3 4
+ST 1 0(3)
+MOV 3 6 // @Lbegin100007$
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 2(7)
+LD 2 1(7)
+LI 5 1
+CMP 1 2
+BLE 1
+LI 5 0
+ST 5 2(7) // @le_label_100008$
+ADD 7 0
+ADD 7 0
+LI 1 0
+SUB 1 5
+BE 35
+MOV 3 6
+LI 4 2
+SUB 3 4
+B 1
+B 99 // @label_unique_9_altnative  // 331 to 675
+LD 5 0(3) // @label_unique_10_for_detour
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 3
+B 1
+B -96 // @label_unique_141_altnative  // 695 to 337
+SUB 3 4 // @label_unique_142_for_detour
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+B 1
+B 73 // @label_unique_23_altnative  // 451 to 581
+LD 1 1(7) // @label_unique_24_for_detour
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+B 1
+B -113 // @label_unique_39_altnative  // 633 to 426
+LI 4 2 // @label_unique_40_for_detour
+B 3
+B 1
+B -105 // @label_unique_171_altnative  // 738 to 337
+B 78 // @label_unique_21_altnative  // 454 to 594 // @label_unique_172_for_detour
+SUB 3 4 // @label_unique_22_for_detour
+ST 5 0(3)
+B -59
+MOV 3 6 // @Lendwhile100007$
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 1
+SUB 3 4
+LD 1 0(3)
+MOV 7 6
+SUB 7 0
+LD 2 0(6)
+ST 5 0(6)
+MOV 6 2
+OUT 0 
+HLT
+B 1
+B 92 // @label_unique_25_altnative  // 473 to 624
+B 74 // @definition_mod:100006$ // @label_unique_26_for_detour
+SUB 7 0 // @call_pow_begin$
+SUB 7 0
+SUB 7 0
+LI 3 -2
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 2
+SUB 3 4
+ST 1 0(3)
+LI 3 -3
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 3
+SUB 3 4
+ST 1 0(3)
+B 1
+B -125 // @label_unique_493_altnative  // 714 to 467
+LI 1 1 // @label_unique_494_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+ADD 7 0
+MOV 3 6
+LI 4 4
+SUB 3 4
+ST 5 0(3)
+LI 1 0 // @Lbegin100010$
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+B 1
+B 81 // @label_unique_15_altnative  // 451 to 705
+LI 4 3 // @label_unique_16_for_detour
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 2(7)
+LD 2 1(7)
+LI 5 1
+CMP 1 2
+BLT 5
+LI 5 0
+B 3
+B 120 // @label_unique_27_altnative  // 506 to 689
+B 1
+B -96 // @label_unique_145_altnative  // 699 to 519
+ST 5 2(7) // @lt_label_100011$ // @label_unique_28_for_detour // @label_unique_146_for_detour
+ADD 7 0
+B 1
+B 88 // @label_unique_19_altnative  // 454 to 732
+ADD 7 0 // @label_unique_20_for_detour
+LI 1 0
+SUB 1 5
+BE 63
+ST 6 0(7)
+SUB 7 0
+LI 1 1
+ST 1 0(7)
+B 1
+B -66 // @label_unique_541_altnative  // 699 to 571
+SUB 7 0 // @label_unique_542_for_detour
+MOV 3 6
+LI 4 4
+B 1
+B -71 // @label_unique_331_altnative  // 697 to 567
+SUB 3 4 // @label_unique_332_for_detour
+LD 5 0(3)
+B 1
+B 87 // @label_unique_29_altnative  // 550 to 683
+ST 5 0(7) // @label_unique_30_for_detour
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+B 3
+B -109 // @label_unique_177_altnative  // 744 to 542
+B 1
+B -66 // @label_unique_543_altnative  // 720 to 591
+SUB 7 0 // @label_unique_178_for_detour // @label_unique_544_for_detour
+MOV 6 7
+LI 1 4
+ADD 6 1
+B -120
+ADD 7 0 // @call_mult_end:10001$
+MOV 3 6
+LI 4 4
+SUB 3 4
+ST 5 0(3)
+MOV 3 6
+B 1
+B -99 // @label_unique_97_altnative  // 728 to 557
+LI 4 3 // @label_unique_98_for_detour
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LI 1 1
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+B 1
+B -113 // @label_unique_539_altnative  // 786 to 571
+ST 5 2(7) // @label_unique_540_for_detour
+ADD 7 0
+ADD 7 0
+MOV 3 6
+B 1
+B 83 // @label_unique_31_altnative  // 585 to 719
+LI 4 3 // @label_unique_32_for_detour
+SUB 3 4
+ST 5 0(3)
+B -93
+MOV 3 6 // @Lendwhile100010$
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 1
+B 1
+B -68 // @label_unique_291_altnative  // 809 to 567
+SUB 3 4 // @label_unique_292_for_detour
+LD 1 0(3)
+MOV 7 6
+SUB 7 0
+LD 2 0(6)
+ST 5 0(6)
+B 1
+B -71 // @label_unique_329_altnative  // 825 to 567
+MOV 6 2 // @label_unique_330_for_detour
+LI 2 1
+B 1
+B 92 // @label_unique_33_altnative  // 602 to 746
+CMP 1 2 // @label_unique_34_for_detour
+BE 125
+LI 2 2
+CMP 1 2
+BE 100
+B 1
+B -67 // @label_unique_487_altnative  // 1201 to 218
+LI 2 3 // @label_unique_488_for_detour
+CMP 1 2
+BE 101
+LI 2 4
+CMP 1 2
+B 1
+B -108 // @label_unique_139_altnative  // 1052 to 337
+BE 85 // @label_unique_140_for_detour
+OUT 0 
+HLT
+B 71 // @definition_pow:100009$
+SUB 7 0 // @call_remainder_begin$
+SUB 7 0
+LI 3 -2
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+B 1
+B 120 // @label_unique_7_altnative  // 331 to 1018
+MOV 3 6 // @label_unique_8_for_detour
+LI 4 2
+SUB 3 4
+ST 1 0(3)
+LI 3 -3
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 3
+SUB 3 4
+ST 1 0(3)
+MOV 3 6 // @Lbegin100013$
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+B 3
+B -113 // @label_unique_169_altnative  // 1138 to 337
+B 1
+B -66 // @label_unique_495_altnative  // 825 to 697
+B 1 // @label_unique_170_for_detour // @label_unique_496_for_detour
+B -102 // @label_unique_95_altnative  // 898 to 557
+SUB 7 0 // @label_unique_96_for_detour
+B 1
+B 91 // @label_unique_13_altnative  // 451 to 957
+LD 1 2(7) // @label_unique_14_for_detour
+LD 2 1(7)
+LI 5 1
+CMP 1 2
+BLE 3
+LI 5 0
+B 1
+B -71 // @label_unique_333_altnative  // 829 to 699
+ST 5 2(7) // @le_label_100014$ // @label_unique_334_for_detour
+ADD 7 0
+ADD 7 0
+LI 1 0
+B 1
+B -66 // @label_unique_545_altnative  // 850 to 722
+SUB 1 5 // @label_unique_546_for_detour
+BE 35
+MOV 3 6
+LI 4 2
+SUB 3 4
+B 1
+B -112 // @label_unique_537_altnative  // 999 to 571
+LD 5 0(3) // @label_unique_538_for_detour
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+B 1
+B -70 // @label_unique_499_altnative  // 856 to 728
+B 1 // @label_unique_500_for_detour
+B 67 // @label_unique_497_altnative  // 727 to 857
+ST 5 0(7) // @label_unique_498_for_detour
+B 1
+B 103 // @label_unique_17_altnative  // 454 to 1009
+SUB 7 0 // @label_unique_18_for_detour
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+B 1
+B 105 // @label_unique_61_altnative  // 692 to 830
+ADD 7 0 // @label_unique_62_for_detour
+MOV 3 6
+LI 4 2
+B 1
+B 64 // @label_unique_47_altnative  // 686 to 842
+SUB 3 4 // @label_unique_48_for_detour
+ST 5 0(3)
+B -71
+MOV 3 6 // @Lendwhile100013$
+B 1
+B 68 // @label_unique_53_altnative  // 689 to 852
+LI 4 2 // @label_unique_54_for_detour
+B 1
+B -97 // @label_unique_135_altnative  // 860 to 698
+SUB 3 4 // @label_unique_136_for_detour
+LD 5 0(3)
+B 1
+B -106 // @label_unique_149_altnative  // 881 to 701
+ST 5 0(7) // @label_unique_150_for_detour
+SUB 7 0
+MOV 3 6
+LI 4 1
+SUB 3 4
+B 1
+B -74 // @label_unique_289_altnative  // 1050 to 567
+B 1 // @label_unique_290_for_detour
+B 83 // @label_unique_41_altnative  // 683 to 869
+LD 1 0(3) // @label_unique_42_for_detour
+MOV 7 6
+SUB 7 0
+LD 2 0(6)
+ST 5 0(6)
+B 3
+B -117 // @label_unique_163_altnative  // 905 to 706
+B 1
+B -66 // @label_unique_503_altnative  // 966 to 716
+MOV 6 2 // @label_unique_164_for_detour // @label_unique_504_for_detour
+LI 2 1
+CMP 1 2
+B 1
+B -77 // @label_unique_327_altnative  // 1082 to 567
+BE 84 // @label_unique_328_for_detour
+LI 2 2
+CMP 1 2
+B 1
+B 89 // @label_unique_65_altnative  // 703 to 888
+BE 115 // @label_unique_66_for_detour
+B 1
+B 64 // @label_unique_69_altnative  // 729 to 868
+LI 2 3 // @label_unique_70_for_detour
+CMP 1 2
+BE 67
+B 1
+B -68 // @label_unique_199_altnative  // 949 to 714
+OUT 0  // @label_unique_200_for_detour
+HLT
+B 77 // @definition_remainder:100012$
+SUB 7 0 // @call_fill_ones_begin$
+SUB 7 0
+LI 3 -2
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+B 1
+B -112 // @label_unique_99_altnative  // 902 to 730
+MOV 3 6 // @label_unique_100_for_detour
+LI 4 2
+SUB 3 4
+B 1
+B 75 // @label_unique_529_altnative  // 811 to 940
+ST 1 0(3) // @label_unique_530_for_detour
+LI 1 0
+B 1
+B -125 // @label_unique_181_altnative  // 948 to 746
+ST 1 0(7) // @label_unique_182_for_detour
+MOV 5 1
+SUB 7 0
+ADD 7 0
+B 1
+B 87 // @label_unique_339_altnative  // 803 to 932
+MOV 3 6 // @label_unique_340_for_detour
+LI 4 3
+B 3
+B -67 // @label_unique_531_altnative  // 955 to 824
+B 1
+B -109 // @label_unique_547_altnative  // 1009 to 794
+SUB 3 4 // @label_unique_532_for_detour // @label_unique_548_for_detour
+ST 5 0(3)
+LI 1 0 // @Lbegin100016$
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+LI 4 2
+B 1
+B 77 // @label_unique_73_altnative  // 754 to 908
+SUB 3 4 // @label_unique_74_for_detour
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+B 1
+B -78 // @label_unique_301_altnative  // 939 to 811
+B 3 // @label_unique_302_for_detour
+B 1
+B -70 // @label_unique_533_altnative  // 974 to 842
+B 75 // @label_unique_59_altnative  // 692 to 966 // @label_unique_534_for_detour
+LD 1 2(7) // @label_unique_60_for_detour
+B 1
+B -76 // @label_unique_343_altnative  // 955 to 826
+B 1 // @label_unique_344_for_detour
+B 113 // @label_unique_201_altnative  // 809 to 939
+LD 2 1(7) // @label_unique_202_for_detour
+B 1
+B 65 // @label_unique_605_altnative  // 865 to 994
+LI 5 1 // @label_unique_606_for_detour
+CMP 1 2
+BLT 3
+LI 5 0
+B 1
+B 65 // @label_unique_603_altnative  // 868 to 998
+ST 5 2(7) // @lt_label_100017$ // @label_unique_604_for_detour
+B 1
+B -83 // @label_unique_337_altnative  // 961 to 831
+ADD 7 0 // @label_unique_338_for_detour
+ADD 7 0
+B 1
+B 91 // @label_unique_299_altnative  // 824 to 953
+LI 1 0 // @label_unique_300_for_detour
+SUB 1 5
+BE 77
+MOV 3 6
+LI 4 3
+B 3
+B 1
+B 67 // @label_unique_527_altnative  // 863 to 993
+B 93 // @label_unique_295_altnative  // 828 to 958 // @label_unique_528_for_detour
+B 3 // @label_unique_296_for_detour
+B 1
+B -82 // @label_unique_341_altnative  // 976 to 848
+B -127 // @label_unique_133_altnative  // 1020 to 698 // @label_unique_342_for_detour
+SUB 3 4 // @label_unique_134_for_detour
+LD 5 0(3)
+B 1
+B -80 // @label_unique_369_altnative  // 984 to 855
+B 3 // @label_unique_370_for_detour
+B 75 // @label_unique_45_altnative  // 686 to 996
+B 1
+B -95 // @label_unique_297_altnative  // 967 to 836
+ST 5 0(7) // @label_unique_46_for_detour // @label_unique_298_for_detour
+B 1
+B -94 // @label_unique_303_altnative  // 976 to 840
+SUB 7 0 // @label_unique_304_for_detour
+ST 6 0(7)
+SUB 7 0
+LI 1 1
+B 1
+B -100 // @label_unique_601_altnative  // 1063 to 874
+B 1 // @label_unique_602_for_detour
+B -86 // @label_unique_345_altnative  // 998 to 862
+B 1 // @label_unique_346_for_detour
+B -78 // @label_unique_147_altnative  // 1060 to 701
+B 1 // @label_unique_148_for_detour
+B 117 // @label_unique_87_altnative  // 797 to 927
+ST 1 0(7) // @label_unique_88_for_detour
+B 3
+B 1
+B -110 // @label_unique_245_altnative  // 977 to 836
+B 82 // @label_unique_51_altnative  // 689 to 1013 // @label_unique_246_for_detour
+SUB 7 0 // @label_unique_52_for_detour
+LI 1 2
+ST 1 0(7)
+MOV 5 1
+B 1
+B 89 // @label_unique_347_altnative  // 880 to 1010
+SUB 7 0 // @label_unique_348_for_detour
+MOV 3 6
+B 1
+B -74 // @label_unique_501_altnative  // 1215 to 716
+B 3 // @label_unique_502_for_detour
+B 66 // @label_unique_67_altnative  // 729 to 1005
+B 1
+B 77 // @label_unique_371_altnative  // 888 to 1018
+LI 4 2 // @label_unique_68_for_detour // @label_unique_372_for_detour
+SUB 3 4
+B 1
+B 76 // @label_unique_81_altnative  // 802 to 949
+LD 5 0(3) // @label_unique_82_for_detour
+ST 5 0(7)
+SUB 7 0
+B 5
+B 1
+B -104 // @label_unique_215_altnative  // 987 to 859
+B -85 // @label_unique_161_altnative  // 1102 to 706 // @label_unique_216_for_detour
+B 1
+B -94 // @label_unique_293_altnative  // 1054 to 811
+LI 1 1 // @label_unique_162_for_detour // @label_unique_294_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+B 1
+B -116 // @label_unique_525_altnative  // 1410 to 571
+B 1 // @label_unique_526_for_detour
+B 75 // @label_unique_83_altnative  // 805 to 963
+LD 1 1(7) // @label_unique_84_for_detour
+LD 5 2(7)
+B 3
+B 1
+B 83 // @label_unique_365_altnative  // 908 to 1038
+B -87 // @label_unique_335_altnative  // 1090 to 831 // @label_unique_366_for_detour
+SUB 5 1 // @label_unique_336_for_detour
+B 1
+B -73 // @label_unique_385_altnative  // 1046 to 916
+ST 5 2(7) // @label_unique_386_for_detour
+ADD 7 0
+MOV 6 7
+LI 1 4
+ADD 6 1
+B 1
+B 99 // @label_unique_75_altnative  // 792 to 989
+B -77 // @label_unique_76_for_detour
+B 1
+B 82 // @label_unique_367_altnative  // 920 to 1051
+B 1 // @label_unique_368_for_detour
+B -86 // @label_unique_213_altnative  // 1046 to 836
+LD 1 1(7) // @call_pow_end:10001$ // @label_unique_214_for_detour
+LD 5 2(7)
+ADD 5 1
+ST 5 2(7)
+B 1
+B 90 // @label_unique_63_altnative  // 703 to 1072
+ADD 7 0 // @label_unique_64_for_detour
+B 1
+B -73 // @label_unique_387_altnative  // 1070 to 935
+ADD 7 0 // @label_unique_388_for_detour
+MOV 3 6
+LI 4 3
+SUB 3 4
+B 1
+B -92 // @label_unique_195_altnative  // 1182 to 714
+ST 5 0(3) // @label_unique_196_for_detour
+B 3
+B -92 // @label_unique_227_altnative  // 1083 to 836
+B 1
+B -67 // @label_unique_549_altnative  // 1118 to 988
+B 3 // @label_unique_228_for_detour // @label_unique_550_for_detour
+B 1
+B 69 // @label_unique_535_altnative  // 978 to 1107
+B -90 // @label_unique_179_altnative  // 1148 to 746 // @label_unique_536_for_detour
+MOV 3 6 // @label_unique_180_for_detour
+B 3
+B 85 // @label_unique_361_altnative  // 940 to 1069
+B 1
+B -97 // @label_unique_599_altnative  // 1250 to 874
+LI 4 2 // @label_unique_362_for_detour // @label_unique_600_for_detour
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+B 1
+B 69 // @label_unique_85_altnative  // 838 to 992
+B 3 // @label_unique_86_for_detour
+B 1
+B 75 // @label_unique_377_altnative  // 958 to 1087
+B 70 // @label_unique_71_altnative  // 754 to 1061 // @label_unique_378_for_detour
+LI 1 1 // @label_unique_72_for_detour
+ST 1 0(7)
+MOV 5 1
+B 1
+B -103 // @label_unique_243_altnative  // 1117 to 836
+SUB 7 0 // @label_unique_244_for_detour
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+B 7
+B 5
+B -84 // @label_unique_363_altnative  // 1089 to 961
+B 3
+B 1
+B 77 // @label_unique_379_altnative  // 973 to 1103
+B -86 // @label_unique_373_altnative  // 1104 to 967 // @label_unique_380_for_detour
+B 114 // @label_unique_77_altnative  // 797 to 1043 // @label_unique_364_for_detour // @label_unique_374_for_detour
+ST 5 2(7) // @label_unique_78_for_detour
+ADD 7 0
+ADD 7 0
+B 1
+B -75 // @label_unique_137_altnative  // 1024 to 862
+MOV 3 6 // @label_unique_138_for_detour
+LI 4 2
+SUB 3 4
+ST 5 0(3)
+B -100
+MOV 3 6 // @Lendwhile100016$
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+B 1
+B -89 // @label_unique_349_altnative  // 1104 to 973
+ST 5 0(7) // @label_unique_350_for_detour
+SUB 7 0
+MOV 3 6
+LI 4 1
+B 1
+B -80 // @label_unique_375_altnative  // 1124 to 992
+B 1 // @label_unique_376_for_detour
+B 94 // @label_unique_89_altnative  // 856 to 1036
+SUB 3 4 // @label_unique_90_for_detour
+B 1
+B -76 // @label_unique_151_altnative  // 1064 to 883
+LD 1 0(3) // @label_unique_152_for_detour
+B 1
+B -111 // @label_unique_555_altnative  // 1226 to 1011
+MOV 7 6 // @label_unique_556_for_detour
+B 1
+B -71 // @label_unique_505_altnative  // 1219 to 968
+SUB 7 0 // @label_unique_506_for_detour
+B 5
+B 77 // @label_unique_93_altnative  // 874 to 1031
+B 3
+B 109 // @label_unique_197_altnative  // 935 to 1065
+B 1
+B 91 // @label_unique_251_altnative  // 952 to 1081
+LD 2 0(6) // @label_unique_94_for_detour // @label_unique_198_for_detour // @label_unique_252_for_detour
+ST 5 0(6)
+MOV 6 2
+LI 2 1
+CMP 1 2
+BE 98
+B 9
+B 1
+B 73 // @label_unique_381_altnative  // 1020 to 1150
+B 5 // @label_unique_382_for_detour
+B 3
+B -86 // @label_unique_359_altnative  // 1130 to 1002
+B 1
+B 72 // @label_unique_383_altnative  // 1024 to 1156
+B -98 // @label_unique_255_altnative  // 1092 to 959 // @label_unique_360_for_detour // @label_unique_384_for_detour
+B 85 // @label_unique_91_altnative  // 866 to 1051 // @label_unique_256_for_detour
+B 3 // @label_unique_92_for_detour
+B 70 // @label_unique_79_altnative  // 802 to 1095
+B 1
+B -100 // @label_unique_247_altnative  // 1091 to 962
+LI 2 2 // @label_unique_80_for_detour // @label_unique_248_for_detour
+CMP 1 2
+BE 117
+LI 2 3
+CMP 1 2
+B 1
+B -96 // @label_unique_607_altnative  // 1258 to 1069
+BE 66 // @label_unique_608_for_detour
+LI 2 4
+CMP 1 2
+BE 100
+B 1
+B -69 // @label_unique_561_altnative  // 1224 to 1094
+OUT 0  // @label_unique_562_for_detour
+HLT
+B 73 // @definition_fill_ones:100015$
+B 1
+B -84 // @label_unique_165_altnative  // 1106 to 907
+SUB 7 0 // @call_dispalay_hanoi_begin$ // @label_unique_166_for_detour
+SUB 7 0
+SUB 7 0
+B 1
+B -85 // @label_unique_287_altnative  // 1532 to 567
+SUB 7 0 // @label_unique_288_for_detour
+LI 3 -2
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+B 1
+B -104 // @label_unique_257_altnative  // 1131 to 979
+LI 4 2 // @label_unique_258_for_detour
+SUB 3 4
+ST 1 0(3)
+ST 6 0(7)
+SUB 7 0
+LI 1 1
+B 1
+B -84 // @label_unique_325_altnative  // 1596 to 567
+B 3 // @label_unique_326_for_detour
+B -80 // @label_unique_209_altnative  // 1254 to 836
+B 1
+B -71 // @label_unique_557_altnative  // 1253 to 1122
+ST 1 0(7) // @label_unique_210_for_detour // @label_unique_558_for_detour
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+B 1
+B -84 // @label_unique_319_altnative  // 1152 to 1024
+LD 5 0(3) // @label_unique_320_for_detour
+B 3
+B 1
+B 79 // @label_unique_357_altnative  // 1053 to 1183
+B 64 // @label_unique_105_altnative  // 935 to 1071 // @label_unique_358_for_detour
+ST 5 0(7) // @label_unique_106_for_detour
+SUB 7 0
+B 1
+B 95 // @label_unique_249_altnative  // 1005 to 1134
+LI 1 10 // @label_unique_250_for_detour
+ST 1 0(7)
+B 7
+B 127 // @label_unique_57_altnative  // 692 to 1238
+B 1
+B -74 // @label_unique_183_altnative  // 1152 to 950
+B 3 // @label_unique_184_for_detour
+B 86 // @label_unique_103_altnative  // 926 to 1093
+B 1
+B 71 // @label_unique_553_altnative  // 1145 to 1274
+MOV 5 1 // @label_unique_58_for_detour // @label_unique_104_for_detour // @label_unique_554_for_detour
+B 1
+B 96 // @label_unique_101_altnative  // 910 to 1110
+SUB 7 0 // @label_unique_102_for_detour
+B 1
+B 69 // @label_unique_559_altnative  // 1155 to 1284
+MOV 6 7 // @label_unique_560_for_detour
+LI 1 4
+ADD 6 1
+B -67
+B 7
+B 1
+B 89 // @label_unique_253_altnative  // 1025 to 1155
+B -89 // @label_unique_203_altnative  // 1190 to 953 // @label_unique_254_for_detour
+B 3
+B 89 // @label_unique_241_altnative  // 1017 to 1146
+B 1
+B -118 // @label_unique_551_altnative  // 1436 to 1011
+ADD 7 0 // @call_remainder_end:10001$ // @label_unique_204_for_detour // @label_unique_242_for_detour // @label_unique_552_for_detour
+B 1
+B 69 // @label_unique_485_altnative  // 1113 to 1243
+MOV 3 6 // @label_unique_486_for_detour
+LI 4 3
+B 1
+B -95 // @label_unique_225_altnative  // 1328 to 836
+SUB 3 4 // @label_unique_226_for_detour
+ST 5 0(3)
+ST 6 0(7)
+B 1
+B -82 // @label_unique_309_altnative  // 1190 to 1061
+SUB 7 0 // @label_unique_310_for_detour
+LI 1 1
+B 1
+B -97 // @label_unique_595_altnative  // 1625 to 874
+ST 1 0(7) // @label_unique_596_for_detour
+B 1
+B -84 // @label_unique_315_altnative  // 1194 to 1066
+SUB 7 0 // @label_unique_316_for_detour
+MOV 3 6
+LI 4 2
+SUB 3 4
+B 3
+B 99 // @label_unique_211_altnative  // 1024 to 1153
+B 1
+B -72 // @label_unique_483_altnative  // 2179 to 218
+LD 5 0(3) // @label_unique_212_for_detour // @label_unique_484_for_detour
+ST 5 0(7)
+SUB 7 0
+B 5
+B 1
+B 67 // @label_unique_597_altnative  // 1202 to 1331
+B 101 // @label_unique_117_altnative  // 972 to 1102 // @label_unique_598_for_detour
+B 1
+B -85 // @label_unique_355_altnative  // 1236 to 1106
+LI 1 10 // @label_unique_118_for_detour // @label_unique_356_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 6 7
+B 1
+B -90 // @label_unique_317_altnative  // 1215 to 1082
+LI 1 4 // @label_unique_318_for_detour
+ADD 6 1
+B -84
+ADD 7 0 // @call_div_end:10001$
+MOV 3 6
+B 1
+B -119 // @label_unique_427_altnative  // 1318 to 1116
+B 3 // @label_unique_428_for_detour
+B 1
+B -110 // @label_unique_239_altnative  // 1392 to 836
+B 122 // @label_unique_109_altnative  // 969 to 1125 // @label_unique_240_for_detour
+LI 4 2 // @label_unique_110_for_detour
+SUB 3 4
+B 1
+B 113 // @label_unique_115_altnative  // 975 to 1128
+ST 5 0(3) // @label_unique_116_for_detour
+ST 6 0(7)
+SUB 7 0
+LI 1 2
+B 5
+B 3
+B -88 // @label_unique_311_altnative  // 1228 to 1100
+B 1
+B 73 // @label_unique_313_altnative  // 1102 to 1231
+B 115 // @label_unique_43_altnative  // 686 to 1305 // @label_unique_312_for_detour // @label_unique_314_for_detour
+ST 1 0(7) // @label_unique_44_for_detour
+SUB 7 0
+MOV 3 6
+B 1
+B 122 // @label_unique_127_altnative  // 981 to 1148
+LI 4 2 // @label_unique_128_for_detour
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LI 1 10
+ST 1 0(7)
+B 1
+B 81 // @label_unique_237_altnative  // 1073 to 1202
+MOV 5 1 // @label_unique_238_for_detour
+B 1
+B 121 // @label_unique_49_altnative  // 689 to 1335
+SUB 7 0 // @label_unique_50_for_detour
+B 1
+B 86 // @label_unique_107_altnative  // 965 to 1173
+MOV 6 7 // @label_unique_108_for_detour
+B 3
+B 1
+B -66 // @label_unique_609_altnative  // 1399 to 1271
+B -98 // @label_unique_233_altnative  // 1208 to 1080 // @label_unique_610_for_detour
+LI 1 4 // @label_unique_234_for_detour
+B 1
+B -78 // @label_unique_307_altnative  // 1309 to 1066
+ADD 6 1 // @label_unique_308_for_detour
+B -87
+B 1
+B -94 // @label_unique_235_altnative  // 1213 to 1085
+ADD 7 0 // @call_remainder_end:10002$ // @label_unique_236_for_detour
+MOV 3 6
+B 3
+B 107 // @label_unique_131_altnative  // 1010 to 1160
+B 1
+B -71 // @label_unique_353_altnative  // 1365 to 1106
+LI 4 4 // @label_unique_132_for_detour // @label_unique_354_for_detour
+SUB 3 4
+ST 5 0(3)
+ST 6 0(7)
+B 1
+B -97 // @label_unique_613_altnative  // 1451 to 1260
+SUB 7 0 // @label_unique_614_for_detour
+LI 1 2
+B 1
+B -117 // @label_unique_563_altnative  // 1448 to 1234
+ST 1 0(7) // @label_unique_564_for_detour
+SUB 7 0
+MOV 3 6
+B 1
+B -79 // @label_unique_217_altnative  // 1262 to 1050
+LI 4 2 // @label_unique_218_for_detour
+SUB 3 4
+B 1
+B 80 // @label_unique_123_altnative  // 978 to 1210
+LD 5 0(3) // @label_unique_124_for_detour
+ST 5 0(7)
+SUB 7 0
+LI 1 10
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 6 7
+LI 1 4
+B 3
+B 98 // @label_unique_111_altnative  // 972 to 1227
+B 1
+B -86 // @label_unique_261_altnative  // 1273 to 1133
+ADD 6 1 // @label_unique_112_for_detour // @label_unique_262_for_detour
+B -76
+ADD 7 0 // @call_div_end:10002$
+MOV 3 6
+LI 4 2
+SUB 3 4
+ST 5 0(3)
+ST 6 0(7)
+SUB 7 0
+LI 1 3
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+B 3
+B 1
+B -68 // @label_unique_511_altnative  // 1468 to 1221
+B -111 // @label_unique_425_altnative  // 1518 to 1116 // @label_unique_512_for_detour
+LI 1 10 // @label_unique_426_for_detour
+ST 1 0(7)
+B 1
+B 119 // @label_unique_5_altnative  // 331 to 1704
+MOV 5 1 // @label_unique_6_for_detour
+B 1
+B -72 // @label_unique_429_altnative  // 1391 to 1262
+SUB 7 0 // @label_unique_430_for_detour
+MOV 6 7
+LI 1 4
+B 1
+B 110 // @label_unique_113_altnative  // 975 to 1279
+ADD 6 1 // @label_unique_114_for_detour
+B 1
+B 83 // @label_unique_231_altnative  // 1142 to 1271
+B -84 // @label_unique_232_for_detour
+ADD 7 0 // @call_remainder_end:10003$
+B 1
+B -80 // @label_unique_229_altnative  // 1332 to 1085
+MOV 3 6 // @label_unique_230_for_detour
+B 1
+B -77 // @label_unique_389_altnative  // 1401 to 1270
+B 3 // @label_unique_390_for_detour
+B 114 // @label_unique_155_altnative  // 1080 to 1247
+B 1
+B -66 // @label_unique_615_altnative  // 1494 to 1365
+LI 4 5 // @label_unique_156_for_detour // @label_unique_616_for_detour
+SUB 3 4
+ST 5 0(3)
+LI 5 0
+LI 1 1
+SLL 1 1
+SLL 1 1
+ADD 5 1
+B 1
+B 116 // @label_unique_125_altnative  // 981 to 1313
+SLL 1 1 // @label_unique_126_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+B 3
+B 1
+B 83 // @label_unique_191_altnative  // 1141 to 1270
+B 121 // @label_unique_159_altnative  // 1095 to 1269 // @label_unique_192_for_detour
+ADD 5 1 // @label_unique_160_for_detour
+B 3
+B 1
+B -100 // @label_unique_611_altnative  // 1641 to 1260
+B 104 // @label_unique_129_altnative  // 1010 to 1308 // @label_unique_612_for_detour
+SLL 1 1 // @label_unique_130_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+B 1
+B -84 // @label_unique_259_altnative  // 1412 to 1133
+ADD 5 1 // @label_unique_260_for_detour
+SLL 1 1
+B 1
+B -67 // @label_unique_617_altnative  // 1534 to 1403
+ADD 5 1 // @label_unique_618_for_detour
+SLL 1 1
+SLL 1 1
+B 1
+B -115 // @label_unique_523_altnative  // 2247 to 571
+SLL 1 1 // @label_unique_524_for_detour
+SLL 1 1
+SLL 1 1
+B 1
+B 99 // @label_unique_167_altnative  // 1136 to 1281
+ST 5 0(7) // @label_unique_168_for_detour
+SUB 7 0
+ST 6 0(7)
+SUB 7 0
+B 1
+B -75 // @label_unique_305_altnative  // 1550 to 1066
+LI 1 1 // @label_unique_306_for_detour
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 5
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 3
+ADD 6 1
+B -69
+B 3
+B 1
+B -76 // @label_unique_351_altnative  // 1622 to 1106
+B -80 // @label_unique_265_altnative  // 1368 to 1239 // @label_unique_352_for_detour
+LD 1 2(7) // @call_fill_ones_end:10001$ // @label_unique_266_for_detour
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+LI 5 0
+LI 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+B 1
+B -112 // @label_unique_431_altnative  // 1524 to 1320
+ADD 5 1 // @label_unique_432_for_detour
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 3
+B 1
+B 111 // @label_unique_193_altnative  // 1180 to 1353
+B 114 // @label_unique_189_altnative  // 1174 to 1353 // @label_unique_194_for_detour
+SLL 1 1 // @label_unique_190_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 3
+B 77 // @label_unique_121_altnative  // 978 to 1440
+B 1
+B -68 // @label_unique_509_altnative  // 1713 to 1221
+SLL 1 1 // @label_unique_122_for_detour // @label_unique_510_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+B 1
+B 111 // @label_unique_153_altnative  // 1080 to 1413
+SLL 1 1 // @label_unique_154_for_detour
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+B 1
+B -86 // @label_unique_263_altnative  // 1416 to 1275
+SUB 7 0 // @label_unique_264_for_detour
+B 1
+B -99 // @label_unique_619_altnative  // 1649 to 1455
+B 3 // @label_unique_620_for_detour
+B 1
+B -72 // @label_unique_395_altnative  // 1515 to 1387
+B 115 // @label_unique_205_altnative  // 1206 to 1391 // @label_unique_396_for_detour
+ST 6 0(7) // @label_unique_206_for_detour
+SUB 7 0
+B 1
+B 100 // @label_unique_207_altnative  // 1220 to 1384
+LI 1 2 // @label_unique_208_for_detour
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+B 3
+B 108 // @label_unique_157_altnative  // 1095 to 1441
+B 1
+B -75 // @label_unique_393_altnative  // 1533 to 1403
+LI 1 3 // @label_unique_158_for_detour // @label_unique_394_for_detour
+ADD 6 1
+B -77
+LD 1 2(7) // @call_fill_ones_end:10002$
+ST 5 0(1)
+B 1
+B -109 // @label_unique_569_altnative  // 1661 to 1450
+LI 1 2 // @label_unique_570_for_detour
+ADD 7 1
+LI 5 0
+LI 1 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 1
+B -67 // @label_unique_621_altnative  // 1666 to 1536
+SLL 1 1 // @label_unique_622_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 1
+B 73 // @label_unique_323_altnative  // 1368 to 1498
+SLL 1 1 // @label_unique_324_for_detour
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+ST 6 0(7)
+SUB 7 0
+LI 1 3
+ST 1 0(7)
+B 3
+B 1
+B -112 // @label_unique_423_altnative  // 1919 to 1116
+B -72 // @label_unique_321_altnative  // 1566 to 1323 // @label_unique_424_for_detour
+SUB 7 0 // @label_unique_322_for_detour
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 3
+ADD 6 1
+B -89
+LD 1 2(7) // @call_fill_ones_end:10003$
+ST 5 0(1)
+LI 1 2
+B 1
+B 118 // @label_unique_187_altnative  // 1174 to 1530
+ADD 7 1 // @label_unique_188_for_detour
+LI 1 1
+B 1
+B -73 // @label_unique_391_altnative  // 1662 to 1403
+ST 1 0(7) // @label_unique_392_for_detour
+MOV 5 1
+SUB 7 0
+MOV 3 6
+B 1
+B -101 // @label_unique_593_altnative  // 2374 to 874
+B 1 // @label_unique_594_for_detour
+B 119 // @label_unique_221_altnative  // 1301 to 1479
+LI 4 1 // @label_unique_222_for_detour
+SUB 3 4
+LD 1 0(3)
+MOV 7 6
+SUB 7 0
+B 1
+B 86 // @label_unique_55_altnative  // 692 to 1782
+LD 2 0(6) // @label_unique_56_for_detour
+ST 5 0(6)
+MOV 6 2
+LI 2 1
+B 1
+B -67 // @label_unique_513_altnative  // 1717 to 1470
+CMP 1 2 // @label_unique_514_for_detour
+BE 106
+OUT 0 
+HLT
+B 80 // @definition_dispalay_hanoi:100018$
+SUB 7 0 // @call_simulate_hanoi_begin$
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+SUB 7 0
+B 1
+B 122 // @label_unique_223_altnative  // 1325 to 1505
+SUB 7 0 // @label_unique_224_for_detour
+SUB 7 0
+B 1
+B 84 // @label_unique_219_altnative  // 1294 to 1536
+LI 3 -2 // @label_unique_220_for_detour
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+B 1
+B -112 // @label_unique_567_altnative  // 1870 to 1450
+LI 4 2 // @label_unique_568_for_detour
+SUB 3 4
+ST 1 0(3)
+B 1
+B -72 // @label_unique_437_altnative  // 1656 to 1527
+LI 3 -3 // @label_unique_438_for_detour
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 3
+SUB 3 4
+ST 1 0(3)
+LI 3 -4
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+LI 4 4
+SUB 3 4
+ST 1 0(3)
+LI 3 -5
+MOV 2 6
+ADD 2 3
+LD 1 0(2)
+MOV 3 6
+B 1
+B -75 // @label_unique_397_altnative  // 1668 to 1537
+LI 4 5 // @label_unique_398_for_detour
+SUB 3 4
+ST 1 0(3)
+MOV 3 6
+LI 4 2
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+ADD 7 0
+B 1
+B -66 // @label_unique_629_altnative  // 1797 to 1668
+MOV 3 6 // @label_unique_630_for_detour
+LI 4 10
+SUB 3 4
+B 3
+B -113 // @label_unique_435_altnative  // 1728 to 1526
+B 1
+B -67 // @label_unique_631_altnative  // 1805 to 1674
+ST 5 0(3) // @label_unique_436_for_detour // @label_unique_632_for_detour
+ST 6 0(7)
+SUB 7 0
+LI 1 2
+ST 1 0(7)
+B 3
+B 1
+B -75 // @label_unique_471_altnative  // 1704 to 1570
+B 92 // @label_unique_273_altnative  // 1440 to 1580 // @label_unique_472_for_detour
+SUB 7 0 // @label_unique_274_for_detour
+B 1
+B -100 // @label_unique_627_altnative  // 1842 to 1653
+B 1 // @label_unique_628_for_detour
+B 77 // @label_unique_285_altnative  // 1449 to 1578
+LI 1 10 // @label_unique_286_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+LI 4 3
+B 1
+B 125 // @label_unique_267_altnative  // 1425 to 1610
+SUB 3 4 // @label_unique_268_for_detour
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 4
+ADD 6 1
+B 3
+B 80 // @label_unique_283_altnative  // 1462 to 1594
+B 1
+B -100 // @label_unique_649_altnative  // 1871 to 1674
+B -77 // @label_unique_284_for_detour // @label_unique_650_for_detour
+ADD 7 0 // @call_pow_end:10002$
+B 1
+B 107 // @label_unique_277_altnative  // 1446 to 1615
+MOV 3 6 // @label_unique_278_for_detour
+LI 4 6
+SUB 3 4
+ST 5 0(3)
+ST 6 0(7)
+SUB 7 0
+LI 1 3
+ST 1 0(7)
+SUB 7 0
+LI 1 10
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+B 1
+B -120 // @label_unique_453_altnative  // 1783 to 1570
+LI 4 4 // @label_unique_454_for_detour
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 4
+ADD 6 1
+B 1
+B -71 // @label_unique_507_altnative  // 2203 to 1221
+B -84 // @label_unique_508_for_detour
+ADD 7 0 // @call_pow_end:10003$
+B 1
+B -115 // @label_unique_571_altnative  // 1874 to 1663
+B 1 // @label_unique_572_for_detour
+B -70 // @label_unique_463_altnative  // 1807 to 1570
+MOV 3 6 // @label_unique_464_for_detour
+LI 4 7
+SUB 3 4
+ST 5 0(3)
+LI 1 3
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+B 1
+B -77 // @label_unique_469_altnative  // 1836 to 1570
+SUB 7 0 // @label_unique_470_for_detour
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+B 1
+B 76 // @label_unique_281_altnative  // 1449 to 1701
+MOV 3 6 // @label_unique_282_for_detour
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+B 1
+B 94 // @label_unique_271_altnative  // 1440 to 1719
+SUB 5 1 // @label_unique_272_for_detour
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+LI 4 9
+B 1
+B -99 // @label_unique_625_altnative  // 2029 to 1653
+B 1 // @label_unique_626_for_detour
+B 79 // @label_unique_119_altnative  // 978 to 1901
+SUB 3 4 // @label_unique_120_for_detour
+ST 5 0(3)
+MOV 3 6
+LI 4 5
+SUB 3 4
+LD 5 0(3)
+B 1
+B -123 // @label_unique_433_altnative  // 1929 to 1526
+ST 5 0(7) // @label_unique_434_for_detour
+SUB 7 0
+LI 1 1
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 2(7)
+LD 2 1(7)
+B 1
+B -68 // @label_unique_573_altnative  // 1893 to 1765
+LI 5 1 // @label_unique_574_for_detour
+B 1
+B -101 // @label_unique_647_altnative  // 2067 to 1674
+CMP 1 2 // @label_unique_648_for_detour
+BE 1
+LI 5 0
+ST 5 2(7) // @eq_label_100021$
+B 1
+B -71 // @label_unique_575_altnative  // 1901 to 1771
+ADD 7 0 // @label_unique_576_for_detour
+ADD 7 0
+LI 1 0
+SUB 1 5
+B 1
+B 112 // @label_unique_275_altnative  // 1446 to 1782
+BE 116 // @label_unique_276_for_detour
+B 1
+B 117 // @label_unique_185_altnative  // 1174 to 1884
+MOV 3 6 // @label_unique_186_for_detour
+LI 4 10
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 6
+SUB 3 4
+LD 5 0(3)
+B 1
+B -77 // @label_unique_473_altnative  // 1840 to 1706
+ST 5 0(7) // @label_unique_474_for_detour
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+B 1
+B 89 // @label_unique_401_altnative  // 1692 to 1821
+MOV 3 6 // @label_unique_402_for_detour
+LI 4 7
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+B 1
+B -127 // @label_unique_451_altnative  // 1995 to 1570
+ADD 5 1 // @label_unique_452_for_detour
+B 1
+B -116 // @label_unique_565_altnative  // 2289 to 1450
+ST 5 2(7) // @label_unique_566_for_detour
+B 1
+B -66 // @label_unique_655_altnative  // 1988 to 1860
+ADD 7 0 // @label_unique_656_for_detour
+ADD 7 0
+MOV 3 6
+LI 4 10
+SUB 3 4
+B 1
+B 77 // @label_unique_441_altnative  // 1724 to 1854
+ST 5 0(3) // @label_unique_442_for_detour
+LI 5 0
+LI 1 1
+B 1
+B 99 // @label_unique_399_altnative  // 1702 to 1847
+ADD 5 1 // @label_unique_400_for_detour
+SLL 1 1
+B 1
+B -72 // @label_unique_517_altnative  // 1966 to 1719
+ADD 5 1 // @label_unique_518_for_detour
+SLL 1 1
+ADD 5 1
+SLL 1 1
+B 3
+B -69 // @label_unique_461_altnative  // 2043 to 1570
+B 1
+B -100 // @label_unique_633_altnative  // 2037 to 1848
+ADD 5 1 // @label_unique_462_for_detour // @label_unique_634_for_detour
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+B 1
+B -103 // @label_unique_651_altnative  // 2071 to 1873
+LI 5 0 // @label_unique_652_for_detour
+B 1
+B -79 // @label_unique_467_altnative  // 2100 to 1570
+LI 1 1 // @label_unique_468_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 1
+B -68 // @label_unique_653_altnative  // 2047 to 1919
+SLL 1 1 // @label_unique_654_for_detour
+ADD 5 1
+B 1
+B -66 // @label_unique_439_altnative  // 1935 to 1732
+SLL 1 1 // @label_unique_440_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+B 3
+B 1
+B 115 // @label_unique_407_altnative  // 1735 to 1912
+B 80 // @label_unique_279_altnative  // 1449 to 1951 // @label_unique_408_for_detour
+ADD 5 1 // @label_unique_280_for_detour
+SLL 1 1
+B 1
+B 118 // @label_unique_409_altnative  // 1736 to 1920
+ADD 5 1 // @label_unique_410_for_detour
+B 1
+B 118 // @label_unique_413_altnative  // 1738 to 1925
+SLL 1 1 // @label_unique_414_for_detour
+ADD 5 1
+B 3
+B 81 // @label_unique_405_altnative  // 1710 to 1948
+B 1
+B -72 // @label_unique_583_altnative  // 2026 to 1897
+SLL 1 1 // @label_unique_406_for_detour // @label_unique_584_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 1
+B -74 // @label_unique_581_altnative  // 2031 to 1903
+SLL 1 1 // @label_unique_582_for_detour
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LD 5 0(5)
+ST 5 1(7)
+LI 1 1
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+B 1
+B 90 // @label_unique_269_altnative  // 1440 to 1996
+ADD 5 1 // @label_unique_270_for_detour
+B 1
+B -119 // @label_unique_579_altnative  // 2091 to 1880
+ST 5 2(7) // @label_unique_580_for_detour
+ADD 7 0
+LD 1 2(7)
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+LI 5 0
+B 1
+B -101 // @label_unique_623_altnative  // 2404 to 1653
+B 1 // @label_unique_624_for_detour
+B -66 // @label_unique_455_altnative  // 1999 to 1785
+LI 1 1 // @label_unique_456_for_detour
+ADD 5 1
+SLL 1 1
+B 1
+B -79 // @label_unique_477_altnative  // 1976 to 1842
+ADD 5 1 // @label_unique_478_for_detour
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+B 1
+B -103 // @label_unique_645_altnative  // 2459 to 1674
+SLL 1 1 // @label_unique_646_for_detour
+B 3
+B 86 // @label_unique_417_altnative  // 1825 to 1957
+B 1
+B -71 // @label_unique_515_altnative  // 2211 to 1719
+ADD 5 1 // @label_unique_418_for_detour // @label_unique_516_for_detour
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+B 1
+B -70 // @label_unique_465_altnative  // 2047 to 1809
+SLL 1 1 // @label_unique_466_for_detour
+B 1
+B 77 // @label_unique_457_altnative  // 1860 to 1990
+ST 5 0(7) // @label_unique_458_for_detour
+SUB 7 0
+LD 5 0(5)
+ST 5 1(7)
+OUT 5 
+ADD 7 0
+ST 6 0(7)
+SUB 7 0
+LI 1 1
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 10
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 3
+ADD 6 1
+B -124
+ADD 7 0 // @call_dispalay_hanoi_end:10001$
+B 1
+B -66 // @label_unique_657_altnative  // 2179 to 2051
+MOV 3 6 // @label_unique_658_for_detour
+LI 4 8
+SUB 3 4
+ST 5 0(3)
+B 82
+ST 6 0(7) // @Lelse100020$
+SUB 7 0
+B 1
+B 115 // @label_unique_411_altnative  // 1738 to 2110
+LI 1 1 // @label_unique_412_for_detour
+B 3
+B 90 // @label_unique_421_altnative  // 1859 to 2003
+B 1
+B -75 // @label_unique_475_altnative  // 2108 to 1842
+ST 1 0(7) // @label_unique_422_for_detour // @label_unique_476_for_detour
+SUB 7 0
+MOV 3 6
+LI 4 10
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 9
+B 1
+B -100 // @label_unique_637_altnative  // 2228 to 2039
+SUB 3 4 // @label_unique_638_for_detour
+B 1
+B -70 // @label_unique_587_altnative  // 2156 to 2028
+LD 5 0(3) // @label_unique_588_for_detour
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+B 1
+B -118 // @label_unique_577_altnative  // 2301 to 1880
+LI 4 5 // @label_unique_578_for_detour
+B 1
+B -72 // @label_unique_585_altnative  // 2163 to 2035
+SUB 3 4 // @label_unique_586_for_detour
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LI 1 1
+B 1
+B 79 // @label_unique_415_altnative  // 1825 to 2087
+ST 1 0(7) // @label_unique_416_for_detour
+B 1
+B 67 // @label_unique_403_altnative  // 1710 to 2185
+MOV 5 1 // @label_unique_404_for_detour
+SUB 7 0
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+B 1
+B -101 // @label_unique_661_altnative  // 2276 to 2077
+ST 5 2(7) // @label_unique_662_for_detour
+ADD 7 0
+MOV 6 7
+LI 1 6
+ADD 6 1
+B -68
+ADD 7 0 // @call_simulate_hanoi_end:10001$
+MOV 3 6
+LI 4 10
+SUB 3 4
+ST 5 0(3)
+ST 6 0(7)
+SUB 7 0
+LI 1 2
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 10
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 3
+SUB 3 4
+B 1
+B 91 // @label_unique_443_altnative  // 1945 to 2086
+LD 5 0(3) // @label_unique_444_for_detour
+ST 5 0(7)
+B 1
+B -79 // @label_unique_479_altnative  // 2112 to 1978
+SUB 7 0 // @label_unique_480_for_detour
+MOV 3 6
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+B 3
+B 1
+B -68 // @label_unique_519_altnative  // 2215 to 1968
+B 87 // @label_unique_419_altnative  // 1859 to 2146 // @label_unique_520_for_detour
+LI 1 1 // @label_unique_420_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 6 7
+LI 1 6
+ADD 6 1
+B -68
+ADD 7 0 // @call_simulate_hanoi_end:10002$
+MOV 3 6
+LI 4 10
+SUB 3 4
+ST 5 0(3)
+ST 6 0(7)
+SUB 7 0
+LI 1 3
+ST 1 0(7)
+B 1
+B 75 // @label_unique_521_altnative  // 2046 to 2176
+SUB 7 0 // @label_unique_522_for_detour
+B 1
+B 116 // @label_unique_445_altnative  // 1949 to 2144
+MOV 3 6 // @label_unique_446_for_detour
+LI 4 10
+B 5
+B 1
+B -99 // @label_unique_635_altnative  // 2416 to 2039
+B 81 // @label_unique_447_altnative  // 1981 to 2119 // @label_unique_636_for_detour
+B 1
+B -66 // @label_unique_639_altnative  // 2297 to 2168
+SUB 3 4 // @label_unique_448_for_detour // @label_unique_640_for_detour
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 9
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 4
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 5
+SUB 3 4
+LD 5 0(3)
+B 1
+B -115 // @label_unique_589_altnative  // 2313 to 2099
+ST 5 0(7) // @label_unique_590_for_detour
+SUB 7 0
+LI 1 1
+ST 1 0(7)
+MOV 5 1
+B 1
+B -102 // @label_unique_659_altnative  // 2473 to 2077
+SUB 7 0 // @label_unique_660_for_detour
+LD 1 1(7)
+LD 5 2(7)
+SUB 5 1
+ST 5 2(7)
+ADD 7 0
+MOV 6 7
+LI 1 6
+ADD 6 1
+B 1
+B -72 // @label_unique_591_altnative  // 2287 to 2158
+B -83 // @label_unique_592_for_detour
+ADD 7 0 // @call_simulate_hanoi_end:10003$
+MOV 3 6
+LI 4 10
+SUB 3 4
+ST 5 0(3)
+MOV 3 6 // @Lendifelse100020$
+LI 4 10
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 1
+SUB 3 4
+LD 1 0(3)
+B 1
+B 82 // @label_unique_459_altnative  // 2035 to 2186
+MOV 7 6 // @label_unique_460_for_detour
+SUB 7 0
+LD 2 0(6)
+ST 5 0(6)
+MOV 6 2
+B 1
+B 66 // @label_unique_449_altnative  // 1984 to 2231
+LI 2 1 // @label_unique_450_for_detour
+CMP 1 2
+BE -69
+LI 2 2
+CMP 1 2
+BE -93
+LI 2 3
+CMP 1 2
+BE -33
+LI 2 4
+CMP 1 2
+BE 79
+OUT 0 
+HLT
+IN 5 0 // @definition_simulate_hanoi:100019$
+ST 5 0(7)
+SUB 7 0
+ADD 7 0
+MOV 3 6
+LI 4 11
+SUB 3 4
+ST 5 0(3)
+ST 6 0(7)
+SUB 7 0
+LI 1 2
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 11
+B 1
+B -100 // @label_unique_641_altnative  // 2422 to 2230
+SUB 3 4 // @label_unique_642_for_detour
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LI 1 100
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 6 7
+LI 1 4
+ADD 6 1
+B -69
+ADD 7 0 // @call_mult_end:10002$
+MOV 3 6
+LI 4 14
+SUB 3 4
+ST 5 0(3)
+MOV 3 6
+LI 4 14
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+ST 6 0(7)
+SUB 7 0
+LI 1 4
+ST 1 0(7)
+SUB 7 0
+LI 1 10
+ST 1 0(7)
+MOV 5 1
+B 1
+B -101 // @label_unique_663_altnative  // 2477 to 2278
+SUB 7 0 // @label_unique_664_for_detour
+B 1
+B 65 // @label_unique_643_altnative  // 2296 to 2425
+LI 1 4 // @label_unique_644_for_detour
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 6 7
+LI 1 4
+ADD 6 1
+B -119
+LD 1 1(7) // @call_pow_end:10004$
+LD 5 2(7)
+ADD 5 1
+ST 5 2(7)
+ADD 7 0
+ADD 7 0
+MOV 3 6
+LI 4 14
+SUB 3 4
+ST 5 0(3)
+LI 5 0
+LI 1 1
+SLL 1 1
+SLL 1 1
+ADD 5 1
+B 1
+B 73 // @label_unique_481_altnative  // 2150 to 2296
+SLL 1 1 // @label_unique_482_for_detour
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+ST 6 0(7)
+SUB 7 0
+LI 1 4
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 11
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 3
+ADD 6 1
+B -102
+LD 1 2(7) // @call_fill_ones_end:10004$
+ST 5 0(1)
+LI 1 2
+ADD 7 1
+ST 6 0(7)
+SUB 7 0
+LI 1 4
+ST 1 0(7)
+SUB 7 0
+MOV 3 6
+LI 4 14
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+LI 1 2
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+LI 1 0
+ST 1 0(7)
+MOV 5 1
+SUB 7 0
+MOV 3 6
+LI 4 11
+SUB 3 4
+LD 5 0(3)
+ST 5 0(7)
+SUB 7 0
+MOV 6 7
+LI 1 6
+ADD 6 1
+B -102
+ADD 7 0 // @call_simulate_hanoi_end:10004$
+MOV 3 6
+LI 4 14
+SUB 3 4
+ST 5 0(3)
+LI 5 0
+LI 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+ADD 5 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+SLL 1 1
+ST 5 0(7)
+SUB 7 0
+LD 5 0(5)
+ST 5 1(7)
+OUT 5 
+ADD 7 0
+HLT
+HLT
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1024
+1024
+1
+1024
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+1
+9
+9
+9
+129
+1025
+1025
+10
+1
+16385
+1
+4097
+1
+1025
+1025
+1025
+1025
+129
+129
+129
+1025
+257
+257
+257
+257
+33
+33
+33
+129
+33
+33
+33
+33
+129
+129
+129
+33
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+1
+1024
+1024
+1
+1024
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+1
+9
+9
+9
+129
+1025
+1025
+10
+1
+16385
+1
+4097
+1
+1025
+1025
+1025
+1025
+129
+129
+129
+1025
+257
+257
+257
+257
+33
+33
+33
+129
+33
+33
+33
+33
+129
+129
+129
+33
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+1
+9
+9
+1
+9
+33
+1
+129
+1
+1
+1
+9
+1
+33
+1
+9
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+9
+9
+9
+33
+65
+65
+65
+65
+33
+33
+33
+65
+257
+257
+257
+257
+65
+65
+65
+257
+1025
+1025
+1025
+1025
+257
+257
+257
+1025
+9
+9
+9
+9
+9
+9
+9
+33
+65
+65
+65
+65
+33
+33
+33
+65
+257
+257
+257
+257
+65
+65
+65
+257
+1025
+1025
+1025
+1025
+1025
+1025
+1025
+1025
+10
+10
+1
+1
+9
+9
+9
+33
+65
+65
+65
+65
+33
+33
+33
+65
+257
+257
+257
+257
+65
+65
+65
+257
+1025
+1025
+1025
+1025
+257
+257
+257
+1025
+9
+9
+9
+9
+9
+9
+9
+33
+65
+65
+65
+65
+33
+33
+33
+65
+257
+257
+257
+257
+65
+65
+65
+257
+33
+33
+33
+33
+33
+33
+33
+33
+1025
+1
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+258
+130
+34
+10
+16385
+10
+34
+1025
+130
+130
+258
+258
+130
+130
+1025
+1025
+129
+1
+129
+1
+129
+129
+33
+9
+16384
+9
+33
+4097
+1025
+1025
+1025
+1025
+257
+1
+257
+129
+33
+129
+257
+33
+9
+16384
+9
+33
+129
+129
+129
+129
+257
+1
+257
+129
+33
+129
+257
+257
+129
+257
+129
+33
+17
+33
+129
+129
+257
+257
+4096
+4096
+9
+16384
+9
+33
+9
+9
+9
+9
+9
+9
+4097
+1
+4097
+4097
+4097
+4097
+4097
+1
+4097
+4097
+16385
+16385
+16385
+16385
+16385
+1
+16385
+16385
+10
+10
+10
+10
+34
+34
+34
+34
+10
+10
+10
+10
+10
+10
+10
+10
+257
+1
+257
+129
+33
+33
+1025
+1025
+9
+9
+16384
+9
+1
+9
+33
+129
+4097
+1
+4097
+1
+4097
+4097
+1025
+257
+129
+257
+1025
+34
+10
+10
+10
+10
+8193
+1
+8193
+4097
+1025
+4097
+8193
+1025
+257
+129
+257
+1025
+4097
+4097
+4097
+4097
+8193
+1
+8193
+4097
+1025
+4097
+8193
+8193
+4097
+8193
+4097
+1025
+513
+1025
+4097
+4097
+8193
+8193
+33
+33
+257
+129
+257
+1025
+257
+257
+257
+257
+257
+257
+34
+1
+34
+34
+34
+34
+34
+1
+34
+34
+130
+130
+130
+130
+130
+1
+130
+130
+258
+258
+258
+258
+1026
+1026
+1026
+1026
+258
+258
+258
+258
+258
+258
+258
+258
+8193
+1
+8193
+4097
+1025
+1025
+10
+10
+257
+257
+129
+257
+1
+257
+1025
+4097
+34
+1
+34
+1
+34
+34
+10
+8193
+4097
+8193
+10
+1026
+258
+258
+258
+258
+66
+1
+66
+34
+10
+34
+66
+10
+8193
+4097
+8193
+10
+34
+34
+34
+34
+66
+1
+66
+34
+10
+34
+66
+66
+34
+66
+34
+10
+16385
+10
+34
+34
+66
+66
+1025
+1025
+8193
+4097
+8193
+10
+8193
+8193
+8193
+8193
+8193
+8193
+1026
+1
+1026
+1026
+1026
+1026
+1026
+1
+1026
+1026
+4098
+4098
+4098
+4098
+4098
+1
+4098
+4098
+8194
+8194
+8194
+8194
+11
+11
+11
+11
+35
+35
+35
+35
+35
+35
+35
+35
+66
+1
+66
+34
+10
+10
+1026
+1026
+8193
+8193
+4097
+8193
+1
+8193
+10
+34
+1026
+1
+1026
+1
+1026
+1026
+258
+66
+34
+66
+258
+11
+8194
+8194
+8194
+8194
+2050
+1
+2050
+1026
+258
+1026
+2050
+258
+66
+34
+66
+258
+1026
+1026
+1026
+1026
+2050
+1
+2050
+1026
+258
+1026
+2050
+2050
+1026
+2050
+1026
+258
+130
+258
+1026
+1026
+2050
+2050
+10
+10
+66
+34
+66
+258
+66
+66
+66
+66
+66
+66
+11
+1
+11
+11
+11
+11
+11
+1
+11
+11
+35
+35
+35
+35
+35
+1
+35
+35
+67
+67
+67
+67
+259
+259
+259
+259
+1027
+1027
+1027
+1027
+1027
+1027
+1027
+1027
+2050
+1
+2050
+1026
+258
+258
+8194
+8194
+66
+66
+34
+66
+1
+4099
+1
+4099
+4099
+4099
+4099
+4099
+1
+4099
+1
+4099
+16387
+16387
+16387
+16387
+1
+16387
+1
+16387
+12
+12
+12
+12
+36
+36
+36
+36
+132
+132
+132
+132
+132
+132
+132
+132
+258
+1
+258
+130
+34
+34
+1026
+1026
+10
+130
+1026
+11
+11
+1025
+4097
+16385
+10
+130
+1026
+11
+11
+1026
+10
+10
+10
+10
+10
+10
+10
+10
+10
+10
+0
+0
+10
+1
+16385
+8193
+1
+4097
+2049
+1
+65
+65
+65
+2049
+1025
+1
+1
+1
+1
+1
+1026
+1
+1
+1
+1
+1
+0
